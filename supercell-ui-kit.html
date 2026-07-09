@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supercell 风 UI 组件库 · Clash Style Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================================
+   SUPERCELL / CLASH UI KIT — reusable component library
+   ----------------------------------------------------------------------------
+   全部 sc- 前缀。改主题只改下面 :root 令牌即可。
+   招牌:厚重双色渐变钮 · 深蓝竞技场底 · 羊皮纸面板 · 金币/宝石/圣水 · 硬描边白字
+   ============================================================================ */
+:root{
+  --sc-green:#78d838; --sc-green-lt:#a8ee6e; --sc-green-dk:#48991c;
+  --sc-blue:#4aa0f0;  --sc-blue-lt:#84ccff;  --sc-blue-dk:#2268b8;
+  --sc-red:#f0563c;   --sc-red-lt:#ff8a68;   --sc-red-dk:#b2301c;
+  --sc-gold:#ffc928;  --sc-gold-lt:#ffe57a;  --sc-gold-dk:#d98f00;
+  --sc-gem:#5ee04e;   --sc-gem-dk:#2ea326;
+  --sc-elixir:#d06ee8;--sc-elixir-lt:#eaa4f8;--sc-elixir-dk:#9c3cba;
+  --sc-ink:#2e2318;
+  --sc-paper:#f4e7cd; --sc-paper-dk:#e2cda4;
+  --sc-deep:#16304f;  --sc-deep2:#0f2238;
+  --sc-text:#4a3a28;  --sc-dim:#93a7c0;      --sc-white:#ffffff;
+
+  --sc-disp:'Lilita One',system-ui,sans-serif;
+  --sc-ui:'Nunito',system-ui,sans-serif;
+  --sc-num:'Nunito',sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:var(--sc-ui); color:var(--sc-text); line-height:1.5;
+  background:radial-gradient(120% 90% at 50% 0%,#3f7fd0 0%,#2a5ca8 42%,#1b4079 74%,#122c55 100%);
+  background-attachment:fixed; min-height:100vh; padding:0 0 90px; position:relative; overflow-x:hidden;
+}
+/* arena diagonal light beams */
+body::before{content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.5;
+  background:repeating-linear-gradient(115deg,rgba(255,255,255,.045) 0 60px,transparent 60px 150px);}
+body::after{content:""; position:fixed; left:50%; top:-160px; width:900px; height:420px; transform:translateX(-50%);
+  background:radial-gradient(closest-side,rgba(255,220,110,.18),transparent 70%); z-index:0; pointer-events:none;}
+
+.doc{max-width:980px; margin:0 auto; padding:0 20px; position:relative; z-index:1;}
+.doc-head{text-align:center; padding:48px 20px 26px; position:relative; z-index:1;}
+.doc-head .eb{display:inline-block; margin-bottom:14px; font-family:var(--sc-disp); font-weight:400; font-size:12px;
+  letter-spacing:.14em; color:#fff; background:linear-gradient(180deg,var(--sc-blue-lt),var(--sc-blue) 55%);
+  padding:7px 18px; border-radius:999px; border:3px solid var(--sc-ink); box-shadow:0 3px 0 var(--sc-blue-dk), 0 5px 0 var(--sc-ink);
+  text-shadow:0 2px 0 rgba(0,0,0,.3);}
+.doc-head h1{font-family:var(--sc-disp); font-weight:400; font-size:clamp(30px,5vw,50px); color:var(--sc-gold);
+  paint-order:stroke fill; -webkit-text-stroke:6px var(--sc-ink); text-shadow:0 4px 0 var(--sc-ink), 0 9px 16px rgba(0,0,0,.45); letter-spacing:.02em;}
+.doc-head p{margin-top:12px; color:#cfe3ff; font-weight:800; text-shadow:0 2px 4px rgba(0,20,50,.6);}
+
+.tokens{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:20px;}
+.tok{display:flex; align-items:center; gap:7px; font-family:var(--sc-num); font-weight:800; font-size:11px; color:#dce9fb;
+  background:rgba(13,30,54,.8); border:2px solid #0b1c33; padding:5px 11px; border-radius:999px;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.4);}
+.tok i{width:14px;height:14px; border-radius:4px; border:2px solid var(--sc-ink);}
+
+.comp{margin-top:38px; position:relative; z-index:1;}
+.comp-title{font-family:var(--sc-disp); font-weight:400; font-size:20px; color:#fff; display:flex; align-items:center; gap:10px;
+  margin-bottom:4px; paint-order:stroke fill; -webkit-text-stroke:3px var(--sc-ink); text-shadow:0 2px 0 var(--sc-ink);}
+.comp-title::before{content:"⚔"; color:var(--sc-gold); -webkit-text-stroke:2px var(--sc-ink); font-size:16px;}
+.comp-desc{color:#a9c6ec; font-weight:800; font-size:13px; margin-bottom:16px; text-shadow:0 1px 3px rgba(0,20,50,.5);}
+.showcase{display:flex; flex-wrap:wrap; gap:16px; align-items:center; padding:24px;
+  background:rgba(10,26,48,.5); border:3px solid #0d2038; border-radius:18px;
+  box-shadow:inset 0 3px 10px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.08);}
+.classline{margin-top:10px; font-family:ui-monospace,monospace; font-size:12px; color:#8fd0ff;
+  background:#0d2038; border:2px solid #081627; border-radius:10px; padding:8px 12px; overflow-x:auto; font-weight:600;}
+.classline b{color:var(--sc-gold);}
+
+/* ============================================================================
+   ============  COMPONENTS  ============
+   ============================================================================ */
+
+/* ----- 1. 按钮 sc-btn ----- */
+.sc-btn{font-family:var(--sc-disp); font-weight:400; font-size:15px; color:#fff; cursor:pointer; user-select:none;
+  display:inline-flex; align-items:center; gap:8px; padding:12px 26px 14px; border:3px solid var(--sc-ink);
+  border-radius:12px; text-align:center; letter-spacing:.03em; text-shadow:0 2px 0 rgba(0,0,0,.35); transition:.07s;
+  background:linear-gradient(180deg,var(--b-lt) 0%,var(--b-lt) 42%,var(--b) 46%,var(--b) 100%);
+  box-shadow:0 5px 0 var(--b-dk), 0 7px 0 var(--sc-ink), inset 0 2px 0 rgba(255,255,255,.45);
+  --b-lt:var(--sc-green-lt); --b:var(--sc-green); --b-dk:var(--sc-green-dk);}
+.sc-btn:active{transform:translateY(5px); box-shadow:0 0 0 var(--b-dk), 0 2px 0 var(--sc-ink), inset 0 2px 0 rgba(255,255,255,.35);}
+.sc-btn--green{--b-lt:var(--sc-green-lt);--b:var(--sc-green);--b-dk:var(--sc-green-dk);}
+.sc-btn--blue{--b-lt:var(--sc-blue-lt);--b:var(--sc-blue);--b-dk:var(--sc-blue-dk);}
+.sc-btn--red{--b-lt:var(--sc-red-lt);--b:var(--sc-red);--b-dk:var(--sc-red-dk);}
+.sc-btn--gold{--b-lt:var(--sc-gold-lt);--b:var(--sc-gold);--b-dk:var(--sc-gold-dk); color:#5c3c00; text-shadow:0 1px 0 rgba(255,255,255,.55);}
+.sc-btn--sm{font-size:13px; padding:9px 18px 11px; border-radius:10px;}
+.sc-btn--lg{font-size:19px; padding:16px 36px 18px; border-radius:14px;}
+.sc-btn--block{width:100%; justify-content:center;}
+.sc-btn--round{width:56px; height:56px; padding:0; border-radius:50%; font-size:24px; justify-content:center;}
+.sc-btn[disabled],.sc-btn--disabled{cursor:not-allowed; filter:grayscale(.75) brightness(.9); opacity:.85;}
+.sc-btn[disabled]:active,.sc-btn--disabled:active{transform:none;
+  box-shadow:0 5px 0 var(--b-dk), 0 7px 0 var(--sc-ink), inset 0 2px 0 rgba(255,255,255,.4);}
+
+/* ----- 2. 面板 sc-panel ----- */
+.sc-panel{position:relative; background:linear-gradient(180deg,var(--sc-paper),var(--sc-paper-dk)); border:4px solid var(--sc-ink);
+  border-radius:16px; box-shadow:0 6px 0 var(--sc-ink), 0 14px 22px rgba(0,10,30,.35), inset 0 2px 0 rgba(255,255,255,.5);}
+.sc-panel__hd{font-family:var(--sc-disp); font-weight:400; font-size:17px; color:#fff; text-align:center; padding:12px 16px;
+  background:linear-gradient(180deg,var(--sc-blue-lt),var(--sc-blue) 55%); border-bottom:4px solid var(--sc-ink);
+  border-radius:11px 11px 0 0; text-shadow:0 2px 0 var(--sc-blue-dk); letter-spacing:.03em;}
+.sc-panel__bd{padding:16px 18px 18px;}
+.sc-panel__bd p{font-weight:700; font-size:13px; color:var(--sc-text); line-height:1.6;}
+/* corner rivets (可选) */
+.sc-rivet{position:absolute; width:11px; height:11px; border-radius:50%;
+  background:radial-gradient(circle at 38% 30%,#ffe9a8,var(--sc-gold) 55%,var(--sc-gold-dk));
+  border:2px solid var(--sc-ink); box-shadow:0 1px 0 var(--sc-ink);}
+.sc-rivet.tl{top:8px;left:8px;} .sc-rivet.tr{top:8px;right:8px;}
+.sc-rivet.bl{bottom:8px;left:8px;} .sc-rivet.br{bottom:8px;right:8px;}
+
+/* ----- 3. 弹窗 sc-modal ----- */
+.sc-modal-mask{position:fixed; inset:0; background:rgba(6,16,32,.66); backdrop-filter:blur(2px);
+  display:grid; place-items:center; z-index:100; padding:20px;}
+.sc-modal{width:min(380px,92vw); position:relative;}
+.sc-modal__close{position:absolute; top:-14px; right:-14px; width:42px; height:42px; z-index:5;
+  --b-lt:var(--sc-red-lt);--b:var(--sc-red);--b-dk:var(--sc-red-dk);}
+
+/* ----- 4. 进度条 sc-bar ----- */
+.sc-bar{position:relative; height:18px; background:#101f35; border:3px solid var(--sc-ink); border-radius:999px; overflow:hidden;
+  box-shadow:inset 0 3px 5px rgba(0,0,0,.5);}
+.sc-bar__fill{height:100%; border-radius:999px; box-shadow:inset 0 3px 0 rgba(255,255,255,.45), inset 0 -3px 0 rgba(0,0,0,.18);}
+.sc-bar__fill--gold{background:linear-gradient(180deg,var(--sc-gold-lt),var(--sc-gold));}
+.sc-bar__fill--hp{background:linear-gradient(180deg,var(--sc-green-lt),var(--sc-green));}
+.sc-bar__fill--elixir{background:linear-gradient(180deg,var(--sc-elixir-lt),var(--sc-elixir));}
+.sc-bar__label{position:absolute; inset:0; display:grid; place-items:center; font-family:var(--sc-disp); font-weight:400;
+  font-size:11px; color:#fff; text-shadow:0 1px 0 rgba(0,0,0,.55); letter-spacing:.04em;}
+.sc-bar--tall{height:24px;}
+
+/* ----- 5. 货币条 sc-currency ----- */
+.sc-currency{display:inline-flex; align-items:center; gap:7px; font-family:var(--sc-num); font-weight:900; font-size:15px;
+  color:#fff; background:linear-gradient(180deg,#243d5e,#152841); border:3px solid var(--sc-ink); border-radius:999px;
+  padding:4px 14px 4px 5px; box-shadow:inset 0 2px 5px rgba(0,0,0,.5), 0 2px 0 rgba(255,255,255,.08); text-shadow:0 1px 0 rgba(0,0,0,.5);}
+.sc-currency__coin{width:26px; height:26px; border-radius:50%; flex:none; border:2px solid var(--sc-ink);
+  display:grid; place-items:center; font-size:13px; box-shadow:inset 0 2px 0 rgba(255,255,255,.5);}
+.sc-currency__coin--gold{background:radial-gradient(circle at 40% 30%,var(--sc-gold-lt),var(--sc-gold) 60%,var(--sc-gold-dk)); color:#7a5200;}
+.sc-currency__coin--gem{border-radius:8px; transform:rotate(0deg);
+  background:radial-gradient(circle at 40% 30%,#b6ff9e,var(--sc-gem) 60%,var(--sc-gem-dk)); color:#14611a;}
+.sc-currency__coin--elixir{background:radial-gradient(circle at 40% 30%,var(--sc-elixir-lt),var(--sc-elixir) 60%,var(--sc-elixir-dk)); color:#571a70;}
+
+/* ----- 6. 圣水计量 sc-meter ----- */
+.sc-meter{display:inline-flex; align-items:center; gap:3px; background:#101f35; border:3px solid var(--sc-ink);
+  border-radius:999px; padding:6px 10px; box-shadow:inset 0 2px 5px rgba(0,0,0,.5);}
+.sc-meter__seg{width:14px; height:14px; border-radius:50% 50% 50% 4px; transform:rotate(45deg); margin:0 1px;
+  background:#26364f; box-shadow:inset 0 1px 2px rgba(0,0,0,.4);}
+.sc-meter__seg.on{background:radial-gradient(circle at 40% 30%,var(--sc-elixir-lt),var(--sc-elixir) 70%);
+  box-shadow:0 0 6px rgba(208,110,232,.8);}
+.sc-meter__num{font-family:var(--sc-disp); font-size:14px; color:#e8b6f5; margin-left:6px; text-shadow:0 1px 0 rgba(0,0,0,.5);}
+.sc-meter__num.max{color:var(--sc-gold); animation:sc-pulse .7s ease-in-out infinite;}
+@keyframes sc-pulse{50%{opacity:.55;}}
+
+/* ----- 7. 图标底座 sc-icon ----- */
+.sc-icon{width:52px; height:52px; border-radius:12px; display:grid; place-items:center; font-size:26px; position:relative;
+  background:linear-gradient(180deg,#fdf6e4,var(--sc-paper-dk)); border:3px solid var(--sc-ink);
+  box-shadow:0 4px 0 var(--sc-ink), inset 0 2px 0 #fff;}
+.sc-icon:hover{transform:translateY(-2px);}
+.sc-icon--rare{background:linear-gradient(180deg,#ffe2ac,#ffb44e);}
+.sc-icon--epic{background:linear-gradient(180deg,#efc2ff,#cf7ff2);}
+.sc-icon--legend{background:linear-gradient(180deg,#fff3b0,#ffd23c 55%,#57d7ff);}
+.sc-icon__cd{position:absolute; inset:0; background:rgba(14,26,46,.68); border-radius:9px; display:grid; place-items:center;
+  font-family:var(--sc-disp); font-size:16px; color:#fff;}
+
+/* ----- 8. 卡片 sc-card ----- */
+.sc-card{width:150px; background:linear-gradient(180deg,var(--sc-paper),var(--sc-paper-dk)); border:4px solid var(--sc-ink);
+  border-radius:14px; overflow:hidden; cursor:pointer; box-shadow:0 6px 0 var(--sc-ink), 0 12px 16px rgba(0,10,30,.35);
+  transition:.12s; position:relative;}
+.sc-card:hover{transform:translateY(-4px);}
+.sc-card__art{height:96px; display:grid; place-items:center; font-size:48px; position:relative;
+  background:linear-gradient(180deg,var(--c1,#84ccff),var(--c2,#3a7dd0)); border-bottom:4px solid var(--sc-ink);
+  text-shadow:0 3px 0 rgba(0,0,0,.2);}
+.sc-card--rare{--c1:#ffd98e;--c2:#e8912a;} .sc-card--epic{--c1:#e0a8f5;--c2:#8e3bbf;}
+.sc-card--legend{--c1:#ffe57a;--c2:#38b6e0;}
+.sc-card__tag{position:absolute; top:6px; left:6px; font-family:var(--sc-num); font-weight:900; font-size:9px; color:#fff;
+  background:rgba(14,26,46,.85); padding:2px 8px; border-radius:999px; letter-spacing:.05em;}
+.sc-card__name{font-family:var(--sc-disp); font-weight:400; font-size:14px; color:var(--sc-text); text-align:center; padding:8px 6px 4px;}
+.sc-card__foot{padding:0 10px 10px;}
+/* 等级角标 */
+.sc-card__lv{position:absolute; bottom:44px; left:50%; transform:translateX(-50%); font-family:var(--sc-disp); font-size:11px;
+  color:#fff; background:linear-gradient(180deg,var(--sc-blue-lt),var(--sc-blue)); border:2px solid var(--sc-ink);
+  border-radius:8px; padding:1px 9px; text-shadow:0 1px 0 rgba(0,0,0,.4); z-index:2;}
+
+/* ----- 9. 列表项 sc-list ----- */
+.sc-list{border:3px solid var(--sc-ink); border-radius:12px; overflow:hidden;
+  background:linear-gradient(180deg,var(--sc-paper),var(--sc-paper-dk)); box-shadow:0 4px 0 var(--sc-ink);}
+.sc-list__item{display:flex; align-items:center; gap:10px; padding:9px 12px; cursor:pointer;
+  border-bottom:2px solid rgba(46,35,24,.14); transition:.1s;}
+.sc-list__item:last-child{border-bottom:none;}
+.sc-list__item:hover{background:rgba(255,214,90,.28);}
+.sc-list__ic{width:34px; height:34px; flex:none; display:grid; place-items:center; font-size:18px;
+  background:linear-gradient(180deg,#fdf6e4,var(--sc-paper-dk)); border:2px solid var(--sc-ink); border-radius:9px;}
+.sc-list__tx{flex:1;}
+.sc-list__tx b{font-family:var(--sc-disp); font-weight:400; font-size:14px; color:var(--sc-text); display:block;}
+.sc-list__tx small{font-family:var(--sc-num); font-weight:700; font-size:11px; color:#8a765c;}
+.sc-list__val{font-family:var(--sc-num); font-weight:900; font-size:14px; color:var(--sc-blue-dk);}
+
+/* ----- 10. 顶部 HUD sc-hud ----- */
+.sc-hud{display:flex; align-items:center; gap:10px; padding:10px 12px;
+  background:linear-gradient(180deg,#22395a,#152841); border:3px solid var(--sc-ink); border-radius:14px;
+  box-shadow:0 4px 0 var(--sc-ink), inset 0 2px 0 rgba(255,255,255,.1);}
+.sc-hud__ava{width:44px; height:44px; border-radius:10px; flex:none; display:grid; place-items:center; font-size:22px;
+  background:linear-gradient(180deg,var(--sc-gold-lt),var(--sc-gold)); border:3px solid var(--sc-ink);}
+.sc-hud__who b{font-family:var(--sc-disp); font-weight:400; font-size:15px; color:#fff; display:block; text-shadow:0 1px 0 rgba(0,0,0,.5);}
+.sc-hud__who small{font-family:var(--sc-num); font-weight:800; font-size:10px; color:#ffd968; letter-spacing:.04em;}
+.sc-hud__spacer{flex:1;}
+
+/* ----- 11. 导航栏 sc-nav ----- */
+.sc-nav{display:flex; gap:6px; padding:7px; background:linear-gradient(180deg,#1b3152,#122340);
+  border:3px solid var(--sc-ink); border-radius:16px; box-shadow:0 4px 0 var(--sc-ink);}
+.sc-nav__tab{flex:1; text-align:center; font-family:var(--sc-disp); font-weight:400; font-size:11px; color:#7e93b4;
+  padding:8px 4px; cursor:pointer; border-radius:11px; border:3px solid transparent; transition:.1s; letter-spacing:.03em;}
+.sc-nav__tab .i{display:block; font-size:20px; margin-bottom:2px; filter:grayscale(.55) brightness(.85);}
+.sc-nav__tab--active{color:#fff; background:linear-gradient(180deg,var(--sc-gold-lt) 0%,var(--sc-gold-lt) 42%,var(--sc-gold) 46%);
+  border-color:var(--sc-ink); box-shadow:0 3px 0 var(--sc-gold-dk); text-shadow:0 1px 0 var(--sc-gold-dk); color:#5c3c00;}
+.sc-nav__tab--active .i{filter:none;}
+
+/* ----- 12. 标签页 sc-tabs ----- */
+.sc-tabs{display:flex; gap:6px;}
+.sc-tabs__tab{font-family:var(--sc-disp); font-weight:400; font-size:12px; color:#7e93b4; padding:9px 18px; cursor:pointer;
+  background:#122340; border:3px solid var(--sc-ink); border-radius:10px 10px 0 0; border-bottom:none; transition:.1s; letter-spacing:.03em;}
+.sc-tabs__tab--active{color:#fff; background:linear-gradient(180deg,var(--sc-blue-lt),var(--sc-blue) 60%); text-shadow:0 1px 0 var(--sc-blue-dk);}
+
+/* ----- 13. 输入框 sc-input ----- */
+.sc-input{font-family:var(--sc-ui); font-weight:700; font-size:14px; color:#e5eefb; background:#101f35;
+  border:3px solid var(--sc-ink); border-radius:10px; padding:10px 14px; width:100%; outline:none; transition:.12s;
+  box-shadow:inset 0 3px 6px rgba(0,0,0,.45);}
+.sc-input::placeholder{color:#54688a;}
+.sc-input:focus{border-color:var(--sc-blue); box-shadow:inset 0 3px 6px rgba(0,0,0,.45), 0 0 0 3px rgba(74,160,240,.35);}
+.sc-field{position:relative;}
+.sc-field__ic{position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:15px;}
+.sc-field .sc-input{padding-left:36px;}
+
+/* ----- 14. 下拉选择 sc-select ----- */
+.sc-select{position:relative; display:inline-block;}
+.sc-select select{appearance:none; -webkit-appearance:none; font-family:var(--sc-disp); font-weight:400; font-size:13px;
+  color:#fff; background:linear-gradient(180deg,#2a4468,#182f4e); border:3px solid var(--sc-ink); border-radius:10px;
+  padding:10px 36px 10px 14px; cursor:pointer; outline:none; box-shadow:0 3px 0 var(--sc-ink); letter-spacing:.03em;}
+.sc-select::after{content:"▾"; position:absolute; right:14px; top:50%; transform:translateY(-50%); color:var(--sc-gold);
+  pointer-events:none; font-weight:800;}
+
+/* ----- 15. 开关 sc-switch ----- */
+.sc-switch{position:relative; display:inline-flex; align-items:center; cursor:pointer; user-select:none;}
+.sc-switch input{position:absolute; opacity:0; pointer-events:none;}
+.sc-switch__track{width:52px; height:28px; border-radius:999px; background:#101f35; border:3px solid var(--sc-ink);
+  position:relative; transition:.15s; box-shadow:inset 0 3px 5px rgba(0,0,0,.5);}
+.sc-switch__track::before{content:""; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%;
+  background:linear-gradient(180deg,#fdf6e4,#d8c9a8); border:2px solid var(--sc-ink); transition:.15s;}
+.sc-switch input:checked + .sc-switch__track{background:linear-gradient(180deg,var(--sc-green-lt),var(--sc-green));}
+.sc-switch input:checked + .sc-switch__track::before{left:26px;}
+
+/* ----- 16. 滑条 sc-slider ----- */
+.sc-slider{-webkit-appearance:none; appearance:none; width:100%; height:12px; border-radius:999px;
+  background:linear-gradient(90deg,var(--sc-gold),#101f35); border:3px solid var(--sc-ink); outline:none; cursor:pointer;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.4);}
+.sc-slider::-webkit-slider-thumb{-webkit-appearance:none; width:24px; height:24px; border-radius:50%;
+  background:radial-gradient(circle at 40% 30%,#ffe9a8,var(--sc-gold) 60%,var(--sc-gold-dk)); border:3px solid var(--sc-ink);
+  cursor:pointer; box-shadow:0 2px 0 var(--sc-ink);}
+.sc-slider::-moz-range-thumb{width:24px; height:24px; border-radius:50%; background:var(--sc-gold); border:3px solid var(--sc-ink); cursor:pointer;}
+
+/* ----- 17. 徽章 sc-badge ----- */
+.sc-badge{display:inline-grid; place-items:center; min-width:20px; height:20px; padding:0 6px; border-radius:999px;
+  font-family:var(--sc-num); font-weight:900; font-size:11px; color:#fff;
+  background:linear-gradient(180deg,var(--sc-red-lt),var(--sc-red)); border:2px solid var(--sc-ink);
+  box-shadow:0 2px 0 var(--sc-ink); text-shadow:0 1px 0 rgba(0,0,0,.4);}
+.sc-badge--gold{background:linear-gradient(180deg,var(--sc-gold-lt),var(--sc-gold)); color:#5c3c00; text-shadow:none;}
+.sc-badge-wrap{position:relative; display:inline-flex;}
+.sc-badge-wrap > .sc-badge{position:absolute; top:-8px; right:-8px;}
+
+/* ----- 18. 角标 sc-ribbon ----- */
+.sc-ribbon{position:absolute; top:10px; left:-4px; font-family:var(--sc-disp); font-weight:400; font-size:11px; color:#fff;
+  background:linear-gradient(180deg,var(--sc-red-lt),var(--sc-red)); padding:3px 12px; border:2px solid var(--sc-ink);
+  border-radius:4px; z-index:3; box-shadow:0 2px 0 var(--sc-ink); text-shadow:0 1px 0 var(--sc-red-dk); letter-spacing:.04em;}
+.sc-ribbon--gold{background:linear-gradient(180deg,var(--sc-gold-lt),var(--sc-gold)); color:#5c3c00; text-shadow:none;}
+
+/* ----- 19. 标签 sc-tag ----- */
+.sc-tag{display:inline-flex; align-items:center; gap:5px; font-family:var(--sc-num); font-weight:800; font-size:11px;
+  color:#d7e5f8; background:#1b3152; border:2px solid var(--sc-ink); border-radius:999px; padding:3px 10px;}
+.sc-tag--red{background:#5c1f14; color:#ffb09e;}
+.sc-tag--green{background:#1e4a12; color:#b2f08e;}
+.sc-tag--elixir{background:#4a1a5c; color:#eab2f8;}
+
+/* ----- 20. Tooltip sc-tooltip ----- */
+.sc-tooltip{position:relative; display:inline-flex; cursor:help; color:#cfe3ff; font-weight:800;
+  border-bottom:2px dotted #5a76a0;}
+.sc-tooltip::after{content:attr(data-tip); position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%);
+  font-family:var(--sc-ui); font-weight:700; font-size:12px; color:#3d2f1c; white-space:nowrap;
+  background:linear-gradient(180deg,#fdf3d8,var(--sc-paper-dk)); border:2px solid var(--sc-ink);
+  border-radius:8px; padding:7px 12px; opacity:0; pointer-events:none; transition:.12s; z-index:20; box-shadow:0 3px 0 var(--sc-ink);}
+.sc-tooltip::before{content:""; position:absolute; bottom:calc(100% + 4px); left:50%; transform:translateX(-50%);
+  border:6px solid transparent; border-top-color:var(--sc-ink); opacity:0; transition:.12s; z-index:20;}
+.sc-tooltip:hover::after,.sc-tooltip:hover::before{opacity:1;}
+
+/* ----- 21. Toast sc-toast ----- */
+.sc-toast{display:flex; align-items:center; gap:10px; font-family:var(--sc-ui); font-weight:700; font-size:13px;
+  color:var(--sc-text); background:linear-gradient(180deg,var(--sc-paper),var(--sc-paper-dk)); border:3px solid var(--sc-ink);
+  border-radius:14px; padding:11px 16px; max-width:340px; box-shadow:0 5px 0 var(--sc-ink);}
+.sc-toast__ic{width:34px; height:34px; border-radius:9px; flex:none; display:grid; place-items:center; font-size:18px;
+  background:linear-gradient(180deg,var(--sc-green-lt),var(--sc-green)); border:2px solid var(--sc-ink);}
+.sc-toast--danger .sc-toast__ic{background:linear-gradient(180deg,var(--sc-red-lt),var(--sc-red));}
+.sc-toast--gold .sc-toast__ic{background:linear-gradient(180deg,var(--sc-gold-lt),var(--sc-gold));}
+.sc-toast b{font-family:var(--sc-disp); font-weight:400; font-size:13px; color:var(--sc-text); display:block;}
+
+/* ----- 22. 对话气泡 sc-bubble ----- */
+.sc-bubble{position:relative; font-family:var(--sc-ui); font-weight:700; font-size:13px; color:var(--sc-text); max-width:300px;
+  background:linear-gradient(180deg,#fdf6e4,var(--sc-paper-dk)); border:3px solid var(--sc-ink); border-radius:14px;
+  padding:12px 16px; box-shadow:0 5px 0 var(--sc-ink);}
+.sc-bubble__who{font-family:var(--sc-disp); font-weight:400; font-size:12px; color:var(--sc-blue-dk); margin-bottom:5px; letter-spacing:.03em;}
+.sc-bubble::before{content:""; position:absolute; left:24px; bottom:-14px; border:8px solid transparent; border-top-color:var(--sc-ink);}
+.sc-bubble::after{content:""; position:absolute; left:26px; bottom:-9px; border:6px solid transparent; border-top-color:var(--sc-paper-dk);}
+
+/* ----- 23. 加载 sc-spinner(旋转宝石) ----- */
+.sc-spinner{width:40px; height:40px; border-radius:10px; transform:rotate(45deg);
+  background:radial-gradient(circle at 40% 30%,#b6ff9e,var(--sc-gem) 60%,var(--sc-gem-dk));
+  border:3px solid var(--sc-ink); display:grid; place-items:center;
+  animation:sc-spin 1.1s linear infinite; box-shadow:inset 0 2px 0 rgba(255,255,255,.5);}
+@keyframes sc-spin{0%{transform:rotate(45deg) rotateY(0)}100%{transform:rotate(45deg) rotateY(360deg)}}
+
+/* ----- 24. 头像组 sc-avatars ----- */
+.sc-avatars{display:inline-flex;}
+.sc-avatars__a{width:38px; height:38px; border-radius:50%; display:grid; place-items:center; font-size:18px; margin-left:-10px;
+  background:linear-gradient(180deg,#fdf6e4,var(--sc-paper-dk)); border:3px solid var(--sc-ink);}
+.sc-avatars__a:first-child{margin-left:0;}
+.sc-avatars__more{width:38px; height:38px; border-radius:50%; display:grid; place-items:center; margin-left:-10px;
+  font-family:var(--sc-num); font-weight:900; font-size:11px; color:#fff;
+  background:linear-gradient(180deg,var(--sc-blue-lt),var(--sc-blue)); border:3px solid var(--sc-ink);}
+
+/* ----- 25. 星级评分 sc-stars ----- */
+.sc-stars{display:inline-flex; gap:3px; font-size:20px; color:#31486b; paint-order:stroke fill; -webkit-text-stroke:2px var(--sc-ink);}
+.sc-stars .on{color:var(--sc-gold); filter:drop-shadow(0 2px 0 var(--sc-gold-dk));}
+
+/* ----- 26. 分隔线 sc-divider ----- */
+.sc-divider{display:flex; align-items:center; gap:10px; margin:6px 0;}
+.sc-divider::before,.sc-divider::after{content:""; height:3px; flex:1; border-radius:999px;
+  background:#456a96; opacity:.5;}
+.sc-divider__mark{font-family:var(--sc-disp); font-weight:400; font-size:13px; color:#cfe3ff; letter-spacing:.05em;}
+
+/* ----- 27. 空状态 sc-empty ----- */
+.sc-empty{text-align:center; padding:28px 20px; color:#8a765c;}
+.sc-empty__ic{font-size:48px; filter:grayscale(.3);}
+.sc-empty__tt{font-family:var(--sc-disp); font-weight:400; font-size:16px; color:var(--sc-text); margin:8px 0 4px;}
+.sc-empty__ds{font-family:var(--sc-num); font-weight:700; font-size:12px;}
+
+/* ----- 28. 步进器 sc-stepper ----- */
+.sc-stepper{display:inline-flex; align-items:center; gap:8px;}
+.sc-stepper__btn{width:36px; height:36px; border-radius:10px; font-family:var(--sc-disp); font-weight:400; font-size:20px; color:#fff;
+  cursor:pointer; border:3px solid var(--sc-ink); display:grid; place-items:center; line-height:0; padding-bottom:2px;
+  background:linear-gradient(180deg,var(--sc-blue-lt) 0%,var(--sc-blue-lt) 42%,var(--sc-blue) 46%);
+  box-shadow:0 3px 0 var(--sc-blue-dk), 0 5px 0 var(--sc-ink); transition:.07s; text-shadow:0 1px 0 rgba(0,0,0,.35);}
+.sc-stepper__btn:active{transform:translateY(3px); box-shadow:0 0 0 var(--sc-blue-dk), 0 2px 0 var(--sc-ink);}
+.sc-stepper__val{min-width:46px; text-align:center; font-family:var(--sc-num); font-weight:900; font-size:18px; color:#fff;
+  background:#101f35; border:3px solid var(--sc-ink); border-radius:10px; padding:6px 0; box-shadow:inset 0 3px 5px rgba(0,0,0,.5);}
+
+/* ----- 29. 面包屑 sc-breadcrumb ----- */
+.sc-breadcrumb{display:flex; align-items:center; gap:6px; font-family:var(--sc-ui); font-weight:700; font-size:13px; flex-wrap:wrap;}
+.sc-breadcrumb a{color:#8fd0ff; text-decoration:none; cursor:pointer;}
+.sc-breadcrumb a:hover{color:var(--sc-gold);}
+.sc-breadcrumb__sep{color:#54688a; font-weight:800;}
+.sc-breadcrumb__cur{color:#fff; font-weight:800;}
+
+/* ----- 30. 手风琴 sc-accordion ----- */
+.sc-accordion{border:3px solid var(--sc-ink); border-radius:12px; overflow:hidden;
+  background:linear-gradient(180deg,var(--sc-paper),var(--sc-paper-dk)); box-shadow:0 4px 0 var(--sc-ink);}
+.sc-accordion details{border-bottom:2px solid rgba(46,35,24,.14);}
+.sc-accordion details:last-child{border-bottom:none;}
+.sc-accordion summary{list-style:none; cursor:pointer; padding:12px 14px; font-family:var(--sc-disp); font-weight:400; font-size:13px;
+  color:var(--sc-text); display:flex; align-items:center; gap:8px; letter-spacing:.02em;}
+.sc-accordion summary::-webkit-details-marker{display:none;}
+.sc-accordion summary::before{content:"▶"; color:var(--sc-gold-dk); font-size:11px; transition:.15s;}
+.sc-accordion details[open] summary::before{transform:rotate(90deg);}
+.sc-accordion summary:hover{background:rgba(255,214,90,.28);}
+.sc-accordion__bd{padding:2px 16px 14px 32px; font-family:var(--sc-ui); font-weight:700; font-size:12px; color:#8a765c; line-height:1.6;}
+
+/* ----- 31. 侧边抽屉 sc-drawer ----- */
+.sc-drawer-mask{position:fixed; inset:0; background:rgba(6,16,32,.6); z-index:110; opacity:0; pointer-events:none; transition:.2s;}
+.sc-drawer-mask.open{opacity:1; pointer-events:auto;}
+.sc-drawer{position:fixed; top:0; right:0; bottom:0; width:min(300px,86vw); z-index:120;
+  background:linear-gradient(180deg,var(--sc-paper),var(--sc-paper-dk)); border-left:4px solid var(--sc-ink);
+  box-shadow:-8px 0 26px rgba(0,0,0,.45); transform:translateX(100%);
+  transition:.22s cubic-bezier(.3,.8,.3,1); display:flex; flex-direction:column;}
+.sc-drawer.open{transform:translateX(0);}
+.sc-drawer__hd{font-family:var(--sc-disp); font-weight:400; font-size:16px; color:#fff; padding:16px;
+  background:linear-gradient(180deg,var(--sc-blue-lt),var(--sc-blue) 55%); border-bottom:4px solid var(--sc-ink);
+  display:flex; align-items:center; justify-content:space-between; text-shadow:0 2px 0 var(--sc-blue-dk); letter-spacing:.03em;}
+.sc-drawer__hd span{cursor:pointer;}
+.sc-drawer__bd{padding:12px; overflow-y:auto;}
+
+/* ----- 32. 数据表格 sc-table ----- */
+.sc-table{width:100%; border-collapse:collapse; font-family:var(--sc-num); font-weight:700; font-size:12px;
+  border:3px solid var(--sc-ink); border-radius:12px; overflow:hidden;
+  background:linear-gradient(180deg,var(--sc-paper),var(--sc-paper-dk));}
+.sc-table thead th{font-family:var(--sc-disp); font-weight:400; font-size:11px; color:#fff; text-align:left; padding:9px 12px;
+  background:linear-gradient(180deg,var(--sc-blue-lt),var(--sc-blue) 60%); border-bottom:3px solid var(--sc-ink);
+  text-shadow:0 1px 0 var(--sc-blue-dk); letter-spacing:.05em;}
+.sc-table tbody td{padding:9px 12px; color:var(--sc-text); border-bottom:2px solid rgba(46,35,24,.12);}
+.sc-table tbody tr:last-child td{border-bottom:none;}
+.sc-table tbody tr:nth-child(even){background:rgba(46,35,24,.05);}
+.sc-table tbody tr:hover{background:rgba(255,214,90,.3);}
+.sc-table__rank{color:var(--sc-gold-dk); font-family:var(--sc-disp); font-weight:400;}
+
+/* ----- 33. 分页器 sc-pagination ----- */
+.sc-pagination{display:inline-flex; gap:6px;}
+.sc-pagination__pg{min-width:34px; height:34px; padding:0 6px; display:grid; place-items:center; cursor:pointer;
+  font-family:var(--sc-disp); font-weight:400; font-size:13px; color:#cfe3ff; background:#1b3152;
+  border:3px solid var(--sc-ink); border-radius:10px; box-shadow:0 3px 0 var(--sc-ink); transition:.07s;}
+.sc-pagination__pg:active{transform:translateY(3px); box-shadow:0 0 0 var(--sc-ink);}
+.sc-pagination__pg--active{color:#5c3c00; background:linear-gradient(180deg,var(--sc-gold-lt) 0%,var(--sc-gold-lt) 42%,var(--sc-gold) 46%);
+  box-shadow:0 3px 0 var(--sc-gold-dk);}
+.sc-pagination__pg--dis{opacity:.4; cursor:not-allowed; box-shadow:0 3px 0 var(--sc-ink);}
+
+/* ----- 34. 时间轴 sc-timeline ----- */
+.sc-timeline{position:relative; padding-left:28px;}
+.sc-timeline::before{content:""; position:absolute; left:9px; top:8px; bottom:8px; width:4px; border-radius:999px;
+  background:repeating-linear-gradient(180deg,#456a96 0 6px,transparent 6px 12px); opacity:.6;}
+.sc-timeline__item{position:relative; padding-bottom:16px;}
+.sc-timeline__item:last-child{padding-bottom:0;}
+.sc-timeline__item::before{content:""; position:absolute; left:-24px; top:2px; width:16px; height:16px; border-radius:50%;
+  background:#1b3152; border:3px solid var(--sc-ink);}
+.sc-timeline__item--done::before{background:radial-gradient(circle at 40% 30%,var(--sc-green-lt),var(--sc-green));}
+.sc-timeline__item--now::before{background:radial-gradient(circle at 40% 30%,var(--sc-gold-lt),var(--sc-gold)); box-shadow:0 0 8px rgba(255,201,40,.8);}
+.sc-timeline__t{font-family:var(--sc-disp); font-weight:400; font-size:13px; color:#fff; letter-spacing:.02em; text-shadow:0 1px 0 rgba(0,0,0,.4);}
+.sc-timeline__d{font-family:var(--sc-num); font-weight:700; font-size:11px; color:#93a7c0; margin-top:2px;}
+
+/* ----- 35. 树形菜单 sc-tree ----- */
+.sc-tree{font-family:var(--sc-ui); font-weight:700; font-size:13px;}
+.sc-tree details{margin-left:4px;}
+.sc-tree summary{list-style:none; cursor:pointer; padding:5px 0; color:#e5eefb; display:flex; align-items:center; gap:6px;}
+.sc-tree summary::-webkit-details-marker{display:none;}
+.sc-tree summary::before{content:"▶"; color:var(--sc-gold); font-size:9px; transition:.15s;}
+.sc-tree details[open] > summary::before{transform:rotate(90deg);}
+.sc-tree summary:hover{color:var(--sc-gold);}
+.sc-tree__leaf{padding:5px 0 5px 20px; color:#93a7c0; cursor:pointer;}
+.sc-tree__leaf:hover{color:#fff;}
+.sc-tree details > *:not(summary){margin-left:14px; border-left:3px solid #2a4468; padding-left:6px;}
+
+/* ----- 36. 能量条倒计时 sc-energy ----- */
+.sc-energy{display:flex; align-items:center; gap:10px;}
+.sc-energy__orb{width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font-size:15px; flex:none;
+  background:radial-gradient(circle at 40% 30%,var(--sc-elixir-lt),var(--sc-elixir) 60%,var(--sc-elixir-dk)); border:3px solid var(--sc-ink);}
+.sc-energy__body{flex:1;}
+.sc-energy__top{display:flex; justify-content:space-between; font-family:var(--sc-num); font-weight:800; font-size:11px; color:#93a7c0; margin-bottom:3px;}
+.sc-energy__timer{color:#e8b6f5; font-variant-numeric:tabular-nums;}
+
+/* ----- 37. 签到日历 sc-calendar ----- */
+.sc-calendar{display:grid; grid-template-columns:repeat(7,1fr); gap:6px;}
+.sc-calendar__day{aspect-ratio:1; border-radius:10px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; font-family:var(--sc-num); font-weight:800; font-size:10px; color:#8a765c;
+  background:linear-gradient(180deg,var(--sc-paper),var(--sc-paper-dk)); border:3px solid var(--sc-ink); position:relative;}
+.sc-calendar__day .r{font-size:16px;}
+.sc-calendar__day--done{filter:saturate(.7);}
+.sc-calendar__day--done::after{content:"✓"; position:absolute; inset:0; display:grid; place-items:center; border-radius:7px;
+  background:rgba(72,153,28,.82); color:#fff; font-size:20px; font-weight:900;}
+.sc-calendar__day--today{border-color:var(--sc-gold); box-shadow:0 0 0 3px rgba(255,201,40,.4), 0 0 12px rgba(255,201,40,.5);
+  background:linear-gradient(180deg,#fff3c8,#ffe08e);}
+
+/* ----- 38. 奖杯之路 sc-questchain ----- */
+.sc-questchain{display:flex; align-items:center;}
+.sc-questchain__node{width:42px; height:42px; border-radius:50%; display:grid; place-items:center; font-size:18px; flex:none; z-index:2;
+  background:linear-gradient(180deg,var(--sc-paper),var(--sc-paper-dk)); border:3px solid var(--sc-ink); box-shadow:0 3px 0 var(--sc-ink);}
+.sc-questchain__node--done{background:radial-gradient(circle at 40% 30%,var(--sc-gold-lt),var(--sc-gold));}
+.sc-questchain__node--now{background:radial-gradient(circle at 40% 30%,var(--sc-red-lt),var(--sc-red)); color:#fff; transform:scale(1.1);
+  box-shadow:0 3px 0 var(--sc-ink), 0 0 14px rgba(240,86,60,.7);}
+.sc-questchain__link{height:4px; flex:1; min-width:16px; border-radius:999px;
+  background:repeating-linear-gradient(90deg,#456a96 0 5px,transparent 5px 10px); opacity:.6;}
+.sc-questchain__link--done{background:var(--sc-gold); opacity:1;}
+
+/* ----- 39. 成就解锁 sc-achievement ----- */
+.sc-achievement{display:flex; align-items:center; gap:14px; padding:12px 16px;
+  background:linear-gradient(180deg,var(--sc-paper),var(--sc-paper-dk)); border:3px solid var(--sc-ink);
+  border-radius:14px; box-shadow:0 4px 0 var(--sc-ink);}
+.sc-achievement__medal{width:52px; height:52px; border-radius:50%; display:grid; place-items:center; font-size:26px; flex:none;
+  background:radial-gradient(circle at 40% 30%,var(--sc-gold-lt),var(--sc-gold) 60%,var(--sc-gold-dk)); border:3px solid var(--sc-ink);}
+.sc-achievement__tx b{font-family:var(--sc-disp); font-weight:400; font-size:14px; color:var(--sc-text); display:block;}
+.sc-achievement__tx small{font-family:var(--sc-num); font-weight:700; font-size:11px; color:#8a765c;}
+.sc-achievement--locked{filter:grayscale(.75); opacity:.7;}
+.sc-achievement--locked .sc-achievement__medal{background:#9aa4b5;}
+
+/* ----- 40. 翻牌 sc-flipcard ----- */
+.sc-flipcard{width:120px; height:168px; perspective:800px; cursor:pointer;}
+.sc-flipcard__inner{position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .5s;}
+.sc-flipcard.flipped .sc-flipcard__inner{transform:rotateY(180deg);}
+.sc-flipcard__face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  border:4px solid var(--sc-ink); border-radius:14px; display:grid; place-items:center; overflow:hidden;}
+.sc-flipcard__back{background:
+  radial-gradient(circle at 50% 42%,rgba(255,255,255,.18),transparent 55%),
+  linear-gradient(135deg,#2a4468 0 25%,#1b3152 25% 50%,#2a4468 50% 75%,#1b3152 75%);
+  color:var(--sc-gold); font-size:40px; font-family:var(--sc-disp); text-shadow:0 3px 0 rgba(0,0,0,.5);}
+.sc-flipcard__front{transform:rotateY(180deg); flex-direction:column;
+  background:linear-gradient(180deg,var(--sc-gold-lt),var(--sc-gold) 55%,#38b6e0);}
+.sc-flipcard__front .em{font-size:46px;}
+.sc-flipcard__front .nm{font-family:var(--sc-disp); font-weight:400; font-size:13px; color:#5c3c00; margin-top:6px;}
+
+/* ----- 41. 开宝箱 sc-chest ----- */
+.sc-chest{width:120px; text-align:center; cursor:pointer; user-select:none;}
+.sc-chest__box{width:78px; height:66px; margin:0 auto; border-radius:12px 12px 10px 10px; display:grid; place-items:center;
+  font-size:34px; font-family:var(--sc-disp); color:#5c3c00; position:relative;
+  background:linear-gradient(180deg,#ffe08e 0 40%,#e8a838 40% 100%);
+  border:4px solid var(--sc-ink); box-shadow:0 5px 0 var(--sc-ink), inset 0 3px 0 rgba(255,255,255,.45); transition:.15s;}
+.sc-chest__box::before{content:""; position:absolute; left:-4px; right:-4px; top:38%; height:7px;
+  background:linear-gradient(180deg,#8a5a20,#6a4014); border-top:2px solid var(--sc-ink); border-bottom:2px solid var(--sc-ink);}
+.sc-chest:hover .sc-chest__box{transform:translateY(-4px);}
+.sc-chest.opened .sc-chest__box{animation:sc-shake .5s ease;}
+@keyframes sc-shake{0%{transform:translateY(0) rotate(0)}25%{transform:translateY(-10px) rotate(-6deg)}
+  50%{transform:translateY(-14px) rotate(6deg)}75%{transform:translateY(-6px) rotate(-3deg)}100%{transform:translateY(0)}}
+.sc-chest__glow{height:0; overflow:hidden; opacity:0; transition:.3s;}
+.sc-chest.opened .sc-chest__glow{height:auto; opacity:1; padding-top:8px;}
+.sc-chest__label{font-family:var(--sc-disp); font-weight:400; font-size:12px; color:#cfe3ff; margin-top:6px; text-shadow:0 1px 2px rgba(0,0,0,.5);}
+
+/* ----- 42. 背包网格 sc-invgrid ----- */
+.sc-invgrid{display:grid; grid-template-columns:repeat(5,1fr); gap:6px; padding:10px;
+  background:linear-gradient(180deg,var(--sc-paper),var(--sc-paper-dk)); border:3px solid var(--sc-ink);
+  border-radius:12px; width:max-content; box-shadow:0 4px 0 var(--sc-ink);}
+.sc-invgrid__cell{width:46px; height:46px; border-radius:9px; display:grid; place-items:center; font-size:22px; position:relative;
+  background:linear-gradient(180deg,#fdf6e4,#e0cda6); border:2px solid var(--sc-ink);}
+.sc-invgrid__cell:hover{background:linear-gradient(180deg,#fff3c8,#ffe08e);}
+.sc-invgrid__cell--rare{background:linear-gradient(180deg,#ffe2ac,#ffb44e);}
+.sc-invgrid__cell--epic{background:linear-gradient(180deg,#efc2ff,#cf7ff2);}
+.sc-invgrid__cell--empty{background:rgba(46,35,24,.12); opacity:.7;}
+.sc-invgrid__qty{position:absolute; bottom:1px; right:3px; font-family:var(--sc-num); font-weight:900; font-size:10px; color:var(--sc-text);}
+
+/* ----- 43. 装备对比 sc-compare ----- */
+.sc-compare{display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center;
+  background:linear-gradient(180deg,var(--sc-paper),var(--sc-paper-dk)); border:3px solid var(--sc-ink);
+  border-radius:14px; padding:14px; box-shadow:0 4px 0 var(--sc-ink);}
+.sc-compare__side{text-align:center;}
+.sc-compare__side .sc-icon{margin:0 auto 8px;}
+.sc-compare__nm{font-family:var(--sc-disp); font-weight:400; font-size:12px; color:var(--sc-text); margin-bottom:8px;}
+.sc-compare__stat{display:flex; justify-content:space-between; font-family:var(--sc-num); font-weight:700; font-size:11px;
+  padding:3px 0; border-bottom:2px solid rgba(46,35,24,.12);}
+.sc-compare__stat span:first-child{color:#8a765c;}
+.sc-compare__up{color:#3f8a14;} .sc-compare__down{color:var(--sc-red-dk);}
+.sc-compare__vs{font-family:var(--sc-disp); font-weight:400; font-size:16px; color:var(--sc-red);
+  paint-order:stroke fill; -webkit-text-stroke:2px var(--sc-ink); text-shadow:0 2px 0 var(--sc-ink);}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important;}}
+</style>
+</head>
+<body>
+
+<div class="doc-head">
+  <span class="eb">SUPERCELL · CLASH STYLE KIT</span>
+  <h1>Supercell 风 UI 组件库</h1>
+  <p>43 个组件 · sc- 前缀 · 厚重双色渐变钮 + 羊皮纸面板 + 金币宝石圣水</p>
+  <div class="tokens">
+    <span class="tok"><i style="background:#78d838"></i>--sc-green</span>
+    <span class="tok"><i style="background:#4aa0f0"></i>--sc-blue</span>
+    <span class="tok"><i style="background:#ffc928"></i>--sc-gold</span>
+    <span class="tok"><i style="background:#d06ee8"></i>--sc-elixir</span>
+    <span class="tok"><i style="background:#2e2318"></i>--sc-ink</span>
+  </div>
+</div>
+
+<div class="doc">
+
+  <!-- 1 -->
+  <div class="comp"><div class="comp-title">按钮 · Button</div><div class="comp-desc">厚重双色渐变钮,绿/蓝/红/金四色,硬顶光泽 + 双层 3D 投影,按下真实下沉。</div>
+    <div class="showcase">
+      <button class="sc-btn sc-btn--green sc-btn--lg">对战!</button>
+      <button class="sc-btn sc-btn--blue">部落</button>
+      <button class="sc-btn sc-btn--gold">商店</button>
+      <button class="sc-btn sc-btn--red">进攻</button>
+      <button class="sc-btn sc-btn--green sc-btn--round">＋</button>
+      <button class="sc-btn sc-btn--blue sc-btn--sm">小按钮</button>
+      <button class="sc-btn sc-btn--green" disabled>未解锁</button>
+    </div>
+    <div class="classline"><b>sc-btn</b> ( <b>--green/--blue/--red/--gold · --sm/--lg/--block/--round</b> )</div>
+  </div>
+
+  <!-- 2 -->
+  <div class="comp"><div class="comp-title">面板 · Panel</div><div class="comp-desc">羊皮纸底 + 蓝色标题条 + 可选四角金铆钉。</div>
+    <div class="showcase">
+      <div class="sc-panel" style="width:300px">
+        <span class="sc-rivet tl"></span><span class="sc-rivet tr"></span><span class="sc-rivet bl"></span><span class="sc-rivet br"></span>
+        <div class="sc-panel__hd">部落战开启!</div>
+        <div class="sc-panel__bd"><p>集结 10 名部落成员,赢下部落战即可瓜分丰厚战利品!</p>
+          <div style="margin-top:12px; display:flex; gap:8px;">
+            <button class="sc-btn sc-btn--green sc-btn--sm">参战</button>
+            <button class="sc-btn sc-btn--blue sc-btn--sm">观战</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>sc-panel</b> &gt; <b>sc-panel__hd</b> + <b>sc-panel__bd</b>　·　四角铆钉:<b>sc-rivet tl/tr/bl/br</b></div>
+  </div>
+
+  <!-- 3 -->
+  <div class="comp"><div class="comp-title">弹窗 · Modal</div><div class="comp-desc">遮罩 + 面板 + 圆形红关闭钮。点击预览。</div>
+    <div class="showcase"><button class="sc-btn sc-btn--gold" onclick="document.getElementById('scModal').style.display='grid'">打开弹窗</button></div>
+    <div class="classline"><b>sc-modal-mask</b> &gt; <b>sc-modal</b> ( <b>sc-modal__close</b> + <b>sc-panel</b> )</div>
+  </div>
+
+  <!-- 4 -->
+  <div class="comp"><div class="comp-title">进度条 · Bar</div><div class="comp-desc">深槽光泽条,金币/生命/圣水三色,可加 label。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch;">
+      <div class="sc-bar sc-bar--tall"><div class="sc-bar__fill sc-bar__fill--gold" style="width:72%"></div><div class="sc-bar__label">金币 72,000 / 100,000</div></div>
+      <div class="sc-bar sc-bar--tall"><div class="sc-bar__fill sc-bar__fill--hp" style="width:90%"></div><div class="sc-bar__label">大本营 HP 90%</div></div>
+      <div class="sc-bar sc-bar--tall"><div class="sc-bar__fill sc-bar__fill--elixir" style="width:45%"></div><div class="sc-bar__label">圣水 45%</div></div>
+    </div>
+    <div class="classline"><b>sc-bar</b> &gt; <b>sc-bar__fill --gold/--hp/--elixir</b> + <b>sc-bar__label</b></div>
+  </div>
+
+  <!-- 5 -->
+  <div class="comp"><div class="comp-title">货币条 · Currency</div><div class="comp-desc">金币/宝石/圣水三种,深蓝内嵌胶囊。</div>
+    <div class="showcase">
+      <span class="sc-currency"><span class="sc-currency__coin sc-currency__coin--gold">$</span>128,400</span>
+      <span class="sc-currency"><span class="sc-currency__coin sc-currency__coin--gem">◆</span>2,450</span>
+      <span class="sc-currency"><span class="sc-currency__coin sc-currency__coin--elixir">💧</span>86,200</span>
+    </div>
+    <div class="classline"><b>sc-currency</b> &gt; <b>sc-currency__coin --gold/--gem/--elixir</b> + 数值</div>
+  </div>
+
+  <!-- 6 -->
+  <div class="comp"><div class="comp-title">圣水计量 · Elixir Meter</div><div class="comp-desc">出兵圣水槽,水滴逐格点亮,满槽数字金色闪烁。</div>
+    <div class="showcase" style="gap:26px;">
+      <div class="sc-meter">
+        <span class="sc-meter__seg on"></span><span class="sc-meter__seg on"></span><span class="sc-meter__seg on"></span>
+        <span class="sc-meter__seg on"></span><span class="sc-meter__seg"></span><span class="sc-meter__seg"></span>
+        <span class="sc-meter__seg"></span><span class="sc-meter__num">4</span>
+      </div>
+      <div class="sc-meter">
+        <span class="sc-meter__seg on"></span><span class="sc-meter__seg on"></span><span class="sc-meter__seg on"></span>
+        <span class="sc-meter__seg on"></span><span class="sc-meter__seg on"></span><span class="sc-meter__seg on"></span>
+        <span class="sc-meter__seg on"></span><span class="sc-meter__num max">MAX</span>
+      </div>
+    </div>
+    <div class="classline"><b>sc-meter</b> &gt; 多个 <b>sc-meter__seg</b>(点亮加 <b>.on</b>) + <b>sc-meter__num</b>(满槽加 <b>.max</b>)</div>
+  </div>
+
+  <!-- 7 -->
+  <div class="comp"><div class="comp-title">图标底座 · Icon Slot</div><div class="comp-desc">卡牌槽,普通/稀有/史诗/传说底色 + 冷却遮罩。</div>
+    <div class="showcase">
+      <div class="sc-icon">🗡️</div>
+      <div class="sc-icon sc-icon--rare">🔥</div>
+      <div class="sc-icon sc-icon--epic">🐉</div>
+      <div class="sc-icon sc-icon--legend">⚡</div>
+      <div class="sc-icon">🛡️<div class="sc-icon__cd">3</div></div>
+    </div>
+    <div class="classline"><b>sc-icon</b> ( <b>--rare / --epic / --legend</b> )　·　冷却:<b>sc-icon__cd</b></div>
+  </div>
+
+  <!-- 8 -->
+  <div class="comp"><div class="comp-title">卡牌 · Card</div><div class="comp-desc">兵种卡,稀有度渐变边 + 等级角标,悬停上浮。</div>
+    <div class="showcase">
+      <div class="sc-card"><div class="sc-card__art"><span class="sc-card__tag">普通</span>⚔️</div><span class="sc-card__lv">Lv.9</span><div class="sc-card__name">野蛮人</div><div class="sc-card__foot"><div class="sc-bar"><div class="sc-bar__fill sc-bar__fill--hp" style="width:80%"></div></div></div></div>
+      <div class="sc-card sc-card--epic"><div class="sc-card__art"><span class="sc-card__tag">史诗</span>🐉</div><span class="sc-card__lv">Lv.6</span><div class="sc-card__name">飞龙宝宝</div><div class="sc-card__foot"><div class="sc-bar"><div class="sc-bar__fill sc-bar__fill--elixir" style="width:55%"></div></div></div></div>
+      <div class="sc-card sc-card--legend"><div class="sc-card__art"><span class="sc-card__tag">传说</span>⚡</div><span class="sc-card__lv">Lv.3</span><div class="sc-card__name">电磁法师</div><div class="sc-card__foot"><div class="sc-bar"><div class="sc-bar__fill sc-bar__fill--gold" style="width:35%"></div></div></div></div>
+    </div>
+    <div class="classline"><b>sc-card</b> ( <b>--rare/--epic/--legend</b> ) &gt; <b>__art</b>(含 <b>__tag</b>) + <b>__lv</b> + <b>__name</b> + <b>__foot</b></div>
+  </div>
+
+  <!-- 9 -->
+  <div class="comp"><div class="comp-title">列表项 · List</div><div class="comp-desc">兵种/建筑通用行,左图标 + 主副标题 + 右值。</div>
+    <div class="showcase" style="display:block;">
+      <div class="sc-list" style="max-width:420px;">
+        <div class="sc-list__item"><div class="sc-list__ic">⚔️</div><div class="sc-list__tx"><b>野蛮人</b><small>近战 · 单体攻击</small></div><span class="sc-list__val">×24</span></div>
+        <div class="sc-list__item"><div class="sc-list__ic">🏹</div><div class="sc-list__tx"><b>弓箭手</b><small>远程 · 对空对地</small></div><span class="sc-list__val">×18</span></div>
+        <div class="sc-list__item"><div class="sc-list__ic">💣</div><div class="sc-list__tx"><b>炸弹人</b><small>专拆城墙</small></div><span class="sc-list__val">×6</span></div>
+      </div>
+    </div>
+    <div class="classline"><b>sc-list</b> &gt; <b>sc-list__item</b> ( <b>__ic</b> + <b>__tx</b>(b+small) + <b>__val</b> )</div>
+  </div>
+
+  <!-- 10 -->
+  <div class="comp"><div class="comp-title">顶部 HUD · HUD Bar</div><div class="comp-desc">头像 + 名称/奖杯 + 右侧货币,深蓝底。</div>
+    <div class="showcase" style="display:block;">
+      <div class="sc-hud"><div class="sc-hud__ava">👑</div><div class="sc-hud__who"><b>酋长大人</b><small>🏆 5,204 奖杯</small></div><div class="sc-hud__spacer"></div><span class="sc-currency"><span class="sc-currency__coin sc-currency__coin--gem">◆</span>2,450</span></div>
+    </div>
+    <div class="classline"><b>sc-hud</b> &gt; <b>sc-hud__ava</b> + <b>sc-hud__who</b>(b+small) + <b>sc-hud__spacer</b> + 右侧组件</div>
+  </div>
+
+  <!-- 11 -->
+  <div class="comp"><div class="comp-title">导航栏 · Nav Bar</div><div class="comp-desc">底部主导航,金色高亮当前页。点击切换。</div>
+    <div class="showcase" style="display:block;">
+      <div class="sc-nav" id="scNav">
+        <div class="sc-nav__tab sc-nav__tab--active" data-nav><span class="i">🏰</span>村庄</div>
+        <div class="sc-nav__tab" data-nav><span class="i">⚔️</span>对战</div>
+        <div class="sc-nav__tab" data-nav><span class="i">🃏</span>卡牌</div>
+        <div class="sc-nav__tab" data-nav><span class="i">🛡️</span>部落</div>
+        <div class="sc-nav__tab" data-nav><span class="i">🏪</span>商店</div>
+      </div>
+    </div>
+    <div class="classline"><b>sc-nav</b> &gt; <b>sc-nav__tab</b> ( <b>--active</b> ) &gt; <b>span.i</b> + 文字</div>
+  </div>
+
+  <!-- 12 -->
+  <div class="comp"><div class="comp-title">标签页 · Tabs</div><div class="comp-desc">面板分页,点击切换。</div>
+    <div class="showcase" style="display:block;">
+      <div style="max-width:420px;">
+        <div class="sc-tabs" id="scTabs">
+          <div class="sc-tabs__tab sc-tabs__tab--active" data-tab>军队</div>
+          <div class="sc-tabs__tab" data-tab>法术</div>
+          <div class="sc-tabs__tab" data-tab>攻城机器</div>
+        </div>
+        <div class="sc-panel" style="border-radius:0 14px 14px 14px;"><div class="sc-panel__bd"><p id="scTabsBody">军队:野蛮人 ×24 · 弓箭手 ×18 · 巨人 ×4</p></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>sc-tabs</b> &gt; <b>sc-tabs__tab</b> ( <b>--active</b> )</div>
+  </div>
+
+  <!-- 13 -->
+  <div class="comp"><div class="comp-title">输入框 · Input</div><div class="comp-desc">深蓝内嵌槽,聚焦蓝光环;可选前置图标 sc-field。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:360px;">
+      <input class="sc-input" placeholder="输入部落名称…">
+      <div class="sc-field"><span class="sc-field__ic">🔍</span><input class="sc-input" placeholder="搜索玩家标签 #…"></div>
+    </div>
+    <div class="classline"><b>&lt;input class="sc-input"&gt;</b>　·　带图标:<b>sc-field</b> &gt; <b>sc-field__ic</b> + <b>sc-input</b></div>
+  </div>
+
+  <!-- 14 -->
+  <div class="comp"><div class="comp-title">下拉选择 · Select</div><div class="comp-desc">深蓝立体钮 + 金色箭头。</div>
+    <div class="showcase">
+      <div class="sc-select"><select><option>联赛:黄金一</option><option>联赛:水晶三</option><option>联赛:大师二</option></select></div>
+      <div class="sc-select"><select><option>竞技场:训练营</option><option>竞技场:骨头坑</option><option>竞技场:皇家竞技场</option></select></div>
+    </div>
+    <div class="classline"><b>sc-select</b> &gt; <b>&lt;select&gt;</b> &gt; <b>&lt;option&gt;</b></div>
+  </div>
+
+  <!-- 15 -->
+  <div class="comp"><div class="comp-title">开关 · Switch</div><div class="comp-desc">深槽滑块,开启变绿。点击切换。</div>
+    <div class="showcase" style="gap:26px;">
+      <label class="sc-switch"><input type="checkbox" checked><span class="sc-switch__track"></span><span style="margin-left:10px; font-weight:800; font-size:13px; color:#dce9fb;">战斗音乐</span></label>
+      <label class="sc-switch"><input type="checkbox"><span class="sc-switch__track"></span><span style="margin-left:10px; font-weight:800; font-size:13px; color:#dce9fb;">好友对战邀请</span></label>
+    </div>
+    <div class="classline"><b>&lt;label class="sc-switch"&gt;</b> &gt; <b>input[checkbox]</b> + <b>span.sc-switch__track</b></div>
+  </div>
+
+  <!-- 16 -->
+  <div class="comp"><div class="comp-title">滑条 · Slider</div><div class="comp-desc">金色圆钮 + 金→深蓝轨,厚描边。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:360px;">
+      <input type="range" class="sc-slider" min="0" max="100" value="65">
+      <input type="range" class="sc-slider" min="0" max="100" value="30">
+    </div>
+    <div class="classline"><b>&lt;input type="range" class="sc-slider"&gt;</b></div>
+  </div>
+
+  <!-- 17 -->
+  <div class="comp"><div class="comp-title">徽章 · Badge</div><div class="comp-desc">红/金徽章,可贴图标右上。</div>
+    <div class="showcase" style="gap:24px;">
+      <span class="sc-badge">3</span>
+      <span class="sc-badge sc-badge--gold">99+</span>
+      <span class="sc-badge-wrap"><div class="sc-icon">✉️</div><span class="sc-badge">5</span></span>
+      <span class="sc-badge-wrap"><div class="sc-icon">🎁</div><span class="sc-badge sc-badge--gold">!</span></span>
+    </div>
+    <div class="classline"><b>sc-badge</b> ( <b>--gold</b> )　·　贴角:<b>sc-badge-wrap</b> &gt; 内容 + <b>sc-badge</b></div>
+  </div>
+
+  <!-- 18 -->
+  <div class="comp"><div class="comp-title">角标 · Ribbon</div><div class="comp-desc">卡片左上丝带。放 position:relative 容器内。</div>
+    <div class="showcase">
+      <div class="sc-card sc-card--legend" style="position:relative;"><span class="sc-ribbon">限时</span><div class="sc-card__art">👑</div><div class="sc-card__name">皇家宝箱</div></div>
+      <div class="sc-card sc-card--rare" style="position:relative;"><span class="sc-ribbon sc-ribbon--gold">新卡</span><div class="sc-card__art">🪓</div><div class="sc-card__name">迷你皮卡</div></div>
+    </div>
+    <div class="classline"><b>sc-ribbon</b> ( <b>--gold</b> )　·　置于 relative 容器内</div>
+  </div>
+
+  <!-- 19 -->
+  <div class="comp"><div class="comp-title">标签 · Tag</div><div class="comp-desc">属性小标签,红/绿/圣水紫变体。</div>
+    <div class="showcase">
+      <span class="sc-tag">对空</span>
+      <span class="sc-tag sc-tag--red">🔥 溅射伤害</span>
+      <span class="sc-tag sc-tag--green">🛡️ 高血量</span>
+      <span class="sc-tag sc-tag--elixir">💧 圣水 5</span>
+    </div>
+    <div class="classline"><b>sc-tag</b> ( <b>--red / --green / --elixir</b> )</div>
+  </div>
+
+  <!-- 20 -->
+  <div class="comp"><div class="comp-title">提示 · Tooltip</div><div class="comp-desc">悬停显示羊皮纸提示,内容取 data-tip。悬停试试。</div>
+    <div class="showcase">
+      <span class="sc-tooltip" data-tip="部署费用 5 圣水,对空对地">飞龙宝宝</span>
+      <span class="sc-tooltip" data-tip="只攻击防御建筑">巨人</span>
+      <span class="sc-tooltip" data-tip="死亡后分裂成两个小骷髅">骷髅军团</span>
+    </div>
+    <div class="classline"><b>&lt;span class="sc-tooltip" data-tip="内容"&gt;</b></div>
+  </div>
+
+  <!-- 21 -->
+  <div class="comp"><div class="comp-title">通知 · Toast</div><div class="comp-desc">羊皮纸提示,普通/危险/金币三种图标色。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch;">
+      <div class="sc-toast sc-toast--gold"><span class="sc-toast__ic">🪙</span><div><b>掠夺成功!</b>获得 82,000 金币 · 64,500 圣水。</div></div>
+      <div class="sc-toast sc-toast--danger"><span class="sc-toast__ic">⚠️</span><div><b>村庄遭到进攻</b>护盾已破,损失 12,400 金币。</div></div>
+      <div class="sc-toast"><span class="sc-toast__ic">⬆️</span><div><b>升级完成</b>加农炮已升到 11 级!</div></div>
+    </div>
+    <div class="classline"><b>sc-toast</b> ( <b>--danger / --gold</b> ) &gt; <b>sc-toast__ic</b> + 内容(b 标题)</div>
+  </div>
+
+  <!-- 22 -->
+  <div class="comp"><div class="comp-title">对话气泡 · Bubble</div><div class="comp-desc">村庄建筑工对话框,含说话人名与尖角。</div>
+    <div class="showcase"><div class="sc-bubble"><div class="sc-bubble__who">建筑工人 · Bob</div>大本营升级还需要 2 天!要不要花 350 宝石立刻完成?嘿嘿。</div></div>
+    <div class="classline"><b>sc-bubble</b> &gt; <b>sc-bubble__who</b> + 对话文字</div>
+  </div>
+
+  <!-- 23 -->
+  <div class="comp"><div class="comp-title">加载 · Spinner</div><div class="comp-desc">旋转绿宝石(rotateY 翻转)。</div>
+    <div class="showcase" style="gap:26px;"><div class="sc-spinner"></div><span style="font-weight:800; color:#a9c6ec; font-size:13px;">正在匹配对手…</span></div>
+    <div class="classline"><b>sc-spinner</b></div>
+  </div>
+
+  <!-- 24 -->
+  <div class="comp"><div class="comp-title">头像组 · Avatar Group</div><div class="comp-desc">部落成员叠放 + 溢出计数。</div>
+    <div class="showcase"><div class="sc-avatars"><div class="sc-avatars__a">👑</div><div class="sc-avatars__a">🧙</div><div class="sc-avatars__a">🏹</div><div class="sc-avatars__a">⚔️</div><div class="sc-avatars__more">+46</div></div></div>
+    <div class="classline"><b>sc-avatars</b> &gt; 多个 <b>sc-avatars__a</b> + <b>sc-avatars__more</b></div>
+  </div>
+
+  <!-- 25 -->
+  <div class="comp"><div class="comp-title">星级评分 · Stars</div><div class="comp-desc">进攻评级,.on 点亮金星。</div>
+    <div class="showcase" style="gap:26px;">
+      <span class="sc-stars"><span class="on">★</span><span class="on">★</span><span>★</span></span>
+      <span class="sc-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span></span>
+    </div>
+    <div class="classline"><b>sc-stars</b> &gt; 多个 <b>&lt;span&gt;★</b>,点亮加 <b>.on</b></div>
+  </div>
+
+  <!-- 26 -->
+  <div class="comp"><div class="comp-title">分隔线 · Divider</div><div class="comp-desc">渐隐线,可带中心标签。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:420px;">
+      <div class="sc-divider"><span class="sc-divider__mark">⚔️</span></div>
+      <div class="sc-divider"><span class="sc-divider__mark">战利品</span></div>
+    </div>
+    <div class="classline"><b>sc-divider</b> &gt; <b>sc-divider__mark</b></div>
+  </div>
+
+  <!-- 27 -->
+  <div class="comp"><div class="comp-title">空状态 · Empty</div><div class="comp-desc">列表为空占位,图标+标题+说明。</div>
+    <div class="showcase" style="display:block;">
+      <div class="sc-panel" style="max-width:420px; margin:0 auto;"><div class="sc-panel__hd">部落邮件</div><div class="sc-empty"><div class="sc-empty__ic">📭</div><div class="sc-empty__tt">暂无邮件</div><div class="sc-empty__ds">加入一个部落,和大家一起并肩作战吧!</div></div></div>
+    </div>
+    <div class="classline"><b>sc-empty</b> &gt; <b>sc-empty__ic</b> + <b>sc-empty__tt</b> + <b>sc-empty__ds</b></div>
+  </div>
+
+  <!-- ADVANCED -->
+  <div class="comp" style="margin-top:52px;"><div class="comp-title" style="font-size:22px;">⚔ 进阶组件 · Advanced</div><div class="comp-desc">复杂交互组件,均可操作。</div></div>
+
+  <!-- 28 -->
+  <div class="comp"><div class="comp-title">步进器 · Stepper</div><div class="comp-desc">立体钮数量选择,可点增减。</div>
+    <div class="showcase">
+      <div class="sc-stepper" data-stepper><button class="sc-stepper__btn" data-dec>−</button><div class="sc-stepper__val" data-val>1</div><button class="sc-stepper__btn" data-inc>+</button></div>
+      <span style="font-weight:800; font-size:13px; color:#93a7c0;">训练野蛮人</span>
+    </div>
+    <div class="classline"><b>sc-stepper</b> &gt; <b>sc-stepper__btn</b>(−) + <b>sc-stepper__val</b> + <b>sc-stepper__btn</b>(+)</div>
+  </div>
+
+  <!-- 29 -->
+  <div class="comp"><div class="comp-title">面包屑 · Breadcrumb</div><div class="comp-desc">层级路径,末项高亮。</div>
+    <div class="showcase" style="display:block;">
+      <nav class="sc-breadcrumb"><a>主村庄</a><span class="sc-breadcrumb__sep">▸</span><a>实验室</a><span class="sc-breadcrumb__sep">▸</span><a>兵种研究</a><span class="sc-breadcrumb__sep">▸</span><span class="sc-breadcrumb__cur">雷电飞龙</span></nav>
+    </div>
+    <div class="classline"><b>sc-breadcrumb</b> &gt; <b>a</b> + <b>__sep</b> … + <b>__cur</b></div>
+  </div>
+
+  <!-- 30 -->
+  <div class="comp"><div class="comp-title">手风琴 · Accordion</div><div class="comp-desc">原生 details,无需 JS。</div>
+    <div class="showcase" style="display:block;">
+      <div class="sc-accordion" style="max-width:440px;">
+        <details open><summary>护盾是怎么工作的?</summary><div class="sc-accordion__bd">被打掉大本营或损失超过 90% 建筑后获得护盾,期间不会被进攻,但主动进攻会缩短护盾时间。</div></details>
+        <details><summary>宝石从哪里来?</summary><div class="sc-accordion__bd">清理障碍物、完成成就、开启宝箱都能获得宝石,商店也可直接购买。</div></details>
+        <details><summary>部落战怎么开?</summary><div class="sc-accordion__bd">首领和副首领可以发起部落战,双方各自进攻两次,总星数多者获胜。</div></details>
+      </div>
+    </div>
+    <div class="classline"><b>sc-accordion</b> &gt; <b>&lt;details&gt;</b> ( <b>&lt;summary&gt;</b> + <b>sc-accordion__bd</b> )</div>
+  </div>
+
+  <!-- 31 -->
+  <div class="comp"><div class="comp-title">侧边抽屉 · Drawer</div><div class="comp-desc">右滑面板。点击预览。</div>
+    <div class="showcase"><button class="sc-btn sc-btn--blue" onclick="scOpenDrawer()">打开军队</button></div>
+    <div class="classline"><b>sc-drawer-mask</b> + <b>sc-drawer</b> ( <b>__hd</b> + <b>__bd</b> )　·　加 <b>.open</b> 展开</div>
+  </div>
+
+  <!-- 32 -->
+  <div class="comp"><div class="comp-title">数据表格 · Table</div><div class="comp-desc">部落排行榜,斑马纹 + 悬停高亮。</div>
+    <div class="showcase" style="display:block;">
+      <table class="sc-table" style="max-width:480px;">
+        <thead><tr><th>排名</th><th>成员</th><th>职位</th><th>奖杯</th></tr></thead>
+        <tbody>
+          <tr><td class="sc-table__rank">①</td><td>酋长大人</td><td>首领</td><td>🏆 5,204</td></tr>
+          <tr><td class="sc-table__rank">②</td><td>哥布林之王</td><td>副首领</td><td>🏆 5,011</td></tr>
+          <tr><td class="sc-table__rank">③</td><td>亡灵法师</td><td>长老</td><td>🏆 4,876</td></tr>
+          <tr><td>4</td><td>飞斧屠夫</td><td>成员</td><td>🏆 4,690</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="classline"><b>table.sc-table</b> &gt; <b>thead th</b> + <b>tbody td</b>　·　名次:<b>sc-table__rank</b></div>
+  </div>
+
+  <!-- 33 -->
+  <div class="comp"><div class="comp-title">分页器 · Pagination</div><div class="comp-desc">翻页,--active 当前 / --dis 禁用。点击切换。</div>
+    <div class="showcase">
+      <div class="sc-pagination" id="scPage">
+        <div class="sc-pagination__pg sc-pagination__pg--dis">‹</div>
+        <div class="sc-pagination__pg sc-pagination__pg--active" data-pg>1</div>
+        <div class="sc-pagination__pg" data-pg>2</div>
+        <div class="sc-pagination__pg" data-pg>3</div>
+        <div class="sc-pagination__pg" data-pg>4</div>
+        <div class="sc-pagination__pg">›</div>
+      </div>
+    </div>
+    <div class="classline"><b>sc-pagination</b> &gt; <b>sc-pagination__pg</b> ( <b>--active / --dis</b> )</div>
+  </div>
+
+  <!-- 34 -->
+  <div class="comp"><div class="comp-title">时间轴 · Timeline</div><div class="comp-desc">赛季进度,--done 完成 / --now 当前(金色发光)。</div>
+    <div class="showcase" style="display:block;">
+      <div class="sc-timeline" style="max-width:400px;">
+        <div class="sc-timeline__item sc-timeline__item--done"><div class="sc-timeline__t">黄金联赛晋级</div><div class="sc-timeline__d">已完成</div></div>
+        <div class="sc-timeline__item sc-timeline__item--done"><div class="sc-timeline__t">水晶联赛晋级</div><div class="sc-timeline__d">已完成</div></div>
+        <div class="sc-timeline__item sc-timeline__item--now"><div class="sc-timeline__t">大师联赛冲刺</div><div class="sc-timeline__d">进行中 · 还差 120 奖杯</div></div>
+        <div class="sc-timeline__item"><div class="sc-timeline__t">冠军联赛</div><div class="sc-timeline__d">未解锁</div></div>
+      </div>
+    </div>
+    <div class="classline"><b>sc-timeline</b> &gt; <b>sc-timeline__item</b> ( <b>--done/--now</b> ) ( <b>__t</b> + <b>__d</b> )</div>
+  </div>
+
+  <!-- 35 -->
+  <div class="comp"><div class="comp-title">树形菜单 · Tree</div><div class="comp-desc">嵌套分类,details 折叠。</div>
+    <div class="showcase" style="display:block;">
+      <div class="sc-tree" style="max-width:320px;">
+        <details open><summary>⚔️ 兵种</summary>
+          <div class="sc-tree__leaf">野蛮人 (Lv.9)</div>
+          <div class="sc-tree__leaf">弓箭手 (Lv.9)</div>
+          <details><summary>暗黑兵种</summary><div class="sc-tree__leaf">亡灵 (Lv.7)</div><div class="sc-tree__leaf">野猪骑士 (Lv.8)</div></details>
+        </details>
+        <details><summary>🧪 法术</summary><div class="sc-tree__leaf">狂暴法术 (Lv.6)</div><div class="sc-tree__leaf">治疗法术 (Lv.5)</div></details>
+      </div>
+    </div>
+    <div class="classline"><b>sc-tree</b> &gt; 嵌套 <b>&lt;details&gt;</b> + <b>sc-tree__leaf</b></div>
+  </div>
+
+  <!-- 36 -->
+  <div class="comp"><div class="comp-title">能量条倒计时 · Energy</div><div class="comp-desc">圣水回复,含实时倒计时。</div>
+    <div class="showcase" style="display:block;">
+      <div class="sc-energy" style="max-width:340px;">
+        <div class="sc-energy__orb">💧</div>
+        <div class="sc-energy__body">
+          <div class="sc-energy__top"><span>圣水 <b style="color:#fff">86,200 / 120,000</b></span><span class="sc-energy__timer" id="scEnergyTimer">+500 · 04:59</span></div>
+          <div class="sc-bar"><div class="sc-bar__fill sc-bar__fill--elixir" style="width:72%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>sc-energy</b> &gt; <b>__orb</b> + <b>__body</b> ( <b>__top</b>(含 <b>__timer</b>) + <b>sc-bar</b> )</div>
+  </div>
+
+  <!-- 37 -->
+  <div class="comp"><div class="comp-title">签到日历 · Calendar</div><div class="comp-desc">7 日签到,--done 已领 / --today 当天金框发光。</div>
+    <div class="showcase" style="display:block;">
+      <div class="sc-calendar" style="max-width:400px;">
+        <div class="sc-calendar__day sc-calendar__day--done"><span class="r">🪙</span>1</div>
+        <div class="sc-calendar__day sc-calendar__day--done"><span class="r">💧</span>2</div>
+        <div class="sc-calendar__day sc-calendar__day--done"><span class="r">◆</span>3</div>
+        <div class="sc-calendar__day sc-calendar__day--today"><span class="r">🎁</span>4</div>
+        <div class="sc-calendar__day"><span class="r">🪙</span>5</div>
+        <div class="sc-calendar__day"><span class="r">◆</span>6</div>
+        <div class="sc-calendar__day"><span class="r">👑</span>7</div>
+      </div>
+    </div>
+    <div class="classline"><b>sc-calendar</b> &gt; <b>sc-calendar__day</b> ( <b>--done / --today</b> )</div>
+  </div>
+
+  <!-- 38 -->
+  <div class="comp"><div class="comp-title">奖杯之路 · Trophy Road</div><div class="comp-desc">竞技场晋级路径,--done/--now + 连接线。</div>
+    <div class="showcase" style="display:block;">
+      <div class="sc-questchain" style="max-width:400px;">
+        <div class="sc-questchain__node sc-questchain__node--done">🏆</div>
+        <div class="sc-questchain__link sc-questchain__link--done"></div>
+        <div class="sc-questchain__node sc-questchain__node--done">🏆</div>
+        <div class="sc-questchain__link sc-questchain__link--done"></div>
+        <div class="sc-questchain__node sc-questchain__node--now">⚔️</div>
+        <div class="sc-questchain__link"></div>
+        <div class="sc-questchain__node">👑</div>
+      </div>
+    </div>
+    <div class="classline"><b>sc-questchain</b> &gt; <b>__node</b>( <b>--done/--now</b> ) 与 <b>__link</b>( <b>--done</b> ) 交替</div>
+  </div>
+
+  <!-- 39 -->
+  <div class="comp"><div class="comp-title">成就解锁 · Achievement</div><div class="comp-desc">奖章+标题+描述,--locked 灰化。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:400px;">
+      <div class="sc-achievement"><div class="sc-achievement__medal">🏅</div><div class="sc-achievement__tx"><b>常胜将军</b><small>多人对战胜利 1,000 场</small></div></div>
+      <div class="sc-achievement sc-achievement--locked"><div class="sc-achievement__medal">🔒</div><div class="sc-achievement__tx"><b>???</b><small>达成隐藏条件解锁</small></div></div>
+    </div>
+    <div class="classline"><b>sc-achievement</b> ( <b>--locked</b> ) &gt; <b>__medal</b> + <b>__tx</b>(b+small)</div>
+  </div>
+
+  <!-- 40 -->
+  <div class="comp"><div class="comp-title">翻牌 · Flip Card</div><div class="comp-desc">CSS 3D 翻转,卡背菱纹 → 新卡揭晓。点击翻。</div>
+    <div class="showcase">
+      <div class="sc-flipcard" onclick="this.classList.toggle('flipped')"><div class="sc-flipcard__inner"><div class="sc-flipcard__face sc-flipcard__back">?</div><div class="sc-flipcard__face sc-flipcard__front"><span class="em">🐉</span><span class="nm">飞龙宝宝</span></div></div></div>
+      <div class="sc-flipcard" onclick="this.classList.toggle('flipped')"><div class="sc-flipcard__inner"><div class="sc-flipcard__face sc-flipcard__back">?</div><div class="sc-flipcard__face sc-flipcard__front"><span class="em">⚡</span><span class="nm">电磁法师</span></div></div></div>
+      <span style="font-weight:800; font-size:12px; color:#93a7c0;">← 点击翻牌</span>
+    </div>
+    <div class="classline"><b>sc-flipcard</b> &gt; <b>__inner</b> &gt; <b>__face __back</b> + <b>__face __front</b>　·　加 <b>.flipped</b></div>
+  </div>
+
+  <!-- 41 -->
+  <div class="comp"><div class="comp-title">开宝箱 · Chest</div><div class="comp-desc">点击摇晃开箱,揭示战利品。</div>
+    <div class="showcase">
+      <div class="sc-chest" onclick="scOpenChest(this)">
+        <div class="sc-chest__box">🔒</div>
+        <div class="sc-chest__label">点击开启</div>
+        <div class="sc-chest__glow"><div style="display:flex; gap:6px; justify-content:center;"><div class="sc-icon sc-icon--legend">⚡</div><div class="sc-icon">🪙</div></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>sc-chest</b> &gt; <b>__box</b> + <b>__label</b> + <b>__glow</b>　·　加 <b>.opened</b></div>
+  </div>
+
+  <!-- 42 -->
+  <div class="comp"><div class="comp-title">背包网格 · Inventory Grid</div><div class="comp-desc">资源仓库,稀有度底色、数量角标、空格。</div>
+    <div class="showcase" style="display:block;">
+      <div class="sc-invgrid">
+        <div class="sc-invgrid__cell sc-invgrid__cell--epic">🐉</div>
+        <div class="sc-invgrid__cell sc-invgrid__cell--rare">🪓</div>
+        <div class="sc-invgrid__cell">⚔️<span class="sc-invgrid__qty">24</span></div>
+        <div class="sc-invgrid__cell">🏹<span class="sc-invgrid__qty">18</span></div>
+        <div class="sc-invgrid__cell">💣<span class="sc-invgrid__qty">6</span></div>
+        <div class="sc-invgrid__cell">🧪</div>
+        <div class="sc-invgrid__cell sc-invgrid__cell--rare">🔮</div>
+        <div class="sc-invgrid__cell sc-invgrid__cell--empty"></div>
+        <div class="sc-invgrid__cell sc-invgrid__cell--empty"></div>
+        <div class="sc-invgrid__cell sc-invgrid__cell--empty"></div>
+      </div>
+    </div>
+    <div class="classline"><b>sc-invgrid</b> &gt; <b>sc-invgrid__cell</b> ( <b>--rare/--epic/--empty</b> ) + <b>sc-invgrid__qty</b></div>
+  </div>
+
+  <!-- 43 -->
+  <div class="comp"><div class="comp-title">卡牌对比 · Compare</div><div class="comp-desc">当前 vs 升级后,属性升降绿/红标注。</div>
+    <div class="showcase" style="display:block;">
+      <div class="sc-compare" style="max-width:460px;">
+        <div class="sc-compare__side"><div class="sc-icon">⚔️</div><div class="sc-compare__nm">野蛮人 Lv.8</div>
+          <div class="sc-compare__stat"><span>生命值</span><span>460</span></div><div class="sc-compare__stat"><span>每秒伤害</span><span>92</span></div></div>
+        <div class="sc-compare__vs">VS</div>
+        <div class="sc-compare__side"><div class="sc-icon sc-icon--legend">⚔️</div><div class="sc-compare__nm" style="color:#3f8a14">野蛮人 Lv.9</div>
+          <div class="sc-compare__stat"><span>生命值</span><span class="sc-compare__up">520 ▲</span></div><div class="sc-compare__stat"><span>每秒伤害</span><span class="sc-compare__up">104 ▲</span></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>sc-compare</b> &gt; <b>__side</b> + <b>__vs</b> + <b>__side</b>　·　升降:<b>sc-compare__up / __down</b></div>
+  </div>
+
+</div>
+
+<!-- modal -->
+<div class="sc-modal-mask" id="scModal" style="display:none;">
+  <div class="sc-modal">
+    <button class="sc-btn sc-modal__close sc-btn--round" onclick="document.getElementById('scModal').style.display='none'">✕</button>
+    <div class="sc-panel">
+      <span class="sc-rivet tl"></span><span class="sc-rivet tr"></span><span class="sc-rivet bl"></span><span class="sc-rivet br"></span>
+      <div class="sc-panel__hd">确认购买</div>
+      <div class="sc-panel__bd"><p style="text-align:center;">花费 500 宝石购买巨人宝箱吗?</p>
+        <div style="margin-top:16px; display:flex; gap:10px; justify-content:center;">
+          <button class="sc-btn sc-btn--green sc-btn--sm" onclick="document.getElementById('scModal').style.display='none'">购买</button>
+          <button class="sc-btn sc-btn--red sc-btn--sm" onclick="document.getElementById('scModal').style.display='none'">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- drawer -->
+<div class="sc-drawer-mask" id="scDrawerMask" onclick="scCloseDrawer()"></div>
+<div class="sc-drawer" id="scDrawer">
+  <div class="sc-drawer__hd">我的军队 <span onclick="scCloseDrawer()">✕</span></div>
+  <div class="sc-drawer__bd">
+    <div class="sc-list">
+      <div class="sc-list__item"><div class="sc-list__ic">⚔️</div><div class="sc-list__tx"><b>野蛮人</b><small>近战</small></div><span class="sc-list__val">×24</span></div>
+      <div class="sc-list__item"><div class="sc-list__ic">🏹</div><div class="sc-list__tx"><b>弓箭手</b><small>远程</small></div><span class="sc-list__val">×18</span></div>
+      <div class="sc-list__item"><div class="sc-list__ic">🛡️</div><div class="sc-list__tx"><b>巨人</b><small>肉盾</small></div><span class="sc-list__val">×4</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function scOpenDrawer(){document.getElementById('scDrawer').classList.add('open');document.getElementById('scDrawerMask').classList.add('open');}
+  function scCloseDrawer(){document.getElementById('scDrawer').classList.remove('open');document.getElementById('scDrawerMask').classList.remove('open');}
+  function scOpenChest(el){el.classList.add('opened');el.querySelector('.sc-chest__label').textContent='获得战利品!';el.querySelector('.sc-chest__box').textContent='✨';}
+  document.querySelectorAll('[data-stepper]').forEach(s=>{const v=s.querySelector('[data-val]');let n=parseInt(v.textContent,10);
+    s.querySelector('[data-inc]').onclick=()=>{n=Math.min(99,n+1);v.textContent=n;};
+    s.querySelector('[data-dec]').onclick=()=>{n=Math.max(1,n-1);v.textContent=n;};});
+  document.querySelectorAll('#scNav [data-nav]').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('#scNav [data-nav]').forEach(x=>x.classList.remove('sc-nav__tab--active'));t.classList.add('sc-nav__tab--active');}));
+  const scTB={0:'军队:野蛮人 ×24 · 弓箭手 ×18 · 巨人 ×4',1:'法术:狂暴 ×2 · 治疗 ×1 · 闪电 ×1',2:'攻城机器:攻城战车 ×1'};
+  document.querySelectorAll('#scTabs [data-tab]').forEach((t,i)=>t.addEventListener('click',()=>{
+    document.querySelectorAll('#scTabs [data-tab]').forEach(x=>x.classList.remove('sc-tabs__tab--active'));t.classList.add('sc-tabs__tab--active');
+    document.getElementById('scTabsBody').textContent=scTB[i];}));
+  document.querySelectorAll('#scPage [data-pg]').forEach(p=>p.addEventListener('click',()=>{
+    document.querySelectorAll('#scPage [data-pg]').forEach(x=>x.classList.remove('sc-pagination__pg--active'));p.classList.add('sc-pagination__pg--active');}));
+  document.getElementById('scModal').addEventListener('click',e=>{if(e.target.id==='scModal')e.target.style.display='none';});
+  (function(){const t=document.getElementById('scEnergyTimer');if(!t)return;let s=299;
+    setInterval(()=>{s=s<=0?299:s-1;const m=String(Math.floor(s/60)).padStart(2,'0'),ss=String(s%60).padStart(2,'0');t.textContent='+500 · '+m+':'+ss;},1000);})();
+</script>
+</body>
+</html>
