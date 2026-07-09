@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>游戏 UI 组件库 · Game UI Kits</title>
+<style>
+:root{
+  --bg:#0d0f14; --card:#151923; --border:#242b3a;
+  --text:#e8ecf4; --muted:#8b94a7; --accent:#6ea8fe;
+}
+*{margin:0; padding:0; box-sizing:border-box;}
+body{
+  background:var(--bg); color:var(--text); min-height:100vh;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  padding:60px 24px 80px;
+}
+.wrap{max-width:960px; margin:0 auto;}
+h1{font-size:34px; font-weight:800; letter-spacing:1px; text-align:center;}
+.sub{color:var(--muted); text-align:center; margin:14px auto 48px; max-width:560px; line-height:1.7;}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:18px;}
+a.card{
+  display:block; background:var(--card); border:1px solid var(--border);
+  border-radius:14px; padding:24px 22px; text-decoration:none; color:var(--text);
+  transition:transform .15s ease, border-color .15s ease;
+}
+a.card:hover{transform:translateY(-3px); border-color:var(--hover,var(--accent));}
+.icon{font-size:30px; margin-bottom:12px;}
+.card h2{font-size:18px; font-weight:700; margin-bottom:6px;}
+.card p{color:var(--muted); font-size:13.5px; line-height:1.6;}
+.tag{
+  display:inline-block; margin-top:14px; font-size:12px; color:var(--hover,var(--accent));
+  border:1px solid currentColor; border-radius:99px; padding:3px 10px; opacity:.85;
+}
+.all{grid-column:1/-1;}
+footer{text-align:center; color:var(--muted); font-size:13px; margin-top:56px;}
+footer a{color:var(--accent); text-decoration:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎮 游戏 UI 组件库</h1>
+  <p class="sub">五套不同风格的游戏界面组件：按钮、面板、血条、弹窗、道具栏……全部为零依赖的单文件 HTML + CSS，点开即用，可直接复制到你的项目里。</p>
+  <div class="grid">
+    <a class="card all" href="game-ui-kit-all.html" style="--hover:#f0c34e">
+      <div class="icon">🗂️</div>
+      <h2>五风格合集 · All-in-One</h2>
+      <p>一个页面切换浏览全部五套风格，适合快速对比选型。</p>
+      <span class="tag">合集页</span>
+    </a>
+    <a class="card" href="diablo-ui-kit.html" style="--hover:#c0392b">
+      <div class="icon">⚔️</div>
+      <h2>暗黑哥特 · Diablo Style</h2>
+      <p>暗色石纹与鎏金边框，适合 ARPG、魔幻题材。</p>
+      <span class="tag">Cinzel 字体</span>
+    </a>
+    <a class="card" href="cyberpunk-ui-kit.html" style="--hover:#00e5ff">
+      <div class="icon">🌃</div>
+      <h2>赛博朋克 · Cyberpunk</h2>
+      <p>霓虹辉光与故障风切角，适合科幻、未来题材。</p>
+      <span class="tag">Orbitron 字体</span>
+    </a>
+    <a class="card" href="mario-ui-kit.html" style="--hover:#ff5c5c">
+      <div class="icon">🍄</div>
+      <h2>马力欧风 · Nintendo Style</h2>
+      <p>明快圆润的卡通质感，适合平台跳跃、合家欢游戏。</p>
+      <span class="tag">Baloo 2 字体</span>
+    </a>
+    <a class="card" href="ios-ui-kit.html" style="--hover:#7bd88f">
+      <div class="icon">📱</div>
+      <h2>iOS 休闲风 · Casual</h2>
+      <p>柔和渐变与大圆角，适合三消、模拟经营等休闲手游。</p>
+      <span class="tag">Nunito 字体</span>
+    </a>
+    <a class="card" href="pixel-ui-kit.html" style="--hover:#9bde4a">
+      <div class="icon">👾</div>
+      <h2>像素 8-bit · Retro Pixel</h2>
+      <p>硬边像素描边与复古配色，适合 Roguelike、复古街机。</p>
+      <span class="tag">Press Start 2P 字体</span>
+    </a>
+  </div>
+  <footer>零依赖 · 单文件 HTML/CSS · <a href="https://github.com/enotsixlm/game-ui-kits">GitHub 仓库</a></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>马力欧风 UI 组件库 · Nintendo Style Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================================
+   NINTENDO / MARIO UI KIT — reusable component library
+   ----------------------------------------------------------------------------
+   全部 mr- 前缀。改主题只改下面 :root 令牌即可。
+   招牌:圆润积木感 · 三原色 · 白描边 · 可按压弹跳 · 硬底 3D 投影
+   ============================================================================ */
+:root{
+  --mr-red:#e8402e;   --mr-red-lt:#ff6a52;  --mr-red-dk:#b52a1a;
+  --mr-blue:#2a86e0;  --mr-blue-lt:#5cbcff; --mr-blue-dk:#1657a8;
+  --mr-green:#3fb54a; --mr-green-lt:#6de07a;--mr-green-dk:#1c7a2c;
+  --mr-yellow:#ffcf1f;--mr-yellow-lt:#ffe066;--mr-yellow-dk:#e0a300;
+  --mr-brick:#c86432; --mr-brick-dk:#8a4418;
+  --mr-ink:#2a2a3a;   --mr-white:#ffffff;   --mr-panel:#ffffff;
+  --mr-text:#3a3a4a;  --mr-dim:#8b8b9d;     --mr-sky:#5cb3ff;
+
+  --mr-disp:'Baloo 2','Fredoka',sans-serif;
+  --mr-ui:'Fredoka','Baloo 2',sans-serif;
+  --mr-num:'Nunito',sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:var(--mr-ui); color:var(--mr-text); line-height:1.5;
+  background:linear-gradient(180deg,#5cb3ff 0%,#7cc6ff 44%,#8bd48b 44%,#5bbf5b 100%);
+  background-attachment:fixed; min-height:100vh; padding:0 0 90px; position:relative; overflow-x:hidden;
+}
+/* floating clouds */
+body::before,body::after{content:""; position:fixed; background:#fff; border-radius:999px; opacity:.85; z-index:0;
+  box-shadow:0 0 0 0 #fff;}
+body::before{width:120px; height:40px; top:80px; left:6%;
+  box-shadow:36px -18px 0 -4px #fff, 74px -6px 0 -10px #fff;}
+body::after{width:90px; height:32px; top:160px; right:8%;
+  box-shadow:30px -14px 0 -4px #fff, 60px -4px 0 -8px #fff;}
+
+.doc{max-width:980px; margin:0 auto; padding:0 20px; position:relative; z-index:1;}
+.doc-head{text-align:center; padding:48px 20px 26px;}
+.doc-head .eb{display:inline-block; margin-bottom:14px; font-family:var(--mr-disp); font-weight:700; font-size:12px;
+  letter-spacing:.14em; color:#fff; background:var(--mr-red); padding:6px 16px; border-radius:999px;
+  border:3px solid var(--mr-ink); box-shadow:0 3px 0 var(--mr-ink);}
+.doc-head h1{font-family:var(--mr-disp); font-weight:800; font-size:clamp(28px,5vw,48px); color:#fff;
+  -webkit-text-stroke:3px var(--mr-ink); text-shadow:0 4px 0 var(--mr-ink), 0 8px 12px rgba(0,0,0,.25); letter-spacing:.01em;}
+.doc-head p{margin-top:12px; color:#2a5a2a; font-weight:800; text-shadow:0 1px 0 rgba(255,255,255,.5);}
+
+.tokens{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:20px;}
+.tok{display:flex; align-items:center; gap:7px; font-family:var(--mr-num); font-weight:800; font-size:11px; color:#3a3a4a;
+  background:#fff; border:3px solid var(--mr-ink); padding:4px 10px; border-radius:999px; box-shadow:0 2px 0 var(--mr-ink);}
+.tok i{width:14px;height:14px; border-radius:4px; border:2px solid var(--mr-ink);}
+
+.comp{margin-top:38px;}
+.comp-title{font-family:var(--mr-disp); font-weight:800; font-size:20px; color:#fff; display:flex; align-items:center; gap:10px;
+  margin-bottom:4px; -webkit-text-stroke:1.5px var(--mr-ink); text-shadow:0 2px 0 var(--mr-ink);}
+.comp-title::before{content:"★"; color:var(--mr-yellow); -webkit-text-stroke:1.5px var(--mr-ink); font-size:16px;}
+.comp-desc{color:#1c4a1c; font-weight:800; font-size:13px; margin-bottom:16px; text-shadow:0 1px 0 rgba(255,255,255,.4);}
+.showcase{display:flex; flex-wrap:wrap; gap:16px; align-items:center; padding:24px;
+  background:rgba(255,255,255,.55); border:4px dashed var(--mr-ink); border-radius:20px;}
+.classline{margin-top:10px; font-family:ui-monospace,monospace; font-size:12px; color:#1c7a2c;
+  background:#fff; border:3px solid var(--mr-ink); border-radius:10px; padding:8px 12px; overflow-x:auto; font-weight:600;}
+.classline b{color:var(--mr-red-dk);}
+
+/* ============================================================================
+   ============  COMPONENTS  ============
+   ============================================================================ */
+
+/* ----- 1. 按钮 mr-btn ----- */
+.mr-btn{font-family:var(--mr-disp); font-weight:800; font-size:15px; color:#fff; cursor:pointer; user-select:none;
+  display:inline-flex; align-items:center; gap:8px; padding:12px 24px 14px; border:3px solid var(--mr-ink);
+  border-radius:16px; text-align:center; text-shadow:0 2px 0 rgba(0,0,0,.22); transition:.07s;
+  background:linear-gradient(180deg,var(--b-lt),var(--b)); box-shadow:0 5px 0 var(--b-dk), inset 0 2px 0 rgba(255,255,255,.5);
+  --b-lt:var(--mr-red-lt); --b:var(--mr-red); --b-dk:var(--mr-red-dk);}
+.mr-btn:active{transform:translateY(5px); box-shadow:0 0 0 var(--b-dk), inset 0 2px 0 rgba(255,255,255,.4);}
+.mr-btn--red{--b-lt:var(--mr-red-lt);--b:var(--mr-red);--b-dk:var(--mr-red-dk);}
+.mr-btn--blue{--b-lt:var(--mr-blue-lt);--b:var(--mr-blue);--b-dk:var(--mr-blue-dk);}
+.mr-btn--green{--b-lt:var(--mr-green-lt);--b:var(--mr-green);--b-dk:var(--mr-green-dk);}
+.mr-btn--yellow{--b-lt:var(--mr-yellow-lt);--b:var(--mr-yellow);--b-dk:var(--mr-yellow-dk); color:#5a4200; text-shadow:0 1px 0 rgba(255,255,255,.5);}
+.mr-btn--sm{font-size:13px; padding:9px 16px 11px; border-radius:13px;}
+.mr-btn--lg{font-size:19px; padding:16px 34px 18px; border-radius:20px;}
+.mr-btn--block{width:100%; justify-content:center;}
+.mr-btn--round{width:56px; height:56px; padding:0; border-radius:50%; font-size:24px;}
+.mr-btn[disabled],.mr-btn--disabled{cursor:not-allowed; filter:grayscale(.6) brightness(.95); opacity:.85;}
+.mr-btn[disabled]:active,.mr-btn--disabled:active{transform:none; box-shadow:0 5px 0 var(--b-dk), inset 0 2px 0 rgba(255,255,255,.4);}
+
+/* ----- 2. 面板 mr-panel ----- */
+.mr-panel{position:relative; background:var(--mr-panel); border:4px solid var(--mr-ink); border-radius:20px;
+  box-shadow:0 6px 0 var(--mr-ink), 0 12px 20px rgba(0,0,0,.15);}
+.mr-panel__hd{font-family:var(--mr-disp); font-weight:800; font-size:17px; color:#fff; text-align:center; padding:12px 16px;
+  background:linear-gradient(180deg,var(--mr-red-lt),var(--mr-red)); border-bottom:4px solid var(--mr-ink);
+  border-radius:15px 15px 0 0; text-shadow:0 2px 0 var(--mr-red-dk);}
+.mr-panel__bd{padding:16px 18px 18px;}
+.mr-panel__bd p{font-weight:700; font-size:13px; color:var(--mr-text); line-height:1.6;}
+/* corner studs (可选) */
+.mr-stud{position:absolute; width:12px; height:12px; border-radius:50%; background:var(--mr-yellow);
+  border:2px solid var(--mr-ink); box-shadow:0 1px 0 var(--mr-ink);}
+.mr-stud.tl{top:8px;left:8px;} .mr-stud.tr{top:8px;right:8px;}
+.mr-stud.bl{bottom:8px;left:8px;} .mr-stud.br{bottom:8px;right:8px;}
+
+/* ----- 3. 弹窗 mr-modal ----- */
+.mr-modal-mask{position:fixed; inset:0; background:rgba(20,30,50,.55); backdrop-filter:blur(2px);
+  display:grid; place-items:center; z-index:100; padding:20px;}
+.mr-modal{width:min(380px,92vw); position:relative;}
+.mr-modal__close{position:absolute; top:-14px; right:-14px; width:42px; height:42px; z-index:5;
+  --b-lt:var(--mr-red-lt);--b:var(--mr-red);--b-dk:var(--mr-red-dk);}
+
+/* ----- 4. 进度条 mr-bar ----- */
+.mr-bar{position:relative; height:18px; background:#e3e6ef; border:3px solid var(--mr-ink); border-radius:999px; overflow:hidden;
+  box-shadow:inset 0 2px 3px rgba(0,0,0,.15);}
+.mr-bar__fill{height:100%; border-radius:999px; box-shadow:inset 0 3px 0 rgba(255,255,255,.5), inset 0 -3px 0 rgba(0,0,0,.12);}
+.mr-bar__fill--coin{background:linear-gradient(180deg,var(--mr-yellow-lt),var(--mr-yellow));}
+.mr-bar__fill--life{background:linear-gradient(180deg,var(--mr-green-lt),var(--mr-green));}
+.mr-bar__fill--star{background:linear-gradient(180deg,var(--mr-blue-lt),var(--mr-blue));}
+.mr-bar__label{position:absolute; inset:0; display:grid; place-items:center; font-family:var(--mr-disp); font-weight:800;
+  font-size:11px; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.4);}
+.mr-bar--tall{height:24px;}
+
+/* ----- 5. 货币条 mr-currency ----- */
+.mr-currency{display:inline-flex; align-items:center; gap:7px; font-family:var(--mr-num); font-weight:900; font-size:16px;
+  color:var(--mr-text); background:#fff; border:3px solid var(--mr-ink); border-radius:999px; padding:4px 14px 4px 5px;
+  box-shadow:0 3px 0 var(--mr-ink);}
+.mr-currency__coin{width:26px; height:26px; border-radius:50%; flex:none; border:2px solid var(--mr-ink);
+  display:grid; place-items:center; font-size:13px; box-shadow:inset 0 2px 0 rgba(255,255,255,.5);}
+.mr-currency__coin--gold{background:radial-gradient(circle at 40% 30%,var(--mr-yellow-lt),var(--mr-yellow) 60%,var(--mr-yellow-dk));}
+.mr-currency__coin--star{background:radial-gradient(circle at 40% 30%,var(--mr-blue-lt),var(--mr-blue) 60%,var(--mr-blue-dk));}
+.mr-currency__coin--life{background:radial-gradient(circle at 40% 30%,var(--mr-green-lt),var(--mr-green) 60%,var(--mr-green-dk));}
+
+/* ----- 6. 状态计量表 mr-meter(P 速度表) ----- */
+.mr-meter{display:inline-flex; align-items:center; gap:3px; background:#fff; border:3px solid var(--mr-ink);
+  border-radius:10px; padding:5px 8px; box-shadow:0 3px 0 var(--mr-ink);}
+.mr-meter__seg{width:0;height:0; border-top:7px solid transparent; border-bottom:7px solid transparent;
+  border-left:11px solid #d5d8e2;}
+.mr-meter__seg.on{border-left-color:var(--mr-yellow);}
+.mr-meter__p{font-family:var(--mr-disp); font-weight:800; font-size:15px; color:#d5d8e2; margin-left:3px;}
+.mr-meter__p.on{color:var(--mr-red); animation:mr-blink .4s steps(1) infinite;}
+@keyframes mr-blink{50%{opacity:.4;}}
+
+/* ----- 7. 图标底座 mr-icon ----- */
+.mr-icon{width:52px; height:52px; border-radius:14px; display:grid; place-items:center; font-size:26px; position:relative;
+  background:linear-gradient(180deg,#fff,#eef1f8); border:3px solid var(--mr-ink); box-shadow:0 4px 0 var(--mr-ink), inset 0 2px 0 #fff;}
+.mr-icon:hover{transform:translateY(-2px);}
+.mr-icon--rare{background:linear-gradient(180deg,var(--mr-blue-lt),#bfe4ff);}
+.mr-icon--legend{background:linear-gradient(180deg,var(--mr-yellow-lt),#ffe89a);}
+.mr-icon__cd{position:absolute; inset:0; background:rgba(42,42,58,.6); border-radius:11px; display:grid; place-items:center;
+  font-family:var(--mr-disp); font-weight:800; font-size:16px; color:#fff;}
+
+/* ----- 8. 卡片 mr-card ----- */
+.mr-card{width:150px; background:#fff; border:4px solid var(--mr-ink); border-radius:18px; overflow:hidden; cursor:pointer;
+  box-shadow:0 6px 0 var(--mr-ink), 0 10px 14px rgba(0,0,0,.15); transition:.12s; position:relative;}
+.mr-card:hover{transform:translateY(-4px);}
+.mr-card__art{height:96px; display:grid; place-items:center; font-size:48px; position:relative;
+  background:linear-gradient(180deg,var(--c1,var(--mr-blue-lt)),var(--c2,var(--mr-blue))); border-bottom:4px solid var(--mr-ink);
+  text-shadow:0 3px 0 rgba(0,0,0,.15);}
+.mr-card--red{--c1:var(--mr-red-lt);--c2:var(--mr-red);} .mr-card--green{--c1:var(--mr-green-lt);--c2:var(--mr-green);}
+.mr-card--yellow{--c1:var(--mr-yellow-lt);--c2:var(--mr-yellow);}
+.mr-card__tag{position:absolute; top:6px; left:6px; font-family:var(--mr-num); font-weight:900; font-size:9px; color:#fff;
+  background:var(--mr-ink); padding:2px 8px; border-radius:999px;}
+.mr-card__name{font-family:var(--mr-disp); font-weight:800; font-size:14px; color:var(--mr-text); text-align:center; padding:8px 6px 4px;}
+.mr-card__foot{padding:0 10px 10px;}
+
+/* ----- 9. 列表项 mr-list ----- */
+.mr-list{border:3px solid var(--mr-ink); border-radius:14px; overflow:hidden; background:#fff; box-shadow:0 4px 0 var(--mr-ink);}
+.mr-list__item{display:flex; align-items:center; gap:10px; padding:9px 12px; cursor:pointer;
+  border-bottom:2px solid #eef1f8; transition:.1s;}
+.mr-list__item:last-child{border-bottom:none;}
+.mr-list__item:hover{background:#fff8dc;}
+.mr-list__ic{width:34px; height:34px; flex:none; display:grid; place-items:center; font-size:18px;
+  background:linear-gradient(180deg,#fff,#eef1f8); border:2px solid var(--mr-ink); border-radius:10px;}
+.mr-list__tx{flex:1;}
+.mr-list__tx b{font-family:var(--mr-disp); font-weight:800; font-size:14px; color:var(--mr-text); display:block;}
+.mr-list__tx small{font-family:var(--mr-num); font-weight:700; font-size:11px; color:var(--mr-dim);}
+.mr-list__val{font-family:var(--mr-num); font-weight:900; font-size:14px; color:var(--mr-red);}
+
+/* ----- 10. 顶部 HUD mr-hud ----- */
+.mr-hud{display:flex; align-items:center; gap:10px; padding:10px 12px; background:#fff; border:3px solid var(--mr-ink);
+  border-radius:16px; box-shadow:0 4px 0 var(--mr-ink);}
+.mr-hud__ava{width:44px; height:44px; border-radius:12px; flex:none; display:grid; place-items:center; font-size:22px;
+  background:linear-gradient(180deg,var(--mr-red-lt),var(--mr-red)); border:3px solid var(--mr-ink);}
+.mr-hud__who b{font-family:var(--mr-disp); font-weight:800; font-size:15px; color:var(--mr-text); display:block;}
+.mr-hud__who small{font-family:var(--mr-num); font-weight:800; font-size:10px; color:var(--mr-green-dk); letter-spacing:.04em;}
+.mr-hud__spacer{flex:1;}
+
+/* ----- 11. 导航栏 mr-nav ----- */
+.mr-nav{display:flex; gap:8px; padding:8px; background:#fff; border:3px solid var(--mr-ink); border-radius:18px;
+  box-shadow:0 4px 0 var(--mr-ink);}
+.mr-nav__tab{flex:1; text-align:center; font-family:var(--mr-disp); font-weight:800; font-size:11px; color:var(--mr-dim);
+  padding:8px 4px; cursor:pointer; border-radius:12px; border:3px solid transparent; transition:.1s;}
+.mr-nav__tab .i{display:block; font-size:20px; margin-bottom:2px;}
+.mr-nav__tab--active{color:#fff; background:linear-gradient(180deg,var(--mr-red-lt),var(--mr-red));
+  border-color:var(--mr-ink); box-shadow:0 3px 0 var(--mr-red-dk); text-shadow:0 1px 0 var(--mr-red-dk);}
+
+/* ----- 12. 标签页 mr-tabs ----- */
+.mr-tabs{display:flex; gap:6px;}
+.mr-tabs__tab{font-family:var(--mr-disp); font-weight:800; font-size:12px; color:var(--mr-dim); padding:9px 16px; cursor:pointer;
+  background:#eef1f8; border:3px solid var(--mr-ink); border-radius:12px 12px 0 0; border-bottom:none; transition:.1s;}
+.mr-tabs__tab--active{color:#fff; background:linear-gradient(180deg,var(--mr-blue-lt),var(--mr-blue));}
+
+/* ----- 13. 输入框 mr-input ----- */
+.mr-input{font-family:var(--mr-ui); font-weight:700; font-size:14px; color:var(--mr-text); background:#fff;
+  border:3px solid var(--mr-ink); border-radius:12px; padding:10px 14px; width:100%; outline:none; transition:.12s;
+  box-shadow:inset 0 2px 3px rgba(0,0,0,.08);}
+.mr-input::placeholder{color:#b5bccf;}
+.mr-input:focus{border-color:var(--mr-blue); box-shadow:0 0 0 3px rgba(42,134,224,.25);}
+.mr-field{position:relative;}
+.mr-field__ic{position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:15px;}
+.mr-field .mr-input{padding-left:36px;}
+
+/* ----- 14. 下拉选择 mr-select ----- */
+.mr-select{position:relative; display:inline-block;}
+.mr-select select{appearance:none; -webkit-appearance:none; font-family:var(--mr-disp); font-weight:700; font-size:13px;
+  color:var(--mr-text); background:#fff; border:3px solid var(--mr-ink); border-radius:12px; padding:10px 36px 10px 14px;
+  cursor:pointer; outline:none; box-shadow:0 3px 0 var(--mr-ink);}
+.mr-select::after{content:"▾"; position:absolute; right:14px; top:50%; transform:translateY(-50%); color:var(--mr-ink);
+  pointer-events:none; font-weight:800;}
+
+/* ----- 15. 开关 mr-switch ----- */
+.mr-switch{position:relative; display:inline-flex; align-items:center; cursor:pointer; user-select:none;}
+.mr-switch input{position:absolute; opacity:0; pointer-events:none;}
+.mr-switch__track{width:52px; height:28px; border-radius:999px; background:#c9cede; border:3px solid var(--mr-ink);
+  position:relative; transition:.15s; box-shadow:inset 0 2px 3px rgba(0,0,0,.1);}
+.mr-switch__track::before{content:""; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%;
+  background:#fff; border:2px solid var(--mr-ink); transition:.15s;}
+.mr-switch input:checked + .mr-switch__track{background:var(--mr-green);}
+.mr-switch input:checked + .mr-switch__track::before{left:26px;}
+
+/* ----- 16. 滑条 mr-slider ----- */
+.mr-slider{-webkit-appearance:none; appearance:none; width:100%; height:10px; border-radius:999px;
+  background:linear-gradient(90deg,var(--mr-red),#e3e6ef); border:3px solid var(--mr-ink); outline:none; cursor:pointer;}
+.mr-slider::-webkit-slider-thumb{-webkit-appearance:none; width:22px; height:22px; border-radius:50%;
+  background:radial-gradient(circle at 40% 30%,#fff,#e8e8f0); border:3px solid var(--mr-ink); cursor:pointer;
+  box-shadow:0 2px 0 var(--mr-ink);}
+.mr-slider::-moz-range-thumb{width:22px; height:22px; border-radius:50%; background:#fff; border:3px solid var(--mr-ink); cursor:pointer;}
+
+/* ----- 17. 徽章 mr-badge ----- */
+.mr-badge{display:inline-grid; place-items:center; min-width:20px; height:20px; padding:0 6px; border-radius:999px;
+  font-family:var(--mr-num); font-weight:900; font-size:11px; color:#fff; background:var(--mr-red);
+  border:2px solid var(--mr-ink); box-shadow:0 2px 0 var(--mr-ink);}
+.mr-badge--yellow{background:var(--mr-yellow); color:#5a4200;}
+.mr-badge-wrap{position:relative; display:inline-flex;}
+.mr-badge-wrap > .mr-badge{position:absolute; top:-8px; right:-8px;}
+
+/* ----- 18. 角标 mr-ribbon ----- */
+.mr-ribbon{position:absolute; top:10px; left:-4px; font-family:var(--mr-disp); font-weight:800; font-size:11px; color:#fff;
+  background:var(--mr-red); padding:3px 12px; border:2px solid var(--mr-ink); border-radius:4px; z-index:3;
+  box-shadow:0 2px 0 var(--mr-ink); text-shadow:0 1px 0 var(--mr-red-dk);}
+.mr-ribbon--yellow{background:var(--mr-yellow); color:#5a4200; text-shadow:none;}
+
+/* ----- 19. 标签 mr-tag ----- */
+.mr-tag{display:inline-flex; align-items:center; gap:5px; font-family:var(--mr-num); font-weight:800; font-size:11px;
+  color:var(--mr-text); background:#eef1f8; border:2px solid var(--mr-ink); border-radius:999px; padding:3px 10px;}
+.mr-tag--red{background:#ffe0da; color:var(--mr-red-dk);}
+.mr-tag--green{background:#dcf5df; color:var(--mr-green-dk);}
+.mr-tag--yellow{background:#fff3cc; color:#8a6a00;}
+
+/* ----- 20. Tooltip mr-tooltip ----- */
+.mr-tooltip{position:relative; display:inline-flex; cursor:help; border-bottom:2px dotted var(--mr-dim);}
+.mr-tooltip::after{content:attr(data-tip); position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%);
+  font-family:var(--mr-ui); font-weight:700; font-size:12px; color:#fff; white-space:nowrap; background:var(--mr-ink);
+  border-radius:10px; padding:7px 12px; opacity:0; pointer-events:none; transition:.12s; z-index:20;}
+.mr-tooltip::before{content:""; position:absolute; bottom:calc(100% + 3px); left:50%; transform:translateX(-50%);
+  border:6px solid transparent; border-top-color:var(--mr-ink); opacity:0; transition:.12s; z-index:20;}
+.mr-tooltip:hover::after,.mr-tooltip:hover::before{opacity:1;}
+
+/* ----- 21. Toast mr-toast ----- */
+.mr-toast{display:flex; align-items:center; gap:10px; font-family:var(--mr-ui); font-weight:700; font-size:13px;
+  color:var(--mr-text); background:#fff; border:3px solid var(--mr-ink); border-radius:16px; padding:11px 16px; max-width:340px;
+  box-shadow:0 5px 0 var(--mr-ink);}
+.mr-toast__ic{width:34px; height:34px; border-radius:10px; flex:none; display:grid; place-items:center; font-size:18px;
+  background:var(--mr-green); border:2px solid var(--mr-ink);}
+.mr-toast--danger .mr-toast__ic{background:var(--mr-red);}
+.mr-toast--coin .mr-toast__ic{background:var(--mr-yellow);}
+.mr-toast b{font-family:var(--mr-disp); font-weight:800; font-size:13px; color:var(--mr-text); display:block;}
+
+/* ----- 22. 对话气泡 mr-bubble ----- */
+.mr-bubble{position:relative; font-family:var(--mr-ui); font-weight:700; font-size:13px; color:var(--mr-text); max-width:300px;
+  background:#fff; border:3px solid var(--mr-ink); border-radius:16px; padding:12px 16px; box-shadow:0 5px 0 var(--mr-ink);}
+.mr-bubble__who{font-family:var(--mr-disp); font-weight:800; font-size:12px; color:var(--mr-red); margin-bottom:5px;}
+.mr-bubble::before{content:""; position:absolute; left:24px; bottom:-14px; border:8px solid transparent; border-top-color:var(--mr-ink);}
+.mr-bubble::after{content:""; position:absolute; left:26px; bottom:-9px; border:6px solid transparent; border-top-color:#fff;}
+
+/* ----- 23. 加载 mr-spinner(旋转金币) ----- */
+.mr-spinner{width:40px; height:40px; border-radius:50%; background:radial-gradient(circle at 40% 30%,var(--mr-yellow-lt),var(--mr-yellow) 60%,var(--mr-yellow-dk));
+  border:3px solid var(--mr-ink); display:grid; place-items:center; font-family:var(--mr-disp); font-weight:800; color:var(--mr-yellow-dk);
+  animation:mr-flip 1s linear infinite;}
+.mr-spinner::before{content:"$"; font-size:16px;}
+@keyframes mr-flip{0%{transform:rotateY(0)}100%{transform:rotateY(360deg)}}
+
+/* ----- 24. 头像组 mr-avatars ----- */
+.mr-avatars{display:inline-flex;}
+.mr-avatars__a{width:38px; height:38px; border-radius:50%; display:grid; place-items:center; font-size:18px; margin-left:-10px;
+  background:linear-gradient(180deg,#fff,#eef1f8); border:3px solid var(--mr-ink);}
+.mr-avatars__a:first-child{margin-left:0;}
+.mr-avatars__more{width:38px; height:38px; border-radius:50%; display:grid; place-items:center; margin-left:-10px;
+  font-family:var(--mr-num); font-weight:900; font-size:11px; color:#fff; background:var(--mr-blue); border:3px solid var(--mr-ink);}
+
+/* ----- 25. 星级评分 mr-stars ----- */
+.mr-stars{display:inline-flex; gap:3px; font-size:20px; color:#d5d8e2;}
+.mr-stars .on{color:var(--mr-yellow); filter:drop-shadow(0 1px 0 var(--mr-yellow-dk));}
+
+/* ----- 26. 分隔线 mr-divider ----- */
+.mr-divider{display:flex; align-items:center; gap:10px; margin:6px 0;}
+.mr-divider::before,.mr-divider::after{content:""; height:3px; flex:1; border-radius:999px; background:var(--mr-ink); opacity:.25;}
+.mr-divider__mark{font-family:var(--mr-disp); font-weight:800; font-size:13px; color:var(--mr-text);}
+
+/* ----- 27. 空状态 mr-empty ----- */
+.mr-empty{text-align:center; padding:28px 20px; color:var(--mr-dim);}
+.mr-empty__ic{font-size:48px;}
+.mr-empty__tt{font-family:var(--mr-disp); font-weight:800; font-size:16px; color:var(--mr-text); margin:8px 0 4px;}
+.mr-empty__ds{font-family:var(--mr-num); font-weight:700; font-size:12px;}
+
+/* ----- 28. 步进器 mr-stepper ----- */
+.mr-stepper{display:inline-flex; align-items:center; gap:8px;}
+.mr-stepper__btn{width:36px; height:36px; border-radius:50%; font-family:var(--mr-disp); font-weight:800; font-size:20px; color:#fff;
+  cursor:pointer; border:3px solid var(--mr-ink); display:grid; place-items:center; line-height:0; padding-bottom:2px;
+  background:linear-gradient(180deg,var(--mr-blue-lt),var(--mr-blue)); box-shadow:0 3px 0 var(--mr-blue-dk); transition:.07s;}
+.mr-stepper__btn:active{transform:translateY(3px); box-shadow:0 0 0 var(--mr-blue-dk);}
+.mr-stepper__val{min-width:46px; text-align:center; font-family:var(--mr-num); font-weight:900; font-size:18px; color:var(--mr-text);
+  background:#fff; border:3px solid var(--mr-ink); border-radius:10px; padding:6px 0;}
+
+/* ----- 29. 面包屑 mr-breadcrumb ----- */
+.mr-breadcrumb{display:flex; align-items:center; gap:6px; font-family:var(--mr-ui); font-weight:700; font-size:13px; flex-wrap:wrap;}
+.mr-breadcrumb a{color:var(--mr-blue-dk); text-decoration:none; cursor:pointer;}
+.mr-breadcrumb a:hover{color:var(--mr-red);}
+.mr-breadcrumb__sep{color:var(--mr-dim); font-weight:800;}
+.mr-breadcrumb__cur{color:var(--mr-text); font-weight:800;}
+
+/* ----- 30. 手风琴 mr-accordion ----- */
+.mr-accordion{border:3px solid var(--mr-ink); border-radius:14px; overflow:hidden; background:#fff; box-shadow:0 4px 0 var(--mr-ink);}
+.mr-accordion details{border-bottom:2px solid #eef1f8;}
+.mr-accordion details:last-child{border-bottom:none;}
+.mr-accordion summary{list-style:none; cursor:pointer; padding:12px 14px; font-family:var(--mr-disp); font-weight:800; font-size:13px;
+  color:var(--mr-text); display:flex; align-items:center; gap:8px;}
+.mr-accordion summary::-webkit-details-marker{display:none;}
+.mr-accordion summary::before{content:"▶"; color:var(--mr-red); font-size:11px; transition:.15s;}
+.mr-accordion details[open] summary::before{transform:rotate(90deg);}
+.mr-accordion summary:hover{background:#fff8dc;}
+.mr-accordion__bd{padding:2px 16px 14px 32px; font-family:var(--mr-ui); font-weight:700; font-size:12px; color:var(--mr-dim); line-height:1.6;}
+
+/* ----- 31. 侧边抽屉 mr-drawer ----- */
+.mr-drawer-mask{position:fixed; inset:0; background:rgba(20,30,50,.5); z-index:110; opacity:0; pointer-events:none; transition:.2s;}
+.mr-drawer-mask.open{opacity:1; pointer-events:auto;}
+.mr-drawer{position:fixed; top:0; right:0; bottom:0; width:min(300px,86vw); z-index:120; background:#fff;
+  border-left:4px solid var(--mr-ink); box-shadow:-8px 0 24px rgba(0,0,0,.25); transform:translateX(100%);
+  transition:.22s cubic-bezier(.3,.8,.3,1); display:flex; flex-direction:column;}
+.mr-drawer.open{transform:translateX(0);}
+.mr-drawer__hd{font-family:var(--mr-disp); font-weight:800; font-size:16px; color:#fff; padding:16px;
+  background:linear-gradient(180deg,var(--mr-red-lt),var(--mr-red)); border-bottom:4px solid var(--mr-ink);
+  display:flex; align-items:center; justify-content:space-between; text-shadow:0 2px 0 var(--mr-red-dk);}
+.mr-drawer__hd span{cursor:pointer;}
+.mr-drawer__bd{padding:12px; overflow-y:auto;}
+
+/* ----- 32. 数据表格 mr-table ----- */
+.mr-table{width:100%; border-collapse:collapse; font-family:var(--mr-num); font-weight:700; font-size:12px;
+  border:3px solid var(--mr-ink); border-radius:12px; overflow:hidden;}
+.mr-table thead th{font-family:var(--mr-disp); font-weight:800; font-size:11px; color:#fff; text-align:left; padding:9px 12px;
+  background:linear-gradient(180deg,var(--mr-blue-lt),var(--mr-blue)); border-bottom:3px solid var(--mr-ink);}
+.mr-table tbody td{padding:9px 12px; color:var(--mr-text); border-bottom:2px solid #eef1f8;}
+.mr-table tbody tr:last-child td{border-bottom:none;}
+.mr-table tbody tr:nth-child(even){background:#f7f9ff;}
+.mr-table tbody tr:hover{background:#fff8dc;}
+.mr-table__rank{color:var(--mr-red); font-family:var(--mr-disp); font-weight:800;}
+
+/* ----- 33. 分页器 mr-pagination ----- */
+.mr-pagination{display:inline-flex; gap:6px;}
+.mr-pagination__pg{min-width:34px; height:34px; padding:0 6px; display:grid; place-items:center; cursor:pointer;
+  font-family:var(--mr-disp); font-weight:800; font-size:13px; color:var(--mr-text); background:#fff;
+  border:3px solid var(--mr-ink); border-radius:10px; box-shadow:0 3px 0 var(--mr-ink); transition:.07s;}
+.mr-pagination__pg:active{transform:translateY(3px); box-shadow:0 0 0 var(--mr-ink);}
+.mr-pagination__pg--active{color:#fff; background:linear-gradient(180deg,var(--mr-red-lt),var(--mr-red)); box-shadow:0 3px 0 var(--mr-red-dk);}
+.mr-pagination__pg--dis{opacity:.4; cursor:not-allowed; box-shadow:0 3px 0 var(--mr-ink);}
+
+/* ----- 34. 时间轴 mr-timeline ----- */
+.mr-timeline{position:relative; padding-left:28px;}
+.mr-timeline::before{content:""; position:absolute; left:9px; top:8px; bottom:8px; width:4px; border-radius:999px;
+  background:repeating-linear-gradient(180deg,var(--mr-ink) 0 6px,transparent 6px 12px); opacity:.5;}
+.mr-timeline__item{position:relative; padding-bottom:16px;}
+.mr-timeline__item:last-child{padding-bottom:0;}
+.mr-timeline__item::before{content:""; position:absolute; left:-24px; top:2px; width:16px; height:16px; border-radius:50%;
+  background:#fff; border:3px solid var(--mr-ink);}
+.mr-timeline__item--done::before{background:var(--mr-green);}
+.mr-timeline__item--now::before{background:var(--mr-red);}
+.mr-timeline__t{font-family:var(--mr-disp); font-weight:800; font-size:13px; color:var(--mr-text);}
+.mr-timeline__d{font-family:var(--mr-num); font-weight:700; font-size:11px; color:var(--mr-dim); margin-top:2px;}
+
+/* ----- 35. 树形菜单 mr-tree ----- */
+.mr-tree{font-family:var(--mr-ui); font-weight:700; font-size:13px;}
+.mr-tree details{margin-left:4px;}
+.mr-tree summary{list-style:none; cursor:pointer; padding:5px 0; color:var(--mr-text); display:flex; align-items:center; gap:6px;}
+.mr-tree summary::-webkit-details-marker{display:none;}
+.mr-tree summary::before{content:"▶"; color:var(--mr-red); font-size:9px; transition:.15s;}
+.mr-tree details[open] > summary::before{transform:rotate(90deg);}
+.mr-tree summary:hover{color:var(--mr-red);}
+.mr-tree__leaf{padding:5px 0 5px 20px; color:var(--mr-dim); cursor:pointer;}
+.mr-tree__leaf:hover{color:var(--mr-text);}
+.mr-tree details > *:not(summary){margin-left:14px; border-left:3px solid #eef1f8; padding-left:6px;}
+
+/* ----- 36. 能量条倒计时 mr-energy ----- */
+.mr-energy{display:flex; align-items:center; gap:10px;}
+.mr-energy__orb{width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font-size:15px; flex:none;
+  background:radial-gradient(circle at 40% 30%,var(--mr-green-lt),var(--mr-green) 60%,var(--mr-green-dk)); border:3px solid var(--mr-ink);}
+.mr-energy__body{flex:1;}
+.mr-energy__top{display:flex; justify-content:space-between; font-family:var(--mr-num); font-weight:800; font-size:11px; color:var(--mr-dim); margin-bottom:3px;}
+.mr-energy__timer{color:var(--mr-green-dk); font-variant-numeric:tabular-nums;}
+
+/* ----- 37. 签到日历 mr-calendar ----- */
+.mr-calendar{display:grid; grid-template-columns:repeat(7,1fr); gap:6px;}
+.mr-calendar__day{aspect-ratio:1; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; font-family:var(--mr-num); font-weight:800; font-size:10px; color:var(--mr-dim); background:#fff;
+  border:3px solid var(--mr-ink); position:relative;}
+.mr-calendar__day .r{font-size:16px;}
+.mr-calendar__day--done{background:#dcf5df;}
+.mr-calendar__day--done::after{content:"✓"; position:absolute; inset:0; display:grid; place-items:center; border-radius:9px;
+  background:rgba(63,181,74,.85); color:#fff; font-size:20px; font-weight:900;}
+.mr-calendar__day--today{border-color:var(--mr-red); box-shadow:0 0 0 3px rgba(232,64,46,.25); background:#fff3cc;}
+
+/* ----- 38. 任务链 mr-questchain ----- */
+.mr-questchain{display:flex; align-items:center;}
+.mr-questchain__node{width:42px; height:42px; border-radius:50%; display:grid; place-items:center; font-size:18px; flex:none; z-index:2;
+  background:#fff; border:3px solid var(--mr-ink); box-shadow:0 3px 0 var(--mr-ink);}
+.mr-questchain__node--done{background:var(--mr-yellow);}
+.mr-questchain__node--now{background:var(--mr-red); color:#fff; transform:scale(1.1);}
+.mr-questchain__link{height:4px; flex:1; min-width:16px; border-radius:999px;
+  background:repeating-linear-gradient(90deg,var(--mr-ink) 0 5px,transparent 5px 10px); opacity:.4;}
+.mr-questchain__link--done{background:var(--mr-yellow); opacity:1;}
+
+/* ----- 39. 成就解锁 mr-achievement ----- */
+.mr-achievement{display:flex; align-items:center; gap:14px; padding:12px 16px; background:#fff; border:3px solid var(--mr-ink);
+  border-radius:16px; box-shadow:0 4px 0 var(--mr-ink);}
+.mr-achievement__medal{width:52px; height:52px; border-radius:50%; display:grid; place-items:center; font-size:26px; flex:none;
+  background:radial-gradient(circle at 40% 30%,var(--mr-yellow-lt),var(--mr-yellow) 60%,var(--mr-yellow-dk)); border:3px solid var(--mr-ink);}
+.mr-achievement__tx b{font-family:var(--mr-disp); font-weight:800; font-size:14px; color:var(--mr-text); display:block;}
+.mr-achievement__tx small{font-family:var(--mr-num); font-weight:700; font-size:11px; color:var(--mr-dim);}
+.mr-achievement--locked{filter:grayscale(.7); opacity:.7;}
+.mr-achievement--locked .mr-achievement__medal{background:#c9cede;}
+
+/* ----- 40. 翻牌 mr-flipcard ----- */
+.mr-flipcard{width:120px; height:168px; perspective:800px; cursor:pointer;}
+.mr-flipcard__inner{position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .5s;}
+.mr-flipcard.flipped .mr-flipcard__inner{transform:rotateY(180deg);}
+.mr-flipcard__face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  border:4px solid var(--mr-ink); border-radius:16px; display:grid; place-items:center; overflow:hidden;}
+.mr-flipcard__back{background:linear-gradient(180deg,var(--mr-brick),var(--mr-brick-dk)); color:#fff; font-size:40px; font-weight:800; font-family:var(--mr-disp);}
+.mr-flipcard__front{transform:rotateY(180deg); flex-direction:column; background:linear-gradient(180deg,var(--mr-yellow-lt),var(--mr-yellow));}
+.mr-flipcard__front .em{font-size:46px;} .mr-flipcard__front .nm{font-family:var(--mr-disp); font-weight:800; font-size:13px; color:#5a4200; margin-top:6px;}
+
+/* ----- 41. 开砖块 mr-chest ----- */
+.mr-chest{width:120px; text-align:center; cursor:pointer; user-select:none;}
+.mr-chest__box{width:74px; height:74px; margin:0 auto; border-radius:12px; display:grid; place-items:center; font-size:38px; font-weight:800;
+  font-family:var(--mr-disp); color:#7a4a12; background:linear-gradient(180deg,var(--mr-yellow),var(--mr-yellow-dk));
+  border:4px solid var(--mr-ink); box-shadow:0 5px 0 var(--mr-ink), inset 0 3px 0 rgba(255,255,255,.4); transition:.15s;}
+.mr-chest:hover .mr-chest__box{transform:translateY(-4px);}
+.mr-chest.opened .mr-chest__box{animation:mr-bounce .5s ease;}
+@keyframes mr-bounce{0%{transform:translateY(0)}40%{transform:translateY(-14px)}100%{transform:translateY(0)}}
+.mr-chest__glow{height:0; overflow:hidden; opacity:0; transition:.3s;}
+.mr-chest.opened .mr-chest__glow{height:auto; opacity:1; padding-top:8px;}
+.mr-chest__label{font-family:var(--mr-disp); font-weight:800; font-size:12px; color:var(--mr-text); margin-top:6px;}
+
+/* ----- 42. 背包网格 mr-invgrid ----- */
+.mr-invgrid{display:grid; grid-template-columns:repeat(5,1fr); gap:6px; padding:10px; background:#fff;
+  border:3px solid var(--mr-ink); border-radius:14px; width:max-content; box-shadow:0 4px 0 var(--mr-ink);}
+.mr-invgrid__cell{width:46px; height:46px; border-radius:10px; display:grid; place-items:center; font-size:22px; position:relative;
+  background:linear-gradient(180deg,#fff,#eef1f8); border:2px solid var(--mr-ink);}
+.mr-invgrid__cell:hover{background:#fff8dc;}
+.mr-invgrid__cell--rare{background:linear-gradient(180deg,var(--mr-blue-lt),#bfe4ff);}
+.mr-invgrid__cell--legend{background:linear-gradient(180deg,var(--mr-yellow-lt),#ffe89a);}
+.mr-invgrid__cell--empty{background:#eef1f8; opacity:.6;}
+.mr-invgrid__qty{position:absolute; bottom:1px; right:3px; font-family:var(--mr-num); font-weight:900; font-size:10px; color:var(--mr-text);}
+
+/* ----- 43. 装备对比 mr-compare ----- */
+.mr-compare{display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center; background:#fff;
+  border:3px solid var(--mr-ink); border-radius:16px; padding:14px; box-shadow:0 4px 0 var(--mr-ink);}
+.mr-compare__side{text-align:center;}
+.mr-compare__side .mr-icon{margin:0 auto 8px;}
+.mr-compare__nm{font-family:var(--mr-disp); font-weight:800; font-size:12px; color:var(--mr-text); margin-bottom:8px;}
+.mr-compare__stat{display:flex; justify-content:space-between; font-family:var(--mr-num); font-weight:700; font-size:11px;
+  padding:3px 0; border-bottom:2px solid #eef1f8;}
+.mr-compare__stat span:first-child{color:var(--mr-dim);}
+.mr-compare__up{color:var(--mr-green-dk);} .mr-compare__down{color:var(--mr-red);}
+.mr-compare__vs{font-family:var(--mr-disp); font-weight:800; font-size:16px; color:var(--mr-red);}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important;}}
+</style>
+</head>
+<body>
+
+<div class="doc-head">
+  <span class="eb">NINTENDO · MARIO STYLE KIT</span>
+  <h1>马力欧风 UI 组件库</h1>
+  <p>43 个组件 · mr- 前缀 · 圆润积木感 + 三原色 + 可按压弹跳</p>
+  <div class="tokens">
+    <span class="tok"><i style="background:#e8402e"></i>--mr-red</span>
+    <span class="tok"><i style="background:#2a86e0"></i>--mr-blue</span>
+    <span class="tok"><i style="background:#3fb54a"></i>--mr-green</span>
+    <span class="tok"><i style="background:#ffcf1f"></i>--mr-yellow</span>
+    <span class="tok"><i style="background:#2a2a3a"></i>--mr-ink</span>
+  </div>
+</div>
+
+<div class="doc">
+
+  <!-- 1 -->
+  <div class="comp"><div class="comp-title">按钮 · Button</div><div class="comp-desc">圆润积木钮,红/蓝/绿/黄四色,硬底 3D 投影,按下真实下沉。</div>
+    <div class="showcase">
+      <button class="mr-btn mr-btn--red mr-btn--lg">开始</button>
+      <button class="mr-btn mr-btn--blue">地图</button>
+      <button class="mr-btn mr-btn--green">确认</button>
+      <button class="mr-btn mr-btn--yellow">商店</button>
+      <button class="mr-btn mr-btn--red mr-btn--round">＋</button>
+      <button class="mr-btn mr-btn--blue mr-btn--sm">小按钮</button>
+      <button class="mr-btn mr-btn--green" disabled>已锁定</button>
+    </div>
+    <div class="classline"><b>mr-btn</b> ( <b>--red/--blue/--green/--yellow · --sm/--lg/--block/--round</b> )</div>
+  </div>
+
+  <!-- 2 -->
+  <div class="comp"><div class="comp-title">面板 · Panel</div><div class="comp-desc">白底厚描边 + 彩色标题条 + 可选四角金钉。</div>
+    <div class="showcase">
+      <div class="mr-panel" style="width:300px">
+        <span class="mr-stud tl"></span><span class="mr-stud tr"></span><span class="mr-stud bl"></span><span class="mr-stud br"></span>
+        <div class="mr-panel__hd">世界 1-4</div>
+        <div class="mr-panel__bd"><p>收集 3 枚星星币,击败关底 Boss 即可解锁下一世界!</p>
+          <div style="margin-top:12px; display:flex; gap:8px;">
+            <button class="mr-btn mr-btn--green mr-btn--sm">出发</button>
+            <button class="mr-btn mr-btn--blue mr-btn--sm">稍后</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>mr-panel</b> &gt; <b>mr-panel__hd</b> + <b>mr-panel__bd</b>　·　四角金钉:<b>mr-stud tl/tr/bl/br</b></div>
+  </div>
+
+  <!-- 3 -->
+  <div class="comp"><div class="comp-title">弹窗 · Modal</div><div class="comp-desc">遮罩 + 面板 + 圆形红关闭钮。点击预览。</div>
+    <div class="showcase"><button class="mr-btn mr-btn--red" onclick="document.getElementById('mrModal').style.display='grid'">打开弹窗</button></div>
+    <div class="classline"><b>mr-modal-mask</b> &gt; <b>mr-modal</b> ( <b>mr-modal__close</b> + <b>mr-panel</b> )</div>
+  </div>
+
+  <!-- 4 -->
+  <div class="comp"><div class="comp-title">进度条 · Bar</div><div class="comp-desc">圆头光泽条,金币/生命/星星三色,可加 label。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch;">
+      <div class="mr-bar mr-bar--tall"><div class="mr-bar__fill mr-bar__fill--coin" style="width:72%"></div><div class="mr-bar__label">金币 72 / 100</div></div>
+      <div class="mr-bar mr-bar--tall"><div class="mr-bar__fill mr-bar__fill--life" style="width:90%"></div><div class="mr-bar__label">生命 90%</div></div>
+      <div class="mr-bar mr-bar--tall"><div class="mr-bar__fill mr-bar__fill--star" style="width:45%"></div><div class="mr-bar__label">星星 45%</div></div>
+    </div>
+    <div class="classline"><b>mr-bar</b> &gt; <b>mr-bar__fill --coin/--life/--star</b> + <b>mr-bar__label</b></div>
+  </div>
+
+  <!-- 5 -->
+  <div class="comp"><div class="comp-title">货币条 · Currency</div><div class="comp-desc">金币/星星/1UP 三种,白底胶囊。</div>
+    <div class="showcase">
+      <span class="mr-currency"><span class="mr-currency__coin mr-currency__coin--gold">$</span>×128</span>
+      <span class="mr-currency"><span class="mr-currency__coin mr-currency__coin--star">★</span>×24</span>
+      <span class="mr-currency"><span class="mr-currency__coin mr-currency__coin--life">1</span>×5</span>
+    </div>
+    <div class="classline"><b>mr-currency</b> &gt; <b>mr-currency__coin --gold/--star/--life</b> + 数值</div>
+  </div>
+
+  <!-- 6 -->
+  <div class="comp"><div class="comp-title">状态计量表 · Meter</div><div class="comp-desc">P 速度表(替代液体球),箭头逐格点亮,满格 P 闪烁。</div>
+    <div class="showcase" style="gap:26px;">
+      <div class="mr-meter">
+        <span class="mr-meter__seg on"></span><span class="mr-meter__seg on"></span><span class="mr-meter__seg on"></span>
+        <span class="mr-meter__seg"></span><span class="mr-meter__seg"></span><span class="mr-meter__p">P</span>
+      </div>
+      <div class="mr-meter">
+        <span class="mr-meter__seg on"></span><span class="mr-meter__seg on"></span><span class="mr-meter__seg on"></span>
+        <span class="mr-meter__seg on"></span><span class="mr-meter__seg on"></span><span class="mr-meter__p on">P</span>
+      </div>
+    </div>
+    <div class="classline"><b>mr-meter</b> &gt; 多个 <b>mr-meter__seg</b>(点亮加 <b>.on</b>) + <b>mr-meter__p</b></div>
+  </div>
+
+  <!-- 7 -->
+  <div class="comp"><div class="comp-title">图标底座 · Icon Slot</div><div class="comp-desc">道具槽,普通/稀有/传说底色 + 冷却遮罩。</div>
+    <div class="showcase">
+      <div class="mr-icon">🍄</div>
+      <div class="mr-icon mr-icon--rare">🔥</div>
+      <div class="mr-icon mr-icon--legend">⭐</div>
+      <div class="mr-icon">🌸<div class="mr-icon__cd">3</div></div>
+    </div>
+    <div class="classline"><b>mr-icon</b> ( <b>--rare / --legend</b> )　·　冷却:<b>mr-icon__cd</b></div>
+  </div>
+
+  <!-- 8 -->
+  <div class="comp"><div class="comp-title">卡片 · Card</div><div class="comp-desc">角色/道具卡,含标签、名称、底部插槽,悬停上浮。</div>
+    <div class="showcase">
+      <div class="mr-card mr-card--red"><div class="mr-card__art"><span class="mr-card__tag">角色</span>🦸</div><div class="mr-card__name">水管工英雄</div><div class="mr-card__foot"><div class="mr-bar"><div class="mr-bar__fill mr-bar__fill--coin" style="width:80%"></div></div></div></div>
+      <div class="mr-card mr-card--green"><div class="mr-card__art"><span class="mr-card__tag">道具</span>🍄</div><div class="mr-card__name">超级蘑菇</div><div class="mr-card__foot"><div class="mr-bar"><div class="mr-bar__fill mr-bar__fill--life" style="width:55%"></div></div></div></div>
+    </div>
+    <div class="classline"><b>mr-card</b> ( <b>--red/--green/--yellow</b> ) &gt; <b>__art</b>(含 <b>__tag</b>) + <b>__name</b> + <b>__foot</b></div>
+  </div>
+
+  <!-- 9 -->
+  <div class="comp"><div class="comp-title">列表项 · List</div><div class="comp-desc">道具/关卡通用行,左图标 + 主副标题 + 右值。</div>
+    <div class="showcase" style="display:block;">
+      <div class="mr-list" style="max-width:420px;">
+        <div class="mr-list__item"><div class="mr-list__ic">🍄</div><div class="mr-list__tx"><b>超级蘑菇</b><small>变大一级</small></div><span class="mr-list__val">×12</span></div>
+        <div class="mr-list__item"><div class="mr-list__ic">🌸</div><div class="mr-list__tx"><b>火焰花</b><small>获得火球能力</small></div><span class="mr-list__val">×3</span></div>
+        <div class="mr-list__item"><div class="mr-list__ic">⭐</div><div class="mr-list__tx"><b>无敌星</b><small>短暂无敌</small></div><span class="mr-list__val">×1</span></div>
+      </div>
+    </div>
+    <div class="classline"><b>mr-list</b> &gt; <b>mr-list__item</b> ( <b>__ic</b> + <b>__tx</b>(b+small) + <b>__val</b> )</div>
+  </div>
+
+  <!-- 10 -->
+  <div class="comp"><div class="comp-title">顶部 HUD · HUD Bar</div><div class="comp-desc">头像 + 名称/关卡 + 右侧货币。</div>
+    <div class="showcase" style="display:block;">
+      <div class="mr-hud"><div class="mr-hud__ava">🦸</div><div class="mr-hud__who"><b>玩家1P</b><small>世界 1-4</small></div><div class="mr-hud__spacer"></div><span class="mr-currency"><span class="mr-currency__coin mr-currency__coin--gold">$</span>×128</span></div>
+    </div>
+    <div class="classline"><b>mr-hud</b> &gt; <b>mr-hud__ava</b> + <b>mr-hud__who</b>(b+small) + <b>mr-hud__spacer</b> + 右侧组件</div>
+  </div>
+
+  <!-- 11 -->
+  <div class="comp"><div class="comp-title">导航栏 · Nav Bar</div><div class="comp-desc">底部主导航,--active 高亮。点击切换。</div>
+    <div class="showcase" style="display:block;">
+      <div class="mr-nav" id="mrNav">
+        <div class="mr-nav__tab mr-nav__tab--active" data-nav><span class="i">🗺️</span>地图</div>
+        <div class="mr-nav__tab" data-nav><span class="i">🎒</span>道具</div>
+        <div class="mr-nav__tab" data-nav><span class="i">🏪</span>商店</div>
+        <div class="mr-nav__tab" data-nav><span class="i">⚙️</span>设置</div>
+      </div>
+    </div>
+    <div class="classline"><b>mr-nav</b> &gt; <b>mr-nav__tab</b> ( <b>--active</b> ) &gt; <b>span.i</b> + 文字</div>
+  </div>
+
+  <!-- 12 -->
+  <div class="comp"><div class="comp-title">标签页 · Tabs</div><div class="comp-desc">面板分页,点击切换。</div>
+    <div class="showcase" style="display:block;">
+      <div style="max-width:420px;">
+        <div class="mr-tabs" id="mrTabs">
+          <div class="mr-tabs__tab mr-tabs__tab--active" data-tab>道具</div>
+          <div class="mr-tabs__tab" data-tab>能力</div>
+          <div class="mr-tabs__tab" data-tab>记录</div>
+        </div>
+        <div class="mr-panel" style="border-radius:0 16px 16px 16px;"><div class="mr-panel__bd"><p id="mrTabsBody">道具:超级蘑菇 ×12 · 火焰花 ×3 · 无敌星 ×1</p></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>mr-tabs</b> &gt; <b>mr-tabs__tab</b> ( <b>--active</b> )</div>
+  </div>
+
+  <!-- 13 -->
+  <div class="comp"><div class="comp-title">输入框 · Input</div><div class="comp-desc">圆角厚边,聚焦蓝光环;可选前置图标 mr-field。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:360px;">
+      <input class="mr-input" placeholder="输入玩家名…">
+      <div class="mr-field"><span class="mr-field__ic">🔍</span><input class="mr-input" placeholder="搜索关卡…"></div>
+    </div>
+    <div class="classline"><b>&lt;input class="mr-input"&gt;</b>　·　带图标:<b>mr-field</b> &gt; <b>mr-field__ic</b> + <b>mr-input</b></div>
+  </div>
+
+  <!-- 14 -->
+  <div class="comp"><div class="comp-title">下拉选择 · Select</div><div class="comp-desc">圆角定制 + 箭头。</div>
+    <div class="showcase">
+      <div class="mr-select"><select><option>难度:简单</option><option>难度:普通</option><option>难度:困难</option></select></div>
+      <div class="mr-select"><select><option>角色:红帽</option><option>角色:绿帽</option><option>角色:公主</option></select></div>
+    </div>
+    <div class="classline"><b>mr-select</b> &gt; <b>&lt;select&gt;</b> &gt; <b>&lt;option&gt;</b></div>
+  </div>
+
+  <!-- 15 -->
+  <div class="comp"><div class="comp-title">开关 · Switch</div><div class="comp-desc">圆润滑块,开启变绿。点击切换。</div>
+    <div class="showcase" style="gap:26px;">
+      <label class="mr-switch"><input type="checkbox" checked><span class="mr-switch__track"></span><span style="margin-left:10px; font-weight:700; font-size:13px;">背景音乐</span></label>
+      <label class="mr-switch"><input type="checkbox"><span class="mr-switch__track"></span><span style="margin-left:10px; font-weight:700; font-size:13px;">震动反馈</span></label>
+    </div>
+    <div class="classline"><b>&lt;label class="mr-switch"&gt;</b> &gt; <b>input[checkbox]</b> + <b>span.mr-switch__track</b></div>
+  </div>
+
+  <!-- 16 -->
+  <div class="comp"><div class="comp-title">滑条 · Slider</div><div class="comp-desc">圆钮 + 红色轨,厚描边。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:360px;">
+      <input type="range" class="mr-slider" min="0" max="100" value="65">
+      <input type="range" class="mr-slider" min="0" max="100" value="30">
+    </div>
+    <div class="classline"><b>&lt;input type="range" class="mr-slider"&gt;</b></div>
+  </div>
+
+  <!-- 17 -->
+  <div class="comp"><div class="comp-title">徽章 · Badge</div><div class="comp-desc">红/黄徽章,可贴图标右上。</div>
+    <div class="showcase" style="gap:24px;">
+      <span class="mr-badge">3</span>
+      <span class="mr-badge mr-badge--yellow">99+</span>
+      <span class="mr-badge-wrap"><div class="mr-icon">✉️</div><span class="mr-badge">5</span></span>
+      <span class="mr-badge-wrap"><div class="mr-icon">🎁</div><span class="mr-badge mr-badge--yellow">!</span></span>
+    </div>
+    <div class="classline"><b>mr-badge</b> ( <b>--yellow</b> )　·　贴角:<b>mr-badge-wrap</b> &gt; 内容 + <b>mr-badge</b></div>
+  </div>
+
+  <!-- 18 -->
+  <div class="comp"><div class="comp-title">角标 · Ribbon</div><div class="comp-desc">卡片左上丝带。放 position:relative 容器内。</div>
+    <div class="showcase">
+      <div class="mr-card mr-card--yellow" style="position:relative;"><span class="mr-ribbon">限时</span><div class="mr-card__art">💰</div><div class="mr-card__name">金币箱</div></div>
+      <div class="mr-card mr-card--green" style="position:relative;"><span class="mr-ribbon mr-ribbon--yellow">新品</span><div class="mr-card__art">🍄</div><div class="mr-card__name">神秘蘑菇</div></div>
+    </div>
+    <div class="classline"><b>mr-ribbon</b> ( <b>--yellow</b> )　·　置于 relative 容器内</div>
+  </div>
+
+  <!-- 19 -->
+  <div class="comp"><div class="comp-title">标签 · Tag</div><div class="comp-desc">属性小标签,红/绿/黄变体。</div>
+    <div class="showcase">
+      <span class="mr-tag">跳跃</span>
+      <span class="mr-tag mr-tag--red">🔥 火焰</span>
+      <span class="mr-tag mr-tag--green">🍄 变大</span>
+      <span class="mr-tag mr-tag--yellow">⭐ 无敌</span>
+    </div>
+    <div class="classline"><b>mr-tag</b> ( <b>--red / --green / --yellow</b> )</div>
+  </div>
+
+  <!-- 20 -->
+  <div class="comp"><div class="comp-title">提示 · Tooltip</div><div class="comp-desc">悬停显示,内容取 data-tip。悬停试试。</div>
+    <div class="showcase">
+      <span class="mr-tooltip" data-tip="踩踏敌人得分 +100">踩踏</span>
+      <span class="mr-tooltip" data-tip="吃下可发射火球">火焰花</span>
+      <span class="mr-tooltip" data-tip="短暂无敌并加速">无敌星</span>
+    </div>
+    <div class="classline"><b>&lt;span class="mr-tooltip" data-tip="内容"&gt;</b></div>
+  </div>
+
+  <!-- 21 -->
+  <div class="comp"><div class="comp-title">通知 · Toast</div><div class="comp-desc">圆角提示,普通/危险/金币三种图标色。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch;">
+      <div class="mr-toast mr-toast--coin"><span class="mr-toast__ic">🪙</span><div><b>获得 100 金币!</b>再收集 400 枚可换取 1UP。</div></div>
+      <div class="mr-toast mr-toast--danger"><span class="mr-toast__ic">💥</span><div><b>你被击中了</b>损失了超级蘑菇能力。</div></div>
+      <div class="mr-toast"><span class="mr-toast__ic">🏁</span><div><b>关卡完成</b>你解锁了世界 1-5!</div></div>
+    </div>
+    <div class="classline"><b>mr-toast</b> ( <b>--danger / --coin</b> ) &gt; <b>mr-toast__ic</b> + 内容(b 标题)</div>
+  </div>
+
+  <!-- 22 -->
+  <div class="comp"><div class="comp-title">对话气泡 · Bubble</div><div class="comp-desc">NPC 对话框,含说话人名与尖角。</div>
+    <div class="showcase"><div class="mr-bubble"><div class="mr-bubble__who">蘑菇头 · 奇诺比奥</div>公主被抓走了!快去城堡救她,一路上小心那些乌龟怪哦!</div></div>
+    <div class="classline"><b>mr-bubble</b> &gt; <b>mr-bubble__who</b> + 对话文字</div>
+  </div>
+
+  <!-- 23 -->
+  <div class="comp"><div class="comp-title">加载 · Spinner</div><div class="comp-desc">旋转金币(rotateY 翻转)。</div>
+    <div class="showcase" style="gap:26px;"><div class="mr-spinner"></div><span style="font-weight:800; color:var(--mr-green-dk); font-size:13px;">载入关卡中…</span></div>
+    <div class="classline"><b>mr-spinner</b></div>
+  </div>
+
+  <!-- 24 -->
+  <div class="comp"><div class="comp-title">头像组 · Avatar Group</div><div class="comp-desc">圆形叠放 + 溢出计数。</div>
+    <div class="showcase"><div class="mr-avatars"><div class="mr-avatars__a">🦸</div><div class="mr-avatars__a">🍄</div><div class="mr-avatars__a">🐢</div><div class="mr-avatars__a">👸</div><div class="mr-avatars__more">+8</div></div></div>
+    <div class="classline"><b>mr-avatars</b> &gt; 多个 <b>mr-avatars__a</b> + <b>mr-avatars__more</b></div>
+  </div>
+
+  <!-- 25 -->
+  <div class="comp"><div class="comp-title">星级评分 · Stars</div><div class="comp-desc">关卡评级,.on 点亮金星。</div>
+    <div class="showcase" style="gap:26px;">
+      <span class="mr-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span>★</span><span>★</span></span>
+      <span class="mr-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></span>
+    </div>
+    <div class="classline"><b>mr-stars</b> &gt; 多个 <b>&lt;span&gt;★</b>,点亮加 <b>.on</b></div>
+  </div>
+
+  <!-- 26 -->
+  <div class="comp"><div class="comp-title">分隔线 · Divider</div><div class="comp-desc">粗圆线,可带中心标签。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:420px;">
+      <div class="mr-divider"><span class="mr-divider__mark">⭐</span></div>
+      <div class="mr-divider"><span class="mr-divider__mark">奖励</span></div>
+    </div>
+    <div class="classline"><b>mr-divider</b> &gt; <b>mr-divider__mark</b></div>
+  </div>
+
+  <!-- 27 -->
+  <div class="comp"><div class="comp-title">空状态 · Empty</div><div class="comp-desc">列表为空占位,图标+标题+说明。</div>
+    <div class="showcase" style="display:block;">
+      <div class="mr-panel" style="max-width:420px; margin:0 auto;"><div class="mr-panel__hd" style="background:linear-gradient(180deg,var(--mr-blue-lt),var(--mr-blue)); text-shadow:0 2px 0 var(--mr-blue-dk);">背包</div><div class="mr-empty"><div class="mr-empty__ic">📦</div><div class="mr-empty__tt">空空如也</div><div class="mr-empty__ds">敲碎问号砖块来获取道具吧!</div></div></div>
+    </div>
+    <div class="classline"><b>mr-empty</b> &gt; <b>mr-empty__ic</b> + <b>mr-empty__tt</b> + <b>mr-empty__ds</b></div>
+  </div>
+
+  <!-- ADVANCED -->
+  <div class="comp" style="margin-top:52px;"><div class="comp-title" style="font-size:22px;">★ 进阶组件 · Advanced</div><div class="comp-desc">复杂交互组件,均可操作。</div></div>
+
+  <!-- 28 -->
+  <div class="comp"><div class="comp-title">步进器 · Stepper</div><div class="comp-desc">圆钮数量选择,可点增减。</div>
+    <div class="showcase">
+      <div class="mr-stepper" data-stepper><button class="mr-stepper__btn" data-dec>−</button><div class="mr-stepper__val" data-val>1</div><button class="mr-stepper__btn" data-inc>+</button></div>
+      <span style="font-weight:700; font-size:13px; color:var(--mr-dim);">购买蘑菇</span>
+    </div>
+    <div class="classline"><b>mr-stepper</b> &gt; <b>mr-stepper__btn</b>(−) + <b>mr-stepper__val</b> + <b>mr-stepper__btn</b>(+)</div>
+  </div>
+
+  <!-- 29 -->
+  <div class="comp"><div class="comp-title">面包屑 · Breadcrumb</div><div class="comp-desc">层级路径,末项高亮。</div>
+    <div class="showcase" style="display:block;">
+      <nav class="mr-breadcrumb"><a>蘑菇王国</a><span class="mr-breadcrumb__sep">▸</span><a>世界 1</a><span class="mr-breadcrumb__sep">▸</span><a>关卡 4</a><span class="mr-breadcrumb__sep">▸</span><span class="mr-breadcrumb__cur">城堡</span></nav>
+    </div>
+    <div class="classline"><b>mr-breadcrumb</b> &gt; <b>a</b> + <b>__sep</b> … + <b>__cur</b></div>
+  </div>
+
+  <!-- 30 -->
+  <div class="comp"><div class="comp-title">手风琴 · Accordion</div><div class="comp-desc">原生 details,无需 JS。</div>
+    <div class="showcase" style="display:block;">
+      <div class="mr-accordion" style="max-width:440px;">
+        <details open><summary>怎么变大?</summary><div class="mr-accordion__bd">吃下超级蘑菇即可变大一级,再被击中会缩小而不是直接死亡。</div></details>
+        <details><summary>怎么发射火球?</summary><div class="mr-accordion__bd">变大状态下吃火焰花,即可发射火球攻击敌人。</div></details>
+        <details><summary>星星有什么用?</summary><div class="mr-accordion__bd">无敌星让你短时间内无敌并加速,碰到敌人可直接消灭。</div></details>
+      </div>
+    </div>
+    <div class="classline"><b>mr-accordion</b> &gt; <b>&lt;details&gt;</b> ( <b>&lt;summary&gt;</b> + <b>mr-accordion__bd</b> )</div>
+  </div>
+
+  <!-- 31 -->
+  <div class="comp"><div class="comp-title">侧边抽屉 · Drawer</div><div class="comp-desc">右滑面板。点击预览。</div>
+    <div class="showcase"><button class="mr-btn mr-btn--red" onclick="mrOpenDrawer()">打开背包</button></div>
+    <div class="classline"><b>mr-drawer-mask</b> + <b>mr-drawer</b> ( <b>__hd</b> + <b>__bd</b> )　·　加 <b>.open</b> 展开</div>
+  </div>
+
+  <!-- 32 -->
+  <div class="comp"><div class="comp-title">数据表格 · Table</div><div class="comp-desc">排行榜,斑马纹 + 悬停高亮。</div>
+    <div class="showcase" style="display:block;">
+      <table class="mr-table" style="max-width:480px;">
+        <thead><tr><th>排名</th><th>玩家</th><th>关卡</th><th>分数</th></tr></thead>
+        <tbody>
+          <tr><td class="mr-table__rank">①</td><td>红帽玩家</td><td>8-4</td><td>128,400</td></tr>
+          <tr><td class="mr-table__rank">②</td><td>绿帽玩家</td><td>8-3</td><td>117,900</td></tr>
+          <tr><td class="mr-table__rank">③</td><td>公主</td><td>7-4</td><td>106,700</td></tr>
+          <tr><td>4</td><td>奇诺比奥</td><td>6-2</td><td>95,210</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="classline"><b>table.mr-table</b> &gt; <b>thead th</b> + <b>tbody td</b>　·　名次:<b>mr-table__rank</b></div>
+  </div>
+
+  <!-- 33 -->
+  <div class="comp"><div class="comp-title">分页器 · Pagination</div><div class="comp-desc">翻页,--active 当前 / --dis 禁用。点击切换。</div>
+    <div class="showcase">
+      <div class="mr-pagination" id="mrPage">
+        <div class="mr-pagination__pg mr-pagination__pg--dis">‹</div>
+        <div class="mr-pagination__pg mr-pagination__pg--active" data-pg>1</div>
+        <div class="mr-pagination__pg" data-pg>2</div>
+        <div class="mr-pagination__pg" data-pg>3</div>
+        <div class="mr-pagination__pg" data-pg>4</div>
+        <div class="mr-pagination__pg">›</div>
+      </div>
+    </div>
+    <div class="classline"><b>mr-pagination</b> &gt; <b>mr-pagination__pg</b> ( <b>--active / --dis</b> )</div>
+  </div>
+
+  <!-- 34 -->
+  <div class="comp"><div class="comp-title">时间轴 · Timeline</div><div class="comp-desc">竖向进度,--done 完成 / --now 当前。</div>
+    <div class="showcase" style="display:block;">
+      <div class="mr-timeline" style="max-width:400px;">
+        <div class="mr-timeline__item mr-timeline__item--done"><div class="mr-timeline__t">世界 1 通关</div><div class="mr-timeline__d">已完成</div></div>
+        <div class="mr-timeline__item mr-timeline__item--done"><div class="mr-timeline__t">世界 2 通关</div><div class="mr-timeline__d">已完成</div></div>
+        <div class="mr-timeline__item mr-timeline__item--now"><div class="mr-timeline__t">世界 3 挑战中</div><div class="mr-timeline__d">进行中</div></div>
+        <div class="mr-timeline__item"><div class="mr-timeline__t">最终城堡</div><div class="mr-timeline__d">未解锁</div></div>
+      </div>
+    </div>
+    <div class="classline"><b>mr-timeline</b> &gt; <b>mr-timeline__item</b> ( <b>--done/--now</b> ) ( <b>__t</b> + <b>__d</b> )</div>
+  </div>
+
+  <!-- 35 -->
+  <div class="comp"><div class="comp-title">树形菜单 · Tree</div><div class="comp-desc">嵌套分类,details 折叠。</div>
+    <div class="showcase" style="display:block;">
+      <div class="mr-tree" style="max-width:320px;">
+        <details open><summary>🍄 道具</summary>
+          <div class="mr-tree__leaf">超级蘑菇 (12)</div>
+          <div class="mr-tree__leaf">火焰花 (3)</div>
+          <details><summary>特殊道具</summary><div class="mr-tree__leaf">无敌星 (1)</div><div class="mr-tree__leaf">超级叶子 (2)</div></details>
+        </details>
+        <details><summary>🏆 收藏</summary><div class="mr-tree__leaf">星星币 (24)</div><div class="mr-tree__leaf">徽章 (8)</div></details>
+      </div>
+    </div>
+    <div class="classline"><b>mr-tree</b> &gt; 嵌套 <b>&lt;details&gt;</b> + <b>mr-tree__leaf</b></div>
+  </div>
+
+  <!-- 36 -->
+  <div class="comp"><div class="comp-title">能量条倒计时 · Energy</div><div class="comp-desc">体力/生命,含实时倒计时。</div>
+    <div class="showcase" style="display:block;">
+      <div class="mr-energy" style="max-width:340px;">
+        <div class="mr-energy__orb">❤️</div>
+        <div class="mr-energy__body">
+          <div class="mr-energy__top"><span>体力 <b style="color:var(--mr-text)">18 / 24</b></span><span class="mr-energy__timer" id="mrEnergyTimer">+1 · 04:59</span></div>
+          <div class="mr-bar"><div class="mr-bar__fill mr-bar__fill--life" style="width:75%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>mr-energy</b> &gt; <b>__orb</b> + <b>__body</b> ( <b>__top</b>(含 <b>__timer</b>) + <b>mr-bar</b> )</div>
+  </div>
+
+  <!-- 37 -->
+  <div class="comp"><div class="comp-title">签到日历 · Calendar</div><div class="comp-desc">7 日签到,--done 已领 / --today 当天。</div>
+    <div class="showcase" style="display:block;">
+      <div class="mr-calendar" style="max-width:400px;">
+        <div class="mr-calendar__day mr-calendar__day--done"><span class="r">🪙</span>1</div>
+        <div class="mr-calendar__day mr-calendar__day--done"><span class="r">🍄</span>2</div>
+        <div class="mr-calendar__day mr-calendar__day--done"><span class="r">🌸</span>3</div>
+        <div class="mr-calendar__day mr-calendar__day--today"><span class="r">🎁</span>4</div>
+        <div class="mr-calendar__day"><span class="r">⭐</span>5</div>
+        <div class="mr-calendar__day"><span class="r">🍄</span>6</div>
+        <div class="mr-calendar__day"><span class="r">👑</span>7</div>
+      </div>
+    </div>
+    <div class="classline"><b>mr-calendar</b> &gt; <b>mr-calendar__day</b> ( <b>--done / --today</b> )</div>
+  </div>
+
+  <!-- 38 -->
+  <div class="comp"><div class="comp-title">任务链 · Quest Chain</div><div class="comp-desc">世界关卡路径,--done/--now + 连接线。</div>
+    <div class="showcase" style="display:block;">
+      <div class="mr-questchain" style="max-width:400px;">
+        <div class="mr-questchain__node mr-questchain__node--done">✓</div>
+        <div class="mr-questchain__link mr-questchain__link--done"></div>
+        <div class="mr-questchain__node mr-questchain__node--done">✓</div>
+        <div class="mr-questchain__link mr-questchain__link--done"></div>
+        <div class="mr-questchain__node mr-questchain__node--now">🚩</div>
+        <div class="mr-questchain__link"></div>
+        <div class="mr-questchain__node">🏰</div>
+      </div>
+    </div>
+    <div class="classline"><b>mr-questchain</b> &gt; <b>__node</b>( <b>--done/--now</b> ) 与 <b>__link</b>( <b>--done</b> ) 交替</div>
+  </div>
+
+  <!-- 39 -->
+  <div class="comp"><div class="comp-title">成就解锁 · Achievement</div><div class="comp-desc">奖章+标题+描述,--locked 灰化。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:400px;">
+      <div class="mr-achievement"><div class="mr-achievement__medal">🏆</div><div class="mr-achievement__tx"><b>金币大师</b><small>累计收集 10,000 金币</small></div></div>
+      <div class="mr-achievement mr-achievement--locked"><div class="mr-achievement__medal">🔒</div><div class="mr-achievement__tx"><b>???</b><small>达成隐藏条件解锁</small></div></div>
+    </div>
+    <div class="classline"><b>mr-achievement</b> ( <b>--locked</b> ) &gt; <b>__medal</b> + <b>__tx</b>(b+small)</div>
+  </div>
+
+  <!-- 40 -->
+  <div class="comp"><div class="comp-title">翻牌 · Flip Card</div><div class="comp-desc">CSS 3D 翻转,砖块背面 → 道具正面。点击翻。</div>
+    <div class="showcase">
+      <div class="mr-flipcard" onclick="this.classList.toggle('flipped')"><div class="mr-flipcard__inner"><div class="mr-flipcard__face mr-flipcard__back">?</div><div class="mr-flipcard__face mr-flipcard__front"><span class="em">🍄</span><span class="nm">超级蘑菇</span></div></div></div>
+      <div class="mr-flipcard" onclick="this.classList.toggle('flipped')"><div class="mr-flipcard__inner"><div class="mr-flipcard__face mr-flipcard__back">?</div><div class="mr-flipcard__face mr-flipcard__front"><span class="em">⭐</span><span class="nm">无敌星</span></div></div></div>
+      <span style="font-weight:700; font-size:12px; color:var(--mr-dim);">← 点击翻牌</span>
+    </div>
+    <div class="classline"><b>mr-flipcard</b> &gt; <b>__inner</b> &gt; <b>__face __back</b> + <b>__face __front</b>　·　加 <b>.flipped</b></div>
+  </div>
+
+  <!-- 41 -->
+  <div class="comp"><div class="comp-title">敲问号砖 · Chest</div><div class="comp-desc">点击弹跳敲击,揭示道具。</div>
+    <div class="showcase">
+      <div class="mr-chest" onclick="mrOpenChest(this)">
+        <div class="mr-chest__box">?</div>
+        <div class="mr-chest__label">点击敲击</div>
+        <div class="mr-chest__glow"><div style="display:flex; gap:6px; justify-content:center;"><div class="mr-icon mr-icon--legend">⭐</div><div class="mr-icon">🪙</div></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>mr-chest</b> &gt; <b>__box</b> + <b>__label</b> + <b>__glow</b>　·　加 <b>.opened</b></div>
+  </div>
+
+  <!-- 42 -->
+  <div class="comp"><div class="comp-title">背包网格 · Inventory Grid</div><div class="comp-desc">格子背包,稀有度底色、数量角标、空格。</div>
+    <div class="showcase" style="display:block;">
+      <div class="mr-invgrid">
+        <div class="mr-invgrid__cell mr-invgrid__cell--legend">⭐</div>
+        <div class="mr-invgrid__cell mr-invgrid__cell--rare">🌸</div>
+        <div class="mr-invgrid__cell">🍄<span class="mr-invgrid__qty">12</span></div>
+        <div class="mr-invgrid__cell">🍃<span class="mr-invgrid__qty">2</span></div>
+        <div class="mr-invgrid__cell">🪙<span class="mr-invgrid__qty">99</span></div>
+        <div class="mr-invgrid__cell">🔑</div>
+        <div class="mr-invgrid__cell mr-invgrid__cell--rare">💎</div>
+        <div class="mr-invgrid__cell mr-invgrid__cell--empty"></div>
+        <div class="mr-invgrid__cell mr-invgrid__cell--empty"></div>
+        <div class="mr-invgrid__cell mr-invgrid__cell--empty"></div>
+      </div>
+    </div>
+    <div class="classline"><b>mr-invgrid</b> &gt; <b>mr-invgrid__cell</b> ( <b>--rare/--legend/--empty</b> ) + <b>mr-invgrid__qty</b></div>
+  </div>
+
+  <!-- 43 -->
+  <div class="comp"><div class="comp-title">道具对比 · Compare</div><div class="comp-desc">当前 vs 新道具,属性升降绿/红标注。</div>
+    <div class="showcase" style="display:block;">
+      <div class="mr-compare" style="max-width:460px;">
+        <div class="mr-compare__side"><div class="mr-icon">🍄</div><div class="mr-compare__nm">旧:普通蘑菇</div>
+          <div class="mr-compare__stat"><span>体型</span><span>大</span></div><div class="mr-compare__stat"><span>能力</span><span>无</span></div></div>
+        <div class="mr-compare__vs">VS</div>
+        <div class="mr-compare__side"><div class="mr-icon mr-icon--legend">🌸</div><div class="mr-compare__nm" style="color:var(--mr-red-dk)">新:火焰花</div>
+          <div class="mr-compare__stat"><span>体型</span><span class="mr-compare__up">大 ▲</span></div><div class="mr-compare__stat"><span>能力</span><span class="mr-compare__up">火球 ▲</span></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>mr-compare</b> &gt; <b>__side</b> + <b>__vs</b> + <b>__side</b>　·　升降:<b>mr-compare__up / __down</b></div>
+  </div>
+
+</div>
+
+<!-- modal -->
+<div class="mr-modal-mask" id="mrModal" style="display:none;">
+  <div class="mr-modal">
+    <button class="mr-btn mr-modal__close mr-btn--round" onclick="document.getElementById('mrModal').style.display='none'">✕</button>
+    <div class="mr-panel">
+      <span class="mr-stud tl"></span><span class="mr-stud tr"></span><span class="mr-stud bl"></span><span class="mr-stud br"></span>
+      <div class="mr-panel__hd">购买确认</div>
+      <div class="mr-panel__bd"><p style="text-align:center;">花费 100 金币购买一个超级蘑菇吗?</p>
+        <div style="margin-top:16px; display:flex; gap:10px; justify-content:center;">
+          <button class="mr-btn mr-btn--green mr-btn--sm" onclick="document.getElementById('mrModal').style.display='none'">购买</button>
+          <button class="mr-btn mr-btn--blue mr-btn--sm" onclick="document.getElementById('mrModal').style.display='none'">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- drawer -->
+<div class="mr-drawer-mask" id="mrDrawerMask" onclick="mrCloseDrawer()"></div>
+<div class="mr-drawer" id="mrDrawer">
+  <div class="mr-drawer__hd">背包 <span onclick="mrCloseDrawer()">✕</span></div>
+  <div class="mr-drawer__bd">
+    <div class="mr-list">
+      <div class="mr-list__item"><div class="mr-list__ic">🍄</div><div class="mr-list__tx"><b>超级蘑菇</b><small>变大</small></div><span class="mr-list__val">×12</span></div>
+      <div class="mr-list__item"><div class="mr-list__ic">🌸</div><div class="mr-list__tx"><b>火焰花</b><small>火球</small></div><span class="mr-list__val">×3</span></div>
+      <div class="mr-list__item"><div class="mr-list__ic">⭐</div><div class="mr-list__tx"><b>无敌星</b><small>无敌</small></div><span class="mr-list__val">×1</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function mrOpenDrawer(){document.getElementById('mrDrawer').classList.add('open');document.getElementById('mrDrawerMask').classList.add('open');}
+  function mrCloseDrawer(){document.getElementById('mrDrawer').classList.remove('open');document.getElementById('mrDrawerMask').classList.remove('open');}
+  function mrOpenChest(el){el.classList.add('opened');el.querySelector('.mr-chest__label').textContent='获得道具!';el.querySelector('.mr-chest__box').textContent='!';}
+  document.querySelectorAll('[data-stepper]').forEach(s=>{const v=s.querySelector('[data-val]');let n=parseInt(v.textContent,10);
+    s.querySelector('[data-inc]').onclick=()=>{n=Math.min(99,n+1);v.textContent=n;};
+    s.querySelector('[data-dec]').onclick=()=>{n=Math.max(1,n-1);v.textContent=n;};});
+  document.querySelectorAll('#mrNav [data-nav]').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('#mrNav [data-nav]').forEach(x=>x.classList.remove('mr-nav__tab--active'));t.classList.add('mr-nav__tab--active');}));
+  const mrTB={0:'道具:超级蘑菇 ×12 · 火焰花 ×3 · 无敌星 ×1',1:'能力:二段跳 · 火球 · 冲刺',2:'记录:通关 8 世界 · 收集 24 星星币'};
+  document.querySelectorAll('#mrTabs [data-tab]').forEach((t,i)=>t.addEventListener('click',()=>{
+    document.querySelectorAll('#mrTabs [data-tab]').forEach(x=>x.classList.remove('mr-tabs__tab--active'));t.classList.add('mr-tabs__tab--active');
+    document.getElementById('mrTabsBody').textContent=mrTB[i];}));
+  document.querySelectorAll('#mrPage [data-pg]').forEach(p=>p.addEventListener('click',()=>{
+    document.querySelectorAll('#mrPage [data-pg]').forEach(x=>x.classList.remove('mr-pagination__pg--active'));p.classList.add('mr-pagination__pg--active');}));
+  document.getElementById('mrModal').addEventListener('click',e=>{if(e.target.id==='mrModal')e.target.style.display='none';});
+  (function(){const t=document.getElementById('mrEnergyTimer');if(!t)return;let s=299;
+    setInterval(()=>{s=s<=0?299:s-1;const m=String(Math.floor(s/60)).padStart(2,'0'),ss=String(s%60).padStart(2,'0');t.textContent='+1 · '+m+':'+ss;},1000);})();
+</script>
+</body>
+</html>

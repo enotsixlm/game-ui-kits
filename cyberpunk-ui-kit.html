@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>赛博朋克 UI 组件库 · Cyberpunk Style Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Share+Tech+Mono&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================================
+   CYBERPUNK / TECH-HUD UI KIT — reusable component library
+   ----------------------------------------------------------------------------
+   全部 cy- 前缀。改主题只改下面 :root 令牌即可。
+   招牌:切角边框(clip-path)· 霓虹辉光 · 扫描线 · 等宽/Orbitron 字体
+   ============================================================================ */
+:root{
+  --cy-cyan:#2ad4ff;   --cy-cyan-lt:#7ff0ff;  --cy-cyan-dk:#0e7a9a;
+  --cy-mag:#ff3ca8;    --cy-mag-lt:#ff85d6;   --cy-mag-dk:#a01466;
+  --cy-yellow:#ffe14a; --cy-green:#39ff88;    --cy-red:#ff3b46;
+  --cy-bg:#06080f;     --cy-panel:#0d1526;    --cy-panel-2:#101a2e;
+  --cy-line:#1c4c60;   --cy-line-lt:#2ad4ff;  --cy-ink:#03040a;
+  --cy-text:#bfe9f5;   --cy-dim:#5a7a8a;
+
+  --cy-disp:'Orbitron',sans-serif;
+  --cy-mono:'Share Tech Mono',ui-monospace,monospace;
+  --cy-ui:'Rajdhani','Share Tech Mono',sans-serif;
+
+  --cy-glow-cy:0 0 8px rgba(42,212,255,.55);
+  --cy-glow-mg:0 0 8px rgba(255,60,168,.55);
+  --cy-clip:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+  --cy-clip-btn:polygon(8px 0,100% 0,100% 70%,calc(100% - 8px) 100%,0 100%,0 30%);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:var(--cy-ui); color:var(--cy-text); line-height:1.5;
+  background:
+    radial-gradient(100% 60% at 50% 0%, #10203c 0%, rgba(0,0,0,0) 55%),
+    radial-gradient(80% 50% at 100% 100%, #2a0f3a 0%, rgba(0,0,0,0) 50%),
+    linear-gradient(180deg,#080b16,#04060c 80%);
+  background-attachment:fixed; min-height:100vh; padding:0 0 90px;
+  position:relative;
+}
+/* global scanlines */
+body::after{content:""; position:fixed; inset:0; pointer-events:none; z-index:9999;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.10) 0 1px,rgba(0,0,0,0) 1px 3px);}
+
+.doc{max-width:980px; margin:0 auto; padding:0 20px;}
+.doc-head{text-align:center; padding:48px 20px 26px;}
+.doc-head .eb{display:inline-block; margin-bottom:14px; font-family:var(--cy-mono); font-size:11px;
+  letter-spacing:.35em; color:var(--cy-mag); border:1px solid var(--cy-mag-dk); padding:5px 16px;
+  clip-path:var(--cy-clip-btn);}
+.doc-head h1{font-family:var(--cy-disp); font-weight:900; font-size:clamp(26px,5vw,44px); letter-spacing:.06em;
+  color:var(--cy-cyan-lt); text-shadow:0 0 12px rgba(42,212,255,.6),0 0 30px rgba(42,212,255,.3);}
+.doc-head p{margin-top:12px; color:var(--cy-dim); font-family:var(--cy-mono); font-size:13px;}
+
+.tokens{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:20px;}
+.tok{display:flex; align-items:center; gap:7px; font-family:var(--cy-mono); font-size:11px; color:var(--cy-dim);
+  background:rgba(20,40,60,.4); border:1px solid var(--cy-line); padding:4px 10px;}
+.tok i{width:12px;height:12px; border:1px solid var(--cy-ink);}
+
+.comp{margin-top:38px;}
+.comp-title{font-family:var(--cy-disp); font-weight:700; font-size:18px; letter-spacing:.1em; color:var(--cy-cyan-lt);
+  display:flex; align-items:center; gap:10px; margin-bottom:4px; text-shadow:var(--cy-glow-cy);}
+.comp-title::before{content:"▘▖"; color:var(--cy-mag); font-size:12px; letter-spacing:-2px;}
+.comp-desc{color:var(--cy-dim); font-family:var(--cy-mono); font-size:12px; margin-bottom:16px;}
+.showcase{display:flex; flex-wrap:wrap; gap:16px; align-items:center; padding:24px;
+  background:rgba(10,20,36,.5); border:1px solid var(--cy-line); position:relative;
+  clip-path:var(--cy-clip);}
+.showcase::before{content:""; position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.08) 0 1px,rgba(0,0,0,0) 1px 3px);}
+.classline{margin-top:10px; font-family:var(--cy-mono); font-size:12px; color:#6fd8a0;
+  background:var(--cy-ink); border:1px solid var(--cy-line); padding:8px 12px; overflow-x:auto;}
+.classline b{color:var(--cy-cyan-lt);}
+
+/* ============================================================================
+   ============  COMPONENTS  ============
+   ============================================================================ */
+
+/* ----- 1. 按钮 cy-btn ----- */
+.cy-btn{font-family:var(--cy-disp); font-weight:600; font-size:13px; letter-spacing:.08em; color:var(--cy-cyan-lt);
+  padding:11px 22px; cursor:pointer; user-select:none; display:inline-flex; align-items:center; gap:8px;
+  background:linear-gradient(180deg,rgba(30,70,95,.6),rgba(12,26,40,.6)); border:1px solid var(--cy-cyan);
+  clip-path:var(--cy-clip-btn); text-shadow:var(--cy-glow-cy); transition:.12s; text-align:center;}
+.cy-btn:hover{background:rgba(42,212,255,.22); box-shadow:0 0 14px rgba(42,212,255,.5);}
+.cy-btn:active{transform:translateY(1px);}
+.cy-btn--exec{color:var(--cy-mag-lt); border-color:var(--cy-mag); text-shadow:var(--cy-glow-mg);
+  background:linear-gradient(180deg,rgba(90,20,60,.6),rgba(40,10,30,.6));}
+.cy-btn--exec:hover{background:rgba(255,60,168,.22); box-shadow:0 0 14px rgba(255,60,168,.5);}
+.cy-btn--ghost{background:transparent; border-color:var(--cy-line); color:var(--cy-text); text-shadow:none;}
+.cy-btn--danger{color:#ffb0b4; border-color:var(--cy-red); text-shadow:0 0 8px rgba(255,59,70,.5);}
+.cy-btn--sm{font-size:11px; padding:8px 14px;}
+.cy-btn--lg{font-size:16px; padding:14px 30px;}
+.cy-btn--block{width:100%; justify-content:center;}
+.cy-btn[disabled],.cy-btn--disabled{opacity:.4; cursor:not-allowed; filter:grayscale(.5);}
+
+/* ----- 2. 面板 cy-panel ----- */
+.cy-panel{position:relative; background:linear-gradient(180deg,rgba(16,30,50,.85),rgba(8,14,26,.9));
+  border:1px solid var(--cy-line); clip-path:var(--cy-clip); padding:2px;
+  box-shadow:inset 0 0 30px rgba(42,212,255,.05);}
+.cy-panel__hd{font-family:var(--cy-disp); font-weight:700; letter-spacing:.12em; font-size:13px; color:var(--cy-cyan-lt);
+  padding:12px 16px 10px; text-shadow:var(--cy-glow-cy); position:relative; display:flex; align-items:center; gap:8px;}
+.cy-panel__hd::after{content:""; position:absolute; left:14px; right:14px; bottom:2px; height:1px;
+  background:linear-gradient(90deg,var(--cy-cyan),transparent);}
+.cy-panel__hd .k{font-family:var(--cy-mono); font-size:9px; color:var(--cy-mag); letter-spacing:.2em;}
+.cy-panel__bd{padding:14px 18px 18px;}
+.cy-panel__bd p{font-family:var(--cy-mono); font-size:12px; color:var(--cy-dim); line-height:1.7;}
+/* 角标括号(可选) */
+.cy-bracket{position:absolute; width:12px; height:12px; border:1px solid var(--cy-cyan); pointer-events:none;}
+.cy-bracket.tl{top:4px;left:4px; border-right:none; border-bottom:none;}
+.cy-bracket.tr{top:4px;right:4px; border-left:none; border-bottom:none;}
+.cy-bracket.bl{bottom:4px;left:4px; border-right:none; border-top:none;}
+.cy-bracket.br{bottom:4px;right:4px; border-left:none; border-top:none;}
+
+/* ----- 3. 弹窗 cy-modal ----- */
+.cy-modal-mask{position:fixed; inset:0; background:rgba(3,5,12,.8); backdrop-filter:blur(3px);
+  display:grid; place-items:center; z-index:100; padding:20px;}
+.cy-modal{width:min(380px,92vw); position:relative;}
+.cy-modal__close{position:absolute; top:-2px; right:-2px; width:30px; height:30px; z-index:5; cursor:pointer;
+  display:grid; place-items:center; font-family:var(--cy-mono); color:var(--cy-mag-lt);
+  background:rgba(40,10,30,.9); border:1px solid var(--cy-mag); clip-path:polygon(30% 0,100% 0,100% 70%,70% 100%,0 100%,0 30%);}
+.cy-modal__close:hover{background:rgba(255,60,168,.3);}
+
+/* ----- 4. 进度条 cy-bar ----- */
+.cy-bar{position:relative; height:10px; background:var(--cy-ink); border:1px solid var(--cy-line); overflow:hidden;
+  clip-path:polygon(0 0,100% 0,100% 100%,4px 100%);}
+.cy-bar__fill{height:100%; box-shadow:0 0 10px currentColor;}
+.cy-bar__fill--cy{background:var(--cy-cyan); color:var(--cy-cyan);}
+.cy-bar__fill--mg{background:var(--cy-mag); color:var(--cy-mag);}
+.cy-bar__fill--yl{background:var(--cy-yellow); color:var(--cy-yellow);}
+.cy-bar__fill--gr{background:var(--cy-green); color:var(--cy-green);}
+.cy-bar__cap{display:flex; justify-content:space-between; font-family:var(--cy-mono); font-size:9px;
+  letter-spacing:.15em; color:var(--cy-dim); margin-bottom:4px;}
+.cy-bar--tall{height:16px;}
+
+/* ----- 5. 货币条 cy-currency ----- */
+.cy-currency{display:inline-flex; align-items:center; gap:7px; font-family:var(--cy-disp); font-weight:700;
+  font-size:14px; color:var(--cy-cyan-lt); background:linear-gradient(180deg,rgba(16,30,50,.9),rgba(8,14,26,.9));
+  padding:5px 14px 5px 8px; border:1px solid var(--cy-line); clip-path:var(--cy-clip-btn);
+  text-shadow:var(--cy-glow-cy);}
+.cy-currency__sym{font-family:var(--cy-mono); font-size:15px; color:var(--cy-cyan);}
+.cy-currency--mag{color:var(--cy-mag-lt); text-shadow:var(--cy-glow-mg);}
+.cy-currency--mag .cy-currency__sym{color:var(--cy-mag);}
+.cy-currency--yl{color:var(--cy-yellow);} .cy-currency--yl .cy-currency__sym{color:var(--cy-yellow);}
+
+/* ----- 6. 状态计量表 cy-gauge(替代 orb) ----- */
+.cy-gauge{width:64px; height:64px; position:relative; flex:none;}
+.cy-gauge svg{transform:rotate(-90deg);}
+.cy-gauge__track{fill:none; stroke:var(--cy-ink); stroke-width:6;}
+.cy-gauge__val{fill:none; stroke-width:6; stroke-linecap:round; filter:drop-shadow(0 0 4px currentColor);}
+.cy-gauge__val--cy{stroke:var(--cy-cyan); color:var(--cy-cyan);}
+.cy-gauge__val--mg{stroke:var(--cy-mag); color:var(--cy-mag);}
+.cy-gauge__num{position:absolute; inset:0; display:grid; place-items:center; font-family:var(--cy-disp);
+  font-weight:700; font-size:14px; color:var(--cy-cyan-lt);}
+.cy-gauge__lbl{position:absolute; bottom:-14px; left:0; right:0; text-align:center; font-family:var(--cy-mono);
+  font-size:8px; letter-spacing:.2em; color:var(--cy-dim);}
+
+/* ----- 7. 图标底座 cy-icon ----- */
+.cy-icon{width:48px; height:48px; display:grid; place-items:center; font-size:22px; position:relative;
+  background:linear-gradient(180deg,rgba(20,40,60,.6),rgba(8,16,26,.6)); border:1px solid var(--cy-line);
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);}
+.cy-icon:hover{border-color:var(--cy-cyan); box-shadow:0 0 12px rgba(42,212,255,.4);}
+.cy-icon--rare{border-color:var(--cy-cyan);}
+.cy-icon--legend{border-color:var(--cy-mag); box-shadow:0 0 12px rgba(255,60,168,.4);}
+.cy-icon__cd{position:absolute; inset:0; background:rgba(3,5,12,.7); display:grid; place-items:center;
+  font-family:var(--cy-disp); font-weight:700; font-size:14px; color:var(--cy-cyan-lt);}
+
+/* ----- 8. 卡片 cy-card ----- */
+.cy-card{width:150px; background:linear-gradient(180deg,rgba(16,30,50,.85),rgba(8,14,26,.9));
+  border:1px solid var(--cy-line); clip-path:var(--cy-clip); cursor:pointer; transition:.12s; position:relative;}
+.cy-card:hover{border-color:var(--cy-cyan); box-shadow:0 0 16px rgba(42,212,255,.3); transform:translateY(-3px);}
+.cy-card__art{height:94px; display:grid; place-items:center; font-size:44px; position:relative;
+  background:radial-gradient(circle at 50% 30%,rgba(42,212,255,.15),rgba(0,0,0,0) 60%);
+  border-bottom:1px solid var(--cy-line); filter:drop-shadow(0 0 10px rgba(42,212,255,.4));}
+.cy-card__tag{position:absolute; top:6px; left:6px; font-family:var(--cy-mono); font-size:8px; letter-spacing:.1em;
+  color:var(--cy-mag); background:rgba(40,10,30,.8); padding:2px 6px; border:1px solid var(--cy-mag-dk);}
+.cy-card__name{font-family:var(--cy-disp); font-weight:600; font-size:12px; color:var(--cy-cyan-lt);
+  text-align:center; padding:8px 6px 4px; text-shadow:var(--cy-glow-cy);}
+.cy-card__foot{padding:0 10px 10px;}
+
+/* ----- 9. 列表项 cy-list ----- */
+.cy-list{border:1px solid var(--cy-line); background:rgba(8,16,26,.5);}
+.cy-list__item{display:flex; align-items:center; gap:10px; padding:9px 12px; cursor:pointer;
+  border-bottom:1px solid rgba(28,76,96,.4); transition:.1s;}
+.cy-list__item:last-child{border-bottom:none;}
+.cy-list__item:hover{background:rgba(42,212,255,.08);}
+.cy-list__ic{width:30px; height:30px; flex:none; display:grid; place-items:center; font-size:15px;
+  background:rgba(20,40,60,.6); border:1px solid var(--cy-line);
+  clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);}
+.cy-list__tx{flex:1;}
+.cy-list__tx b{font-family:var(--cy-ui); font-weight:700; font-size:14px; color:var(--cy-text); display:block;}
+.cy-list__tx small{font-family:var(--cy-mono); font-size:10px; color:var(--cy-dim);}
+.cy-list__val{font-family:var(--cy-disp); font-weight:700; font-size:13px; color:var(--cy-cyan-lt);}
+
+/* ----- 10. 顶部 HUD cy-hud ----- */
+.cy-hud{display:flex; align-items:center; gap:10px; padding:10px 14px;
+  background:linear-gradient(180deg,rgba(16,30,50,.9),rgba(8,14,26,.9)); border:1px solid var(--cy-line);
+  clip-path:var(--cy-clip);}
+.cy-hud__hex{width:42px; height:42px; flex:none; display:grid; place-items:center; font-size:20px;
+  background:linear-gradient(180deg,#12324a,#0a1826); clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  box-shadow:0 0 10px rgba(42,212,255,.5);}
+.cy-hud__who b{font-family:var(--cy-disp); font-weight:700; font-size:14px; color:var(--cy-cyan-lt); display:block;
+  text-shadow:var(--cy-glow-cy);}
+.cy-hud__who small{font-family:var(--cy-mono); font-size:9px; color:var(--cy-mag); letter-spacing:.15em;}
+.cy-hud__spacer{flex:1;}
+
+/* ----- 11. 导航栏 cy-nav ----- */
+.cy-nav{display:flex; gap:4px; padding:6px; background:linear-gradient(180deg,rgba(12,22,38,.9),rgba(6,12,22,.95));
+  border:1px solid var(--cy-line);}
+.cy-nav__tab{flex:1; text-align:center; font-family:var(--cy-disp); font-weight:600; font-size:10px; letter-spacing:.06em;
+  color:var(--cy-dim); padding:8px 4px; cursor:pointer; border:1px solid transparent; transition:.1s;
+  clip-path:var(--cy-clip-btn);}
+.cy-nav__tab .i{display:block; font-size:18px; margin-bottom:3px;}
+.cy-nav__tab:hover{color:var(--cy-text);}
+.cy-nav__tab--active{color:var(--cy-cyan-lt); border-color:var(--cy-cyan); background:rgba(42,212,255,.12);
+  text-shadow:var(--cy-glow-cy);}
+
+/* ----- 12. 标签页 cy-tabs ----- */
+.cy-tabs{display:flex; gap:2px; border-bottom:1px solid var(--cy-line);}
+.cy-tabs__tab{font-family:var(--cy-disp); font-weight:600; font-size:11px; letter-spacing:.06em; color:var(--cy-dim);
+  padding:9px 16px; cursor:pointer; border:1px solid transparent; border-bottom:none; transition:.1s;
+  clip-path:polygon(6px 0,100% 0,100% 100%,0 100%);}
+.cy-tabs__tab:hover{color:var(--cy-text);}
+.cy-tabs__tab--active{color:var(--cy-cyan-lt); background:rgba(42,212,255,.1); border-color:var(--cy-line);
+  text-shadow:var(--cy-glow-cy);}
+
+/* ----- 13. 输入框 cy-input ----- */
+.cy-input{font-family:var(--cy-mono); font-size:13px; color:var(--cy-cyan-lt); background:var(--cy-ink);
+  border:1px solid var(--cy-line); padding:9px 12px; width:100%; outline:none; transition:.12s;
+  clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);}
+.cy-input::placeholder{color:#3a5a6a;}
+.cy-input:focus{border-color:var(--cy-cyan); box-shadow:0 0 10px rgba(42,212,255,.35);}
+.cy-field{position:relative;}
+.cy-field__ic{position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--cy-cyan); font-size:13px;}
+.cy-field .cy-input{padding-left:32px;}
+
+/* ----- 14. 下拉选择 cy-select ----- */
+.cy-select{position:relative; display:inline-block;}
+.cy-select select{appearance:none; -webkit-appearance:none; font-family:var(--cy-mono); font-size:12px;
+  color:var(--cy-cyan-lt); background:linear-gradient(180deg,rgba(20,40,60,.7),rgba(10,20,34,.7));
+  border:1px solid var(--cy-line); padding:9px 34px 9px 14px; cursor:pointer; outline:none;
+  clip-path:var(--cy-clip-btn);}
+.cy-select select:focus{border-color:var(--cy-cyan);}
+.cy-select::after{content:"▾"; position:absolute; right:12px; top:50%; transform:translateY(-50%);
+  color:var(--cy-cyan); pointer-events:none;}
+.cy-select option{background:#0d1526; color:var(--cy-text);}
+
+/* ----- 15. 开关 cy-switch ----- */
+.cy-switch{position:relative; display:inline-flex; align-items:center; cursor:pointer; user-select:none;}
+.cy-switch input{position:absolute; opacity:0; pointer-events:none;}
+.cy-switch__track{width:46px; height:22px; background:var(--cy-ink); border:1px solid var(--cy-line); position:relative;
+  transition:.15s; clip-path:polygon(5px 0,100% 0,100% 100%,0 100%,0 5px);}
+.cy-switch__track::before{content:""; position:absolute; top:2px; left:2px; width:16px; height:16px;
+  background:var(--cy-dim); transition:.15s; clip-path:polygon(4px 0,100% 0,100% 100%,0 100%,0 4px);}
+.cy-switch input:checked + .cy-switch__track{border-color:var(--cy-cyan); background:rgba(42,212,255,.15);}
+.cy-switch input:checked + .cy-switch__track::before{left:26px; background:var(--cy-cyan);
+  box-shadow:0 0 8px rgba(42,212,255,.7);}
+
+/* ----- 16. 滑条 cy-slider ----- */
+.cy-slider{-webkit-appearance:none; appearance:none; width:100%; height:6px; background:linear-gradient(90deg,var(--cy-cyan-dk),var(--cy-ink));
+  border:1px solid var(--cy-line); outline:none; cursor:pointer;}
+.cy-slider::-webkit-slider-thumb{-webkit-appearance:none; width:16px; height:16px; background:var(--cy-cyan);
+  border:1px solid var(--cy-ink); box-shadow:0 0 10px rgba(42,212,255,.7); cursor:pointer;
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);}
+.cy-slider::-moz-range-thumb{width:16px; height:16px; background:var(--cy-cyan); border:1px solid var(--cy-ink);
+  box-shadow:0 0 10px rgba(42,212,255,.7); cursor:pointer;}
+
+/* ----- 17. 徽章 cy-badge ----- */
+.cy-badge{display:inline-grid; place-items:center; min-width:16px; height:16px; padding:0 5px;
+  font-family:var(--cy-disp); font-weight:700; font-size:9px; color:var(--cy-ink); background:var(--cy-mag);
+  box-shadow:0 0 8px rgba(255,60,168,.6); clip-path:polygon(3px 0,100% 0,100% 100%,0 100%,0 3px);}
+.cy-badge--cy{background:var(--cy-cyan); box-shadow:0 0 8px rgba(42,212,255,.6);}
+.cy-badge-wrap{position:relative; display:inline-flex;}
+.cy-badge-wrap > .cy-badge{position:absolute; top:-6px; right:-6px;}
+
+/* ----- 18. 角标 cy-ribbon ----- */
+.cy-ribbon{position:absolute; top:8px; left:0; font-family:var(--cy-mono); font-size:9px; letter-spacing:.1em;
+  color:var(--cy-ink); background:var(--cy-mag); padding:3px 10px 3px 8px; z-index:3; font-weight:700;
+  clip-path:polygon(0 0,100% 0,calc(100% - 7px) 50%,100% 100%,0 100%); box-shadow:0 0 10px rgba(255,60,168,.5);}
+.cy-ribbon--cy{background:var(--cy-cyan); box-shadow:0 0 10px rgba(42,212,255,.5);}
+
+/* ----- 19. 标签 cy-tag ----- */
+.cy-tag{display:inline-flex; align-items:center; gap:5px; font-family:var(--cy-mono); font-size:10px; letter-spacing:.05em;
+  color:var(--cy-cyan-lt); background:rgba(42,212,255,.08); border:1px solid var(--cy-line); padding:3px 9px;
+  clip-path:polygon(4px 0,100% 0,100% 100%,0 100%,0 4px);}
+.cy-tag--mg{color:var(--cy-mag-lt); border-color:var(--cy-mag-dk); background:rgba(255,60,168,.08);}
+.cy-tag--yl{color:var(--cy-yellow); border-color:#7a6a10; background:rgba(255,225,74,.08);}
+
+/* ----- 20. Tooltip cy-tooltip ----- */
+.cy-tooltip{position:relative; display:inline-flex; cursor:help; border-bottom:1px dashed var(--cy-cyan-dk);}
+.cy-tooltip::after{content:attr(data-tip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
+  font-family:var(--cy-mono); font-size:11px; color:var(--cy-cyan-lt); white-space:nowrap; background:var(--cy-panel);
+  border:1px solid var(--cy-cyan); padding:6px 10px; opacity:0; pointer-events:none; transition:.12s; z-index:20;
+  box-shadow:0 0 12px rgba(42,212,255,.3);}
+.cy-tooltip:hover::after{opacity:1;}
+
+/* ----- 21. Toast cy-toast ----- */
+.cy-toast{display:flex; align-items:center; gap:10px; font-family:var(--cy-ui); font-size:13px; color:var(--cy-text);
+  background:linear-gradient(180deg,rgba(16,30,50,.92),rgba(8,14,26,.95)); border:1px solid var(--cy-cyan);
+  padding:11px 16px; max-width:340px; clip-path:var(--cy-clip); box-shadow:0 0 18px rgba(42,212,255,.25);}
+.cy-toast__ic{font-size:18px; flex:none;}
+.cy-toast--danger{border-color:var(--cy-red); box-shadow:0 0 18px rgba(255,59,70,.25);}
+.cy-toast--success{border-color:var(--cy-green); box-shadow:0 0 18px rgba(57,255,136,.25);}
+.cy-toast b{font-family:var(--cy-disp); font-weight:700; font-size:11px; letter-spacing:.06em; color:var(--cy-cyan-lt);
+  display:block;}
+
+/* ----- 22. 对话气泡 cy-bubble ----- */
+.cy-bubble{position:relative; font-family:var(--cy-ui); font-size:13px; color:var(--cy-text); max-width:300px;
+  background:linear-gradient(180deg,rgba(16,30,50,.9),rgba(8,14,26,.92)); border:1px solid var(--cy-line);
+  padding:12px 16px; clip-path:var(--cy-clip);}
+.cy-bubble__who{font-family:var(--cy-disp); font-weight:700; font-size:10px; letter-spacing:.1em; color:var(--cy-mag);
+  margin-bottom:5px; text-shadow:var(--cy-glow-mg);}
+.cy-bubble::before{content:"◤"; position:absolute; left:20px; bottom:-11px; color:var(--cy-line); font-size:16px;}
+
+/* ----- 23. 加载 cy-spinner ----- */
+.cy-spinner{width:36px; height:36px; position:relative;}
+.cy-spinner::before,.cy-spinner::after{content:""; position:absolute; inset:0; border:2px solid transparent; border-radius:50%;}
+.cy-spinner::before{border-top-color:var(--cy-cyan); animation:cy-spin .8s linear infinite; box-shadow:0 0 8px rgba(42,212,255,.4);}
+.cy-spinner::after{inset:6px; border-bottom-color:var(--cy-mag); animation:cy-spin 1.2s linear infinite reverse;}
+@keyframes cy-spin{to{transform:rotate(360deg);}}
+
+/* ----- 24. 头像组 cy-avatars ----- */
+.cy-avatars{display:inline-flex;}
+.cy-avatars__a{width:36px; height:36px; display:grid; place-items:center; font-size:16px; margin-left:-8px;
+  background:linear-gradient(180deg,#12324a,#0a1826); border:1px solid var(--cy-cyan);
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%); box-shadow:0 0 8px rgba(42,212,255,.3);}
+.cy-avatars__a:first-child{margin-left:0;}
+.cy-avatars__more{width:36px; height:36px; display:grid; place-items:center; margin-left:-8px;
+  font-family:var(--cy-disp); font-weight:700; font-size:10px; color:var(--cy-mag-lt);
+  background:#0d1526; border:1px solid var(--cy-mag-dk); clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);}
+
+/* ----- 25. 评级 cy-rating(方块 pip) ----- */
+.cy-rating{display:inline-flex; gap:3px;}
+.cy-rating__pip{width:14px; height:14px; background:var(--cy-ink); border:1px solid var(--cy-line);
+  clip-path:polygon(3px 0,100% 0,100% 100%,0 100%,0 3px);}
+.cy-rating__pip.on{background:var(--cy-cyan); box-shadow:0 0 8px rgba(42,212,255,.6); border-color:var(--cy-cyan);}
+
+/* ----- 26. 分隔线 cy-divider ----- */
+.cy-divider{display:flex; align-items:center; gap:10px; color:var(--cy-cyan); margin:6px 0;}
+.cy-divider::before,.cy-divider::after{content:""; height:1px; flex:1;
+  background:linear-gradient(90deg,transparent,var(--cy-line),transparent);}
+.cy-divider__mark{font-family:var(--cy-mono); font-size:10px; letter-spacing:.15em; color:var(--cy-dim);}
+
+/* ----- 27. 空状态 cy-empty ----- */
+.cy-empty{text-align:center; padding:28px 20px; color:var(--cy-dim);}
+.cy-empty__ic{font-size:42px; opacity:.4; filter:drop-shadow(0 0 8px rgba(42,212,255,.3));}
+.cy-empty__tt{font-family:var(--cy-disp); font-weight:700; font-size:14px; color:var(--cy-text); margin:10px 0 4px; letter-spacing:.06em;}
+.cy-empty__ds{font-family:var(--cy-mono); font-size:11px;}
+
+/* ----- 28. 步进器 cy-stepper ----- */
+.cy-stepper{display:inline-flex; border:1px solid var(--cy-line); background:rgba(8,16,26,.6);}
+.cy-stepper__btn{width:32px; font-family:var(--cy-disp); font-weight:700; font-size:16px; color:var(--cy-cyan-lt);
+  background:transparent; border:none; cursor:pointer; display:grid; place-items:center; text-shadow:var(--cy-glow-cy);}
+.cy-stepper__btn:hover{background:rgba(42,212,255,.15);}
+.cy-stepper__val{min-width:48px; display:grid; place-items:center; font-family:var(--cy-mono); font-size:14px;
+  color:var(--cy-text); border-left:1px solid var(--cy-line); border-right:1px solid var(--cy-line);}
+
+/* ----- 29. 面包屑 cy-breadcrumb ----- */
+.cy-breadcrumb{display:flex; align-items:center; gap:7px; font-family:var(--cy-mono); font-size:12px; flex-wrap:wrap;}
+.cy-breadcrumb a{color:var(--cy-dim); text-decoration:none; cursor:pointer;}
+.cy-breadcrumb a:hover{color:var(--cy-cyan-lt);}
+.cy-breadcrumb__sep{color:var(--cy-mag);}
+.cy-breadcrumb__cur{color:var(--cy-cyan-lt); text-shadow:var(--cy-glow-cy);}
+
+/* ----- 30. 手风琴 cy-accordion ----- */
+.cy-accordion{border:1px solid var(--cy-line); background:rgba(8,16,26,.5);}
+.cy-accordion details{border-bottom:1px solid rgba(28,76,96,.4);}
+.cy-accordion details:last-child{border-bottom:none;}
+.cy-accordion summary{list-style:none; cursor:pointer; padding:11px 14px; font-family:var(--cy-disp);
+  font-weight:600; font-size:12px; color:var(--cy-text); display:flex; align-items:center; gap:8px;}
+.cy-accordion summary::-webkit-details-marker{display:none;}
+.cy-accordion summary::before{content:"+"; color:var(--cy-cyan); font-family:var(--cy-mono);}
+.cy-accordion details[open] summary::before{content:"−";}
+.cy-accordion summary:hover{background:rgba(42,212,255,.06);}
+.cy-accordion__bd{padding:2px 16px 14px 30px; font-family:var(--cy-mono); font-size:11px; color:var(--cy-dim); line-height:1.7;}
+
+/* ----- 31. 侧边抽屉 cy-drawer ----- */
+.cy-drawer-mask{position:fixed; inset:0; background:rgba(3,5,12,.6); z-index:110; opacity:0; pointer-events:none; transition:.2s;}
+.cy-drawer-mask.open{opacity:1; pointer-events:auto;}
+.cy-drawer{position:fixed; top:0; right:0; bottom:0; width:min(300px,86vw); z-index:120;
+  background:linear-gradient(180deg,rgba(16,30,50,.96),rgba(8,14,26,.98)); border-left:1px solid var(--cy-cyan);
+  box-shadow:-8px 0 30px rgba(0,0,0,.6),-2px 0 16px rgba(42,212,255,.2); transform:translateX(100%);
+  transition:.22s cubic-bezier(.3,.8,.3,1); display:flex; flex-direction:column;}
+.cy-drawer.open{transform:translateX(0);}
+.cy-drawer__hd{font-family:var(--cy-disp); font-weight:700; letter-spacing:.1em; font-size:14px; color:var(--cy-cyan-lt);
+  padding:16px; border-bottom:1px solid var(--cy-line); display:flex; align-items:center; justify-content:space-between;
+  text-shadow:var(--cy-glow-cy);}
+.cy-drawer__hd span{cursor:pointer; color:var(--cy-mag);}
+.cy-drawer__bd{padding:12px; overflow-y:auto;}
+
+/* ----- 32. 数据表格 cy-table ----- */
+.cy-table{width:100%; border-collapse:collapse; font-family:var(--cy-mono); font-size:12px; border:1px solid var(--cy-line);}
+.cy-table thead th{font-family:var(--cy-disp); font-weight:700; font-size:10px; letter-spacing:.08em; color:var(--cy-cyan-lt);
+  text-align:left; padding:9px 12px; background:rgba(42,212,255,.08); border-bottom:1px solid var(--cy-line);}
+.cy-table tbody td{padding:9px 12px; color:var(--cy-text); border-bottom:1px solid rgba(28,76,96,.3);}
+.cy-table tbody tr:last-child td{border-bottom:none;}
+.cy-table tbody tr:nth-child(even){background:rgba(42,212,255,.04);}
+.cy-table tbody tr:hover{background:rgba(42,212,255,.1);}
+.cy-table__rank{color:var(--cy-mag); font-family:var(--cy-disp); font-weight:700;}
+
+/* ----- 33. 分页器 cy-pagination ----- */
+.cy-pagination{display:inline-flex; gap:4px;}
+.cy-pagination__pg{min-width:30px; height:30px; padding:0 6px; display:grid; place-items:center; cursor:pointer;
+  font-family:var(--cy-disp); font-weight:600; font-size:12px; color:var(--cy-dim);
+  background:rgba(20,40,60,.5); border:1px solid var(--cy-line); transition:.1s;
+  clip-path:polygon(5px 0,100% 0,100% 100%,0 100%,0 5px);}
+.cy-pagination__pg:hover{color:var(--cy-text); border-color:var(--cy-cyan);}
+.cy-pagination__pg--active{color:var(--cy-ink); background:var(--cy-cyan); border-color:var(--cy-cyan);
+  box-shadow:0 0 10px rgba(42,212,255,.5);}
+.cy-pagination__pg--dis{opacity:.35; cursor:not-allowed;}
+
+/* ----- 34. 时间轴 cy-timeline ----- */
+.cy-timeline{position:relative; padding-left:26px;}
+.cy-timeline::before{content:""; position:absolute; left:6px; top:6px; bottom:6px; width:1px;
+  background:linear-gradient(180deg,var(--cy-cyan),var(--cy-mag));}
+.cy-timeline__item{position:relative; padding-bottom:16px;}
+.cy-timeline__item:last-child{padding-bottom:0;}
+.cy-timeline__item::before{content:""; position:absolute; left:-24px; top:3px; width:11px; height:11px;
+  background:var(--cy-cyan); box-shadow:0 0 8px rgba(42,212,255,.6);
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);}
+.cy-timeline__item--done::before{background:var(--cy-green); box-shadow:0 0 8px rgba(57,255,136,.6);}
+.cy-timeline__t{font-family:var(--cy-disp); font-weight:600; font-size:12px; color:var(--cy-text);}
+.cy-timeline__d{font-family:var(--cy-mono); font-size:10px; color:var(--cy-dim); margin-top:2px;}
+
+/* ----- 35. 树形菜单 cy-tree ----- */
+.cy-tree{font-family:var(--cy-mono); font-size:13px;}
+.cy-tree details{margin-left:4px;}
+.cy-tree summary{list-style:none; cursor:pointer; padding:5px 0; color:var(--cy-text); display:flex; align-items:center; gap:6px;}
+.cy-tree summary::-webkit-details-marker{display:none;}
+.cy-tree summary::before{content:"▸"; color:var(--cy-cyan); font-size:10px; transition:.15s;}
+.cy-tree details[open] > summary::before{transform:rotate(90deg);}
+.cy-tree summary:hover{color:var(--cy-cyan-lt);}
+.cy-tree__leaf{padding:5px 0 5px 20px; color:var(--cy-dim); cursor:pointer;}
+.cy-tree__leaf:hover{color:var(--cy-text);}
+.cy-tree details > *:not(summary){margin-left:14px; border-left:1px solid rgba(28,76,96,.4); padding-left:6px;}
+
+/* ----- 36. 能量条倒计时 cy-energy ----- */
+.cy-energy{display:flex; align-items:center; gap:10px;}
+.cy-energy__orb{width:28px; height:28px; display:grid; place-items:center; font-size:14px; flex:none; color:var(--cy-yellow);
+  background:linear-gradient(180deg,rgba(60,50,10,.6),rgba(20,16,4,.6)); border:1px solid var(--cy-yellow);
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%); box-shadow:0 0 10px rgba(255,225,74,.4);}
+.cy-energy__body{flex:1;}
+.cy-energy__top{display:flex; justify-content:space-between; font-family:var(--cy-mono); font-size:10px; color:var(--cy-dim); margin-bottom:3px;}
+.cy-energy__timer{color:var(--cy-yellow); font-variant-numeric:tabular-nums;}
+
+/* ----- 37. 签到日历 cy-calendar ----- */
+.cy-calendar{display:grid; grid-template-columns:repeat(7,1fr); gap:6px;}
+.cy-calendar__day{aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+  font-family:var(--cy-mono); font-size:10px; color:var(--cy-dim); background:rgba(8,16,26,.6); border:1px solid var(--cy-line);
+  position:relative; clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);}
+.cy-calendar__day .r{font-size:15px;}
+.cy-calendar__day--done{color:var(--cy-text); border-color:var(--cy-cyan-dk);}
+.cy-calendar__day--done::after{content:"✓"; position:absolute; inset:0; display:grid; place-items:center;
+  background:rgba(8,16,26,.75); color:var(--cy-green); font-size:18px;}
+.cy-calendar__day--today{border-color:var(--cy-cyan); box-shadow:0 0 12px rgba(42,212,255,.4); background:rgba(42,212,255,.1);}
+
+/* ----- 38. 任务链 cy-questchain ----- */
+.cy-questchain{display:flex; align-items:center;}
+.cy-questchain__node{width:40px; height:40px; display:grid; place-items:center; font-size:17px; flex:none; z-index:2;
+  background:rgba(20,40,60,.6); border:1px solid var(--cy-line);
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);}
+.cy-questchain__node--done{border-color:var(--cy-green); box-shadow:0 0 10px rgba(57,255,136,.4);}
+.cy-questchain__node--now{border-color:var(--cy-cyan); box-shadow:0 0 12px rgba(42,212,255,.6);}
+.cy-questchain__link{height:2px; flex:1; min-width:16px; background:repeating-linear-gradient(90deg,var(--cy-line) 0 4px,transparent 4px 8px);}
+.cy-questchain__link--done{background:var(--cy-cyan);}
+
+/* ----- 39. 成就解锁 cy-achievement ----- */
+.cy-achievement{display:flex; align-items:center; gap:14px; padding:12px 16px;
+  background:linear-gradient(180deg,rgba(16,30,50,.9),rgba(8,14,26,.92)); border:1px solid var(--cy-cyan);
+  clip-path:var(--cy-clip); box-shadow:0 0 16px rgba(42,212,255,.2);}
+.cy-achievement__medal{width:50px; height:50px; display:grid; place-items:center; font-size:24px; flex:none; color:var(--cy-ink);
+  background:var(--cy-cyan); box-shadow:0 0 14px rgba(42,212,255,.6);
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);}
+.cy-achievement__tx b{font-family:var(--cy-disp); font-weight:700; font-size:13px; color:var(--cy-cyan-lt); display:block; letter-spacing:.05em;}
+.cy-achievement__tx small{font-family:var(--cy-mono); font-size:10px; color:var(--cy-dim);}
+.cy-achievement--locked{border-color:var(--cy-line); box-shadow:none; filter:grayscale(.7); opacity:.65;}
+.cy-achievement--locked .cy-achievement__medal{background:var(--cy-dim); box-shadow:none;}
+
+/* ----- 40. 翻牌 cy-flipcard ----- */
+.cy-flipcard{width:120px; height:168px; perspective:800px; cursor:pointer;}
+.cy-flipcard__inner{position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .5s;}
+.cy-flipcard.flipped .cy-flipcard__inner{transform:rotateY(180deg);}
+.cy-flipcard__face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  border:1px solid var(--cy-line); display:grid; place-items:center; overflow:hidden; clip-path:var(--cy-clip);}
+.cy-flipcard__back{background:repeating-linear-gradient(45deg,rgba(42,212,255,.08) 0 6px,rgba(8,14,26,.9) 6px 12px);
+  color:var(--cy-cyan); font-size:30px; text-shadow:var(--cy-glow-cy);}
+.cy-flipcard__front{transform:rotateY(180deg); background:radial-gradient(circle at 50% 30%,rgba(255,60,168,.15),rgba(8,14,26,.95));
+  flex-direction:column; border-color:var(--cy-mag); box-shadow:inset 0 0 20px rgba(255,60,168,.2);}
+.cy-flipcard__front .em{font-size:44px; filter:drop-shadow(0 0 10px rgba(255,60,168,.5));}
+.cy-flipcard__front .nm{font-family:var(--cy-disp); font-weight:600; font-size:11px; color:var(--cy-mag-lt); margin-top:6px;}
+
+/* ----- 41. 解密缓存 cy-chest ----- */
+.cy-chest{width:130px; text-align:center; cursor:pointer; user-select:none;}
+.cy-chest__box{font-size:60px; transition:.2s; filter:drop-shadow(0 0 12px rgba(42,212,255,.4));}
+.cy-chest:hover .cy-chest__box{transform:scale(1.05);}
+.cy-chest.opened .cy-chest__box{animation:cy-chest-pop .5s ease;}
+@keyframes cy-chest-pop{0%{transform:scale(1)}40%{transform:scale(1.3);filter:drop-shadow(0 0 24px rgba(42,212,255,.9))}100%{transform:scale(1)}}
+.cy-chest__glow{height:0; overflow:hidden; opacity:0; transition:.3s;}
+.cy-chest.opened .cy-chest__glow{height:auto; opacity:1; padding-top:6px;}
+.cy-chest__label{font-family:var(--cy-mono); font-size:11px; color:var(--cy-cyan-lt); margin-top:4px; letter-spacing:.1em;}
+
+/* ----- 42. 背包网格 cy-invgrid ----- */
+.cy-invgrid{display:grid; grid-template-columns:repeat(5,1fr); gap:5px; padding:8px; background:rgba(8,16,26,.6);
+  border:1px solid var(--cy-line); width:max-content;}
+.cy-invgrid__cell{width:44px; height:44px; display:grid; place-items:center; font-size:22px; position:relative;
+  background:rgba(20,40,60,.4); border:1px solid rgba(28,76,96,.5);
+  clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);}
+.cy-invgrid__cell:hover{border-color:var(--cy-cyan);}
+.cy-invgrid__cell--rare{border-color:var(--cy-cyan); box-shadow:inset 0 0 8px rgba(42,212,255,.3);}
+.cy-invgrid__cell--legend{border-color:var(--cy-mag); box-shadow:inset 0 0 8px rgba(255,60,168,.3);}
+.cy-invgrid__cell--empty{background:rgba(8,16,26,.4);}
+.cy-invgrid__qty{position:absolute; bottom:1px; right:3px; font-family:var(--cy-disp); font-weight:700; font-size:9px;
+  color:var(--cy-cyan-lt);}
+
+/* ----- 43. 装备对比 cy-compare ----- */
+.cy-compare{display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center;
+  background:rgba(8,16,26,.5); border:1px solid var(--cy-line); padding:14px; clip-path:var(--cy-clip);}
+.cy-compare__side{text-align:center;}
+.cy-compare__side .cy-icon{margin:0 auto 8px;}
+.cy-compare__nm{font-family:var(--cy-disp); font-weight:600; font-size:11px; color:var(--cy-text); margin-bottom:8px; letter-spacing:.05em;}
+.cy-compare__stat{display:flex; justify-content:space-between; font-family:var(--cy-mono); font-size:11px;
+  padding:3px 0; border-bottom:1px solid rgba(28,76,96,.3);}
+.cy-compare__stat span:first-child{color:var(--cy-dim);}
+.cy-compare__up{color:var(--cy-green);} .cy-compare__down{color:var(--cy-red);}
+.cy-compare__vs{font-family:var(--cy-disp); font-weight:900; font-size:15px; color:var(--cy-mag); text-shadow:var(--cy-glow-mg);}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important;}}
+</style>
+</head>
+<body>
+
+<div class="doc-head">
+  <span class="eb">CYBERPUNK · TECH-HUD KIT</span>
+  <h1>赛博朋克 UI 组件库</h1>
+  <p>43 个组件 · cy- 前缀 · 切角边框 + 霓虹辉光 + 扫描线</p>
+  <div class="tokens">
+    <span class="tok"><i style="background:#2ad4ff"></i>--cy-cyan</span>
+    <span class="tok"><i style="background:#ff3ca8"></i>--cy-mag</span>
+    <span class="tok"><i style="background:#ffe14a"></i>--cy-yellow</span>
+    <span class="tok"><i style="background:#39ff88"></i>--cy-green</span>
+    <span class="tok"><i style="background:#0d1526"></i>--cy-panel</span>
+  </div>
+</div>
+
+<div class="doc">
+
+  <!-- 1 -->
+  <div class="comp"><div class="comp-title">按钮 · Button</div><div class="comp-desc">切角霓虹钮,青(默认)/洋红(exec)/幽灵/危险,支持 sm/lg/block/disabled。</div>
+    <div class="showcase">
+      <button class="cy-btn">CONNECT</button>
+      <button class="cy-btn cy-btn--exec">▶ JACK IN</button>
+      <button class="cy-btn cy-btn--danger">ABORT</button>
+      <button class="cy-btn cy-btn--ghost">CANCEL</button>
+      <button class="cy-btn cy-btn--sm">SCAN</button>
+      <button class="cy-btn" disabled>LOCKED</button>
+    </div>
+    <div class="classline"><b>cy-btn</b> ( <b>--exec / --danger / --ghost / --sm / --lg / --block</b> )</div>
+  </div>
+
+  <!-- 2 -->
+  <div class="comp"><div class="comp-title">面板 · Panel</div><div class="comp-desc">切角容器 + 可选四角括号 cy-bracket + 副标代码。</div>
+    <div class="showcase">
+      <div class="cy-panel" style="width:300px">
+        <span class="cy-bracket tl"></span><span class="cy-bracket tr"></span>
+        <span class="cy-bracket bl"></span><span class="cy-bracket br"></span>
+        <div class="cy-panel__hd">合约简报 <span class="k">// CONTRACT</span></div>
+        <div class="cy-panel__bd"><p>潜入荒坂塔 42 层,提取加密数据核心。警戒等级:极高。奖励:12,000 ₡。</p>
+          <div style="margin-top:12px; display:flex; gap:8px;">
+            <button class="cy-btn cy-btn--exec cy-btn--sm">ACCEPT</button>
+            <button class="cy-btn cy-btn--ghost cy-btn--sm">LATER</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>cy-panel</b> &gt; <b>cy-panel__hd</b> (含 <b>.k</b>) + <b>cy-panel__bd</b>　·　四角:<b>cy-bracket tl/tr/bl/br</b></div>
+  </div>
+
+  <!-- 3 -->
+  <div class="comp"><div class="comp-title">弹窗 · Modal</div><div class="comp-desc">遮罩 + 面板 + 切角关闭钮。点击预览。</div>
+    <div class="showcase"><button class="cy-btn cy-btn--exec" onclick="document.getElementById('cyModal').style.display='grid'">OPEN DIALOG</button></div>
+    <div class="classline"><b>cy-modal-mask</b> &gt; <b>cy-modal</b> ( <b>cy-modal__close</b> + <b>cy-panel</b> )</div>
+  </div>
+
+  <!-- 4 -->
+  <div class="comp"><div class="comp-title">进度条 · Bar</div><div class="comp-desc">切角发光条,青/洋红/黄/绿四色,可加 cy-bar__cap 标题。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch;">
+      <div><div class="cy-bar__cap"><span>INTEGRITY</span><span>84%</span></div><div class="cy-bar cy-bar--tall"><div class="cy-bar__fill cy-bar__fill--cy" style="width:84%"></div></div></div>
+      <div><div class="cy-bar__cap"><span>RAM / DECK</span><span>60%</span></div><div class="cy-bar cy-bar--tall"><div class="cy-bar__fill cy-bar__fill--mg" style="width:60%"></div></div></div>
+      <div><div class="cy-bar__cap"><span>HEAT</span><span>37%</span></div><div class="cy-bar cy-bar--tall"><div class="cy-bar__fill cy-bar__fill--yl" style="width:37%"></div></div></div>
+    </div>
+    <div class="classline"><b>cy-bar__cap</b> + <b>cy-bar</b> &gt; <b>cy-bar__fill --cy/--mg/--yl/--gr</b></div>
+  </div>
+
+  <!-- 5 -->
+  <div class="comp"><div class="comp-title">货币条 · Currency</div><div class="comp-desc">欧元币/数据分/经验,青/洋红/黄三色。</div>
+    <div class="showcase">
+      <span class="cy-currency"><span class="cy-currency__sym">₡</span>48,120</span>
+      <span class="cy-currency cy-currency--mag"><span class="cy-currency__sym">◈</span>320</span>
+      <span class="cy-currency cy-currency--yl"><span class="cy-currency__sym">⌁</span>18</span>
+    </div>
+    <div class="classline"><b>cy-currency</b> ( <b>--mag / --yl</b> ) &gt; <b>cy-currency__sym</b> + 数值</div>
+  </div>
+
+  <!-- 6 -->
+  <div class="comp"><div class="comp-title">状态计量表 · Gauge</div><div class="comp-desc">环形 SVG 计量表(替代液体球),stroke-dashoffset 控制百分比。</div>
+    <div class="showcase" style="gap:30px;">
+      <div class="cy-gauge">
+        <svg width="64" height="64" viewBox="0 0 64 64"><circle class="cy-gauge__track" cx="32" cy="32" r="27"/><circle class="cy-gauge__val cy-gauge__val--cy" cx="32" cy="32" r="27" stroke-dasharray="170" stroke-dashoffset="48"/></svg>
+        <div class="cy-gauge__num">72</div><div class="cy-gauge__lbl">SHIELD</div>
+      </div>
+      <div class="cy-gauge">
+        <svg width="64" height="64" viewBox="0 0 64 64"><circle class="cy-gauge__track" cx="32" cy="32" r="27"/><circle class="cy-gauge__val cy-gauge__val--mg" cx="32" cy="32" r="27" stroke-dasharray="170" stroke-dashoffset="90"/></svg>
+        <div class="cy-gauge__num">48</div><div class="cy-gauge__lbl">CHARGE</div>
+      </div>
+    </div>
+    <div class="classline"><b>cy-gauge</b> &gt; svg(<b>cy-gauge__track</b> + <b>cy-gauge__val --cy/--mg</b>) + <b>__num</b> + <b>__lbl</b></div>
+  </div>
+
+  <!-- 7 -->
+  <div class="comp"><div class="comp-title">图标底座 · Icon Slot</div><div class="comp-desc">技能/义体槽,普通/稀有/传说描边 + 冷却遮罩。</div>
+    <div class="showcase">
+      <div class="cy-icon">🔫</div>
+      <div class="cy-icon cy-icon--rare">🦿</div>
+      <div class="cy-icon cy-icon--legend">🧬</div>
+      <div class="cy-icon">💉<div class="cy-icon__cd">4</div></div>
+    </div>
+    <div class="classline"><b>cy-icon</b> ( <b>--rare / --legend</b> )　·　冷却:<b>cy-icon__cd</b></div>
+  </div>
+
+  <!-- 8 -->
+  <div class="comp"><div class="comp-title">卡片 · Card</div><div class="comp-desc">义体/程序卡,含类型标签、名称、底部插槽。</div>
+    <div class="showcase">
+      <div class="cy-card"><div class="cy-card__art"><span class="cy-card__tag">DAEMON</span>🦾</div><div class="cy-card__name">短路病毒</div><div class="cy-card__foot"><div class="cy-bar"><div class="cy-bar__fill cy-bar__fill--cy" style="width:80%"></div></div></div></div>
+      <div class="cy-card"><div class="cy-card__art"><span class="cy-card__tag">CYBERWARE</span>👁️</div><div class="cy-card__name">凯罗奇光学</div><div class="cy-card__foot"><div class="cy-bar"><div class="cy-bar__fill cy-bar__fill--mg" style="width:55%"></div></div></div></div>
+    </div>
+    <div class="classline"><b>cy-card</b> &gt; <b>cy-card__art</b> ( <b>cy-card__tag</b> ) + <b>cy-card__name</b> + <b>cy-card__foot</b></div>
+  </div>
+
+  <!-- 9 -->
+  <div class="comp"><div class="comp-title">列表项 · List</div><div class="comp-desc">物品/日志通用行,左图标 + 主副标题 + 右值。</div>
+    <div class="showcase" style="display:block;">
+      <div class="cy-list" style="max-width:420px;">
+        <div class="cy-list__item"><div class="cy-list__ic">💉</div><div class="cy-list__tx"><b>MaxDoc 医疗针</b><small>RESTORE 40% HP</small></div><span class="cy-list__val">×12</span></div>
+        <div class="cy-list__item"><div class="cy-list__ic">🔋</div><div class="cy-list__tx"><b>能量电芯</b><small>DECK CHARGE</small></div><span class="cy-list__val">×6</span></div>
+        <div class="cy-list__item"><div class="cy-list__ic">💾</div><div class="cy-list__tx"><b>破解程序</b><small>ICE BREAKER v3</small></div><span class="cy-list__val">×2</span></div>
+      </div>
+    </div>
+    <div class="classline"><b>cy-list</b> &gt; <b>cy-list__item</b> ( <b>__ic</b> + <b>__tx</b>(b+small) + <b>__val</b> )</div>
+  </div>
+
+  <!-- 10 -->
+  <div class="comp"><div class="comp-title">顶部 HUD · HUD Bar</div><div class="comp-desc">六边形头像 + 代号/ID + 右侧信用点。</div>
+    <div class="showcase" style="display:block;">
+      <div class="cy-hud"><div class="cy-hud__hex">🤖</div><div class="cy-hud__who"><b>V_RUNNER</b><small>ID://0xF3A9</small></div><div class="cy-hud__spacer"></div><span class="cy-currency"><span class="cy-currency__sym">₡</span>48,120</span></div>
+    </div>
+    <div class="classline"><b>cy-hud</b> &gt; <b>cy-hud__hex</b> + <b>cy-hud__who</b>(b+small) + <b>cy-hud__spacer</b> + 右侧组件</div>
+  </div>
+
+  <!-- 11 -->
+  <div class="comp"><div class="comp-title">导航栏 · Nav Bar</div><div class="comp-desc">底部主导航,--active 高亮。点击切换。</div>
+    <div class="showcase" style="display:block;">
+      <div class="cy-nav" id="cyNav">
+        <div class="cy-nav__tab cy-nav__tab--active" data-nav><span class="i">🎯</span>合约</div>
+        <div class="cy-nav__tab" data-nav><span class="i">🎒</span>库存</div>
+        <div class="cy-nav__tab" data-nav><span class="i">🦾</span>义体</div>
+        <div class="cy-nav__tab" data-nav><span class="i">🗺️</span>夜城</div>
+      </div>
+    </div>
+    <div class="classline"><b>cy-nav</b> &gt; <b>cy-nav__tab</b> ( <b>--active</b> ) &gt; <b>span.i</b> + 文字</div>
+  </div>
+
+  <!-- 12 -->
+  <div class="comp"><div class="comp-title">标签页 · Tabs</div><div class="comp-desc">面板分页,与 cy-panel 拼接。点击切换。</div>
+    <div class="showcase" style="display:block;">
+      <div style="max-width:420px;">
+        <div class="cy-tabs" id="cyTabs">
+          <div class="cy-tabs__tab cy-tabs__tab--active" data-tab>STATS</div>
+          <div class="cy-tabs__tab" data-tab>CYBERWARE</div>
+          <div class="cy-tabs__tab" data-tab>SKILLS</div>
+        </div>
+        <div class="cy-panel" style="clip-path:none; border-top:none;"><div class="cy-panel__bd"><p id="cyTabsBody">STATS // 身体 8 · 智力 12 · 反应 10 · 冷静 9 · 技术 11</p></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>cy-tabs</b> &gt; <b>cy-tabs__tab</b> ( <b>--active</b> )</div>
+  </div>
+
+  <!-- 13 -->
+  <div class="comp"><div class="comp-title">输入框 · Input</div><div class="comp-desc">切角石槽,聚焦青光;可选前置图标 cy-field。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:360px;">
+      <input class="cy-input" placeholder="ENTER HANDLE…">
+      <div class="cy-field"><span class="cy-field__ic">🔍</span><input class="cy-input" placeholder="SEARCH DATABASE…"></div>
+    </div>
+    <div class="classline"><b>&lt;input class="cy-input"&gt;</b>　·　带图标:<b>cy-field</b> &gt; <b>cy-field__ic</b> + <b>cy-input</b></div>
+  </div>
+
+  <!-- 14 -->
+  <div class="comp"><div class="comp-title">下拉选择 · Select</div><div class="comp-desc">定制外观 + 青色箭头。</div>
+    <div class="showcase">
+      <div class="cy-select"><select><option>难度:NETRUNNER</option><option>难度:HARD</option><option>难度:VERY HARD</option></select></div>
+      <div class="cy-select"><select><option>区域:WATSON</option><option>区域:CITY CENTER</option><option>区域:PACIFICA</option></select></div>
+    </div>
+    <div class="classline"><b>cy-select</b> &gt; <b>&lt;select&gt;</b> &gt; <b>&lt;option&gt;</b></div>
+  </div>
+
+  <!-- 15 -->
+  <div class="comp"><div class="comp-title">开关 · Switch</div><div class="comp-desc">切角滑块,开启青光。点击切换。</div>
+    <div class="showcase" style="gap:26px;">
+      <label class="cy-switch"><input type="checkbox" checked><span class="cy-switch__track"></span><span style="margin-left:10px; font-family:var(--cy-mono); font-size:12px;">HUD 覆盖层</span></label>
+      <label class="cy-switch"><input type="checkbox"><span class="cy-switch__track"></span><span style="margin-left:10px; font-family:var(--cy-mono); font-size:12px;">隐身模式</span></label>
+    </div>
+    <div class="classline"><b>&lt;label class="cy-switch"&gt;</b> &gt; <b>input[checkbox]</b> + <b>span.cy-switch__track</b></div>
+  </div>
+
+  <!-- 16 -->
+  <div class="comp"><div class="comp-title">滑条 · Slider</div><div class="comp-desc">菱形滑钮 + 青色发光轨。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:360px;">
+      <input type="range" class="cy-slider" min="0" max="100" value="65">
+      <input type="range" class="cy-slider" min="0" max="100" value="30">
+    </div>
+    <div class="classline"><b>&lt;input type="range" class="cy-slider"&gt;</b></div>
+  </div>
+
+  <!-- 17 -->
+  <div class="comp"><div class="comp-title">徽章 · Badge</div><div class="comp-desc">洋红/青发光徽章,可贴图标右上。</div>
+    <div class="showcase" style="gap:24px;">
+      <span class="cy-badge">3</span>
+      <span class="cy-badge cy-badge--cy">99+</span>
+      <span class="cy-badge-wrap"><div class="cy-icon">📡</div><span class="cy-badge">5</span></span>
+      <span class="cy-badge-wrap"><div class="cy-icon">💾</div><span class="cy-badge cy-badge--cy">!</span></span>
+    </div>
+    <div class="classline"><b>cy-badge</b> ( <b>--cy</b> )　·　贴角:<b>cy-badge-wrap</b> &gt; 内容 + <b>cy-badge</b></div>
+  </div>
+
+  <!-- 18 -->
+  <div class="comp"><div class="comp-title">角标 · Ribbon</div><div class="comp-desc">卡片左上箭头丝带。放 position:relative 容器内。</div>
+    <div class="showcase">
+      <div class="cy-card" style="position:relative;"><span class="cy-ribbon">LIMITED</span><div class="cy-card__art">💰</div><div class="cy-card__name">数据宝库</div></div>
+      <div class="cy-card" style="position:relative;"><span class="cy-ribbon cy-ribbon--cy">NEW</span><div class="cy-card__art">🧊</div><div class="cy-card__name">冰破协议</div></div>
+    </div>
+    <div class="classline"><b>cy-ribbon</b> ( <b>--cy</b> )　·　置于 relative 容器内</div>
+  </div>
+
+  <!-- 19 -->
+  <div class="comp"><div class="comp-title">标签 · Tag</div><div class="comp-desc">属性/词条,青/洋红/黄变体。</div>
+    <div class="showcase">
+      <span class="cy-tag">近战</span>
+      <span class="cy-tag cy-tag--mg">◈ 穿甲 +30</span>
+      <span class="cy-tag cy-tag--yl">⌁ 电击 DoT</span>
+      <span class="cy-tag">◆ 稀有</span>
+    </div>
+    <div class="classline"><b>cy-tag</b> ( <b>--mg / --yl</b> )</div>
+  </div>
+
+  <!-- 20 -->
+  <div class="comp"><div class="comp-title">提示 · Tooltip</div><div class="comp-desc">悬停显示,内容取 data-tip。悬停试试。</div>
+    <div class="showcase">
+      <span class="cy-tooltip" data-tip="暴击几率 +15%">暴击</span>
+      <span class="cy-tooltip" data-tip="每秒回复 12 点护盾">护盾回复</span>
+      <span class="cy-tooltip" data-tip="免疫黑客入侵">防火墙</span>
+    </div>
+    <div class="classline"><b>&lt;span class="cy-tooltip" data-tip="内容"&gt;</b></div>
+  </div>
+
+  <!-- 21 -->
+  <div class="comp"><div class="comp-title">通知 · Toast</div><div class="comp-desc">切角提示,普通/危险/成功三色边框辉光。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch;">
+      <div class="cy-toast cy-toast--success"><span class="cy-toast__ic">📡</span><div><b>数据已提取</b>加密核心已上传至你的赛博空间。</div></div>
+      <div class="cy-toast cy-toast--danger"><span class="cy-toast__ic">⚠️</span><div><b>入侵检测</b>ICE 已激活,追踪进度 68%。</div></div>
+      <div class="cy-toast"><span class="cy-toast__ic">◈</span><div><b>合约更新</b>固定者刷新了新的委托。</div></div>
+    </div>
+    <div class="classline"><b>cy-toast</b> ( <b>--danger / --success</b> ) &gt; <b>cy-toast__ic</b> + 内容(b 标题)</div>
+  </div>
+
+  <!-- 22 -->
+  <div class="comp"><div class="comp-title">对话气泡 · Bubble</div><div class="comp-desc">NPC 对话框,含发话人代号与尖角。</div>
+    <div class="showcase"><div class="cy-bubble"><div class="cy-bubble__who">FIXER · 罗格</div>有个大活儿等着你,报酬够你换套新义体。感兴趣就来阿夫特生活找我。</div></div>
+    <div class="classline"><b>cy-bubble</b> &gt; <b>cy-bubble__who</b> + 对话文字</div>
+  </div>
+
+  <!-- 23 -->
+  <div class="comp"><div class="comp-title">加载 · Spinner</div><div class="comp-desc">双环反向旋转,青 + 洋红。</div>
+    <div class="showcase" style="gap:26px;"><div class="cy-spinner"></div><span style="font-family:var(--cy-mono); color:var(--cy-dim); font-size:12px;">DECRYPTING…</span></div>
+    <div class="classline"><b>cy-spinner</b></div>
+  </div>
+
+  <!-- 24 -->
+  <div class="comp"><div class="comp-title">头像组 · Avatar Group</div><div class="comp-desc">六边形叠放 + 溢出计数。</div>
+    <div class="showcase"><div class="cy-avatars"><div class="cy-avatars__a">🦾</div><div class="cy-avatars__a">👁️</div><div class="cy-avatars__a">🧠</div><div class="cy-avatars__a">🤖</div><div class="cy-avatars__more">+9</div></div></div>
+    <div class="classline"><b>cy-avatars</b> &gt; 多个 <b>cy-avatars__a</b> + <b>cy-avatars__more</b></div>
+  </div>
+
+  <!-- 25 -->
+  <div class="comp"><div class="comp-title">评级 · Rating</div><div class="comp-desc">方块 pip 评级(替代星星),.on 点亮。</div>
+    <div class="showcase" style="gap:26px;">
+      <span class="cy-rating"><span class="cy-rating__pip on"></span><span class="cy-rating__pip on"></span><span class="cy-rating__pip on"></span><span class="cy-rating__pip"></span><span class="cy-rating__pip"></span></span>
+      <span class="cy-rating"><span class="cy-rating__pip on"></span><span class="cy-rating__pip on"></span><span class="cy-rating__pip on"></span><span class="cy-rating__pip on"></span><span class="cy-rating__pip on"></span></span>
+    </div>
+    <div class="classline"><b>cy-rating</b> &gt; 多个 <b>cy-rating__pip</b>,点亮加 <b>.on</b></div>
+  </div>
+
+  <!-- 26 -->
+  <div class="comp"><div class="comp-title">分隔线 · Divider</div><div class="comp-desc">渐隐线,可带中心标签。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:420px;">
+      <div class="cy-divider"><span class="cy-divider__mark">// SECTION</span></div>
+      <div class="cy-divider"><span class="cy-divider__mark">◈ ◈ ◈</span></div>
+    </div>
+    <div class="classline"><b>cy-divider</b> &gt; <b>cy-divider__mark</b></div>
+  </div>
+
+  <!-- 27 -->
+  <div class="comp"><div class="comp-title">空状态 · Empty</div><div class="comp-desc">列表为空占位,图标+标题+说明。</div>
+    <div class="showcase" style="display:block;">
+      <div class="cy-panel" style="max-width:420px; margin:0 auto;"><div class="cy-empty"><div class="cy-empty__ic">📭</div><div class="cy-empty__tt">NO SIGNAL</div><div class="cy-empty__ds">暂无可用合约,稍后重新连接网络。</div></div></div>
+    </div>
+    <div class="classline"><b>cy-empty</b> &gt; <b>cy-empty__ic</b> + <b>cy-empty__tt</b> + <b>cy-empty__ds</b></div>
+  </div>
+
+  <!-- ADVANCED -->
+  <div class="comp" style="margin-top:52px;"><div class="comp-title" style="font-size:22px;">▘▖ 进阶组件 · Advanced</div><div class="comp-desc">复杂交互组件,均可操作。</div></div>
+
+  <!-- 28 -->
+  <div class="comp"><div class="comp-title">步进器 · Stepper</div><div class="comp-desc">数量选择,可点增减。</div>
+    <div class="showcase">
+      <div class="cy-stepper" data-stepper><button class="cy-stepper__btn" data-dec>−</button><div class="cy-stepper__val" data-val>1</div><button class="cy-stepper__btn" data-inc>+</button></div>
+      <span style="font-family:var(--cy-mono); font-size:12px; color:var(--cy-dim);">购买医疗针</span>
+    </div>
+    <div class="classline"><b>cy-stepper</b> &gt; <b>cy-stepper__btn</b>(−) + <b>cy-stepper__val</b> + <b>cy-stepper__btn</b>(+)</div>
+  </div>
+
+  <!-- 29 -->
+  <div class="comp"><div class="comp-title">面包屑 · Breadcrumb</div><div class="comp-desc">层级路径,末项高亮。</div>
+    <div class="showcase" style="display:block;">
+      <nav class="cy-breadcrumb"><a>夜城</a><span class="cy-breadcrumb__sep">/</span><a>沃森区</a><span class="cy-breadcrumb__sep">/</span><a>小中国</a><span class="cy-breadcrumb__sep">/</span><span class="cy-breadcrumb__cur">龙庭</span></nav>
+    </div>
+    <div class="classline"><b>cy-breadcrumb</b> &gt; <b>a</b> + <b>__sep</b> … + <b>__cur</b></div>
+  </div>
+
+  <!-- 30 -->
+  <div class="comp"><div class="comp-title">手风琴 · Accordion</div><div class="comp-desc">原生 details,无需 JS。</div>
+    <div class="showcase" style="display:block;">
+      <div class="cy-accordion" style="max-width:440px;">
+        <details open><summary>如何安装义体?</summary><div class="cy-accordion__bd">前往任意夜城的滑板医生处,消耗欧元币安装。安装量受身体属性限制。</div></details>
+        <details><summary>什么是超梦?</summary><div class="cy-accordion__bd">超梦(Braindance)是可回放他人感官体验的记录,侦探常用于分析犯罪现场。</div></details>
+        <details><summary>ICE 是什么?</summary><div class="cy-accordion__bd">入侵对抗电子设备(ICE)是保护网络的防御程序,黑入时需用破解程序击穿。</div></details>
+      </div>
+    </div>
+    <div class="classline"><b>cy-accordion</b> &gt; <b>&lt;details&gt;</b> ( <b>&lt;summary&gt;</b> + <b>cy-accordion__bd</b> )</div>
+  </div>
+
+  <!-- 31 -->
+  <div class="comp"><div class="comp-title">侧边抽屉 · Drawer</div><div class="comp-desc">右滑面板。点击预览。</div>
+    <div class="showcase"><button class="cy-btn cy-btn--exec" onclick="cyOpenDrawer()">OPEN INVENTORY</button></div>
+    <div class="classline"><b>cy-drawer-mask</b> + <b>cy-drawer</b> ( <b>__hd</b> + <b>__bd</b> )　·　加 <b>.open</b> 展开</div>
+  </div>
+
+  <!-- 32 -->
+  <div class="comp"><div class="comp-title">数据表格 · Table</div><div class="comp-desc">排行榜/数据,斑马纹 + 悬停高亮。</div>
+    <div class="showcase" style="display:block;">
+      <table class="cy-table" style="max-width:480px;">
+        <thead><tr><th>#</th><th>RUNNER</th><th>ROLE</th><th>STREET CRED</th></tr></thead>
+        <tbody>
+          <tr><td class="cy-table__rank">01</td><td>V</td><td>NETRUNNER</td><td>9,840</td></tr>
+          <tr><td class="cy-table__rank">02</td><td>Rogue</td><td>FIXER</td><td>9,120</td></tr>
+          <tr><td class="cy-table__rank">03</td><td>Judy</td><td>TECHIE</td><td>8,510</td></tr>
+          <tr><td>04</td><td>River</td><td>SOLO</td><td>7,930</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="classline"><b>table.cy-table</b> &gt; <b>thead th</b> + <b>tbody td</b>　·　名次:<b>cy-table__rank</b></div>
+  </div>
+
+  <!-- 33 -->
+  <div class="comp"><div class="comp-title">分页器 · Pagination</div><div class="comp-desc">翻页,--active 当前 / --dis 禁用。点击切换。</div>
+    <div class="showcase">
+      <div class="cy-pagination" id="cyPage">
+        <div class="cy-pagination__pg cy-pagination__pg--dis">‹</div>
+        <div class="cy-pagination__pg cy-pagination__pg--active" data-pg>1</div>
+        <div class="cy-pagination__pg" data-pg>2</div>
+        <div class="cy-pagination__pg" data-pg>3</div>
+        <div class="cy-pagination__pg" data-pg>4</div>
+        <div class="cy-pagination__pg">›</div>
+      </div>
+    </div>
+    <div class="classline"><b>cy-pagination</b> &gt; <b>cy-pagination__pg</b> ( <b>--active / --dis</b> )</div>
+  </div>
+
+  <!-- 34 -->
+  <div class="comp"><div class="comp-title">时间轴 · Timeline</div><div class="comp-desc">竖向进度,--done 已完成。菱形节点。</div>
+    <div class="showcase" style="display:block;">
+      <div class="cy-timeline" style="max-width:400px;">
+        <div class="cy-timeline__item cy-timeline__item--done"><div class="cy-timeline__t">接下委托</div><div class="cy-timeline__d">PHASE 01 · DONE</div></div>
+        <div class="cy-timeline__item cy-timeline__item--done"><div class="cy-timeline__t">侦查目标</div><div class="cy-timeline__d">PHASE 02 · DONE</div></div>
+        <div class="cy-timeline__item"><div class="cy-timeline__t">突破防火墙</div><div class="cy-timeline__d">PHASE 03 · ACTIVE</div></div>
+        <div class="cy-timeline__item"><div class="cy-timeline__t">提取并撤离</div><div class="cy-timeline__d">PHASE 04 · LOCKED</div></div>
+      </div>
+    </div>
+    <div class="classline"><b>cy-timeline</b> &gt; <b>cy-timeline__item</b> ( <b>--done</b> ) ( <b>__t</b> + <b>__d</b> )</div>
+  </div>
+
+  <!-- 35 -->
+  <div class="comp"><div class="comp-title">树形菜单 · Tree</div><div class="comp-desc">嵌套分类,details 折叠。</div>
+    <div class="showcase" style="display:block;">
+      <div class="cy-tree" style="max-width:320px;">
+        <details open><summary>🔫 武器</summary>
+          <div class="cy-tree__leaf">手枪 (18)</div>
+          <div class="cy-tree__leaf">步枪 (9)</div>
+          <details><summary>近战</summary><div class="cy-tree__leaf">武士刀 (4)</div><div class="cy-tree__leaf">螳螂刀 (2)</div></details>
+        </details>
+        <details><summary>🦾 义体</summary><div class="cy-tree__leaf">神经系统 (6)</div><div class="cy-tree__leaf">骨骼 (5)</div></details>
+      </div>
+    </div>
+    <div class="classline"><b>cy-tree</b> &gt; 嵌套 <b>&lt;details&gt;</b> + <b>cy-tree__leaf</b></div>
+  </div>
+
+  <!-- 36 -->
+  <div class="comp"><div class="comp-title">能量条倒计时 · Energy</div><div class="comp-desc">体力/门票,含实时倒计时。</div>
+    <div class="showcase" style="display:block;">
+      <div class="cy-energy" style="max-width:340px;">
+        <div class="cy-energy__orb">⚡</div>
+        <div class="cy-energy__body">
+          <div class="cy-energy__top"><span>ENERGY <b style="color:var(--cy-text)">18 / 24</b></span><span class="cy-energy__timer" id="cyEnergyTimer">+1 · 04:59</span></div>
+          <div class="cy-bar"><div class="cy-bar__fill cy-bar__fill--yl" style="width:75%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>cy-energy</b> &gt; <b>__orb</b> + <b>__body</b> ( <b>__top</b>(含 <b>__timer</b>) + <b>cy-bar</b> )</div>
+  </div>
+
+  <!-- 37 -->
+  <div class="comp"><div class="comp-title">签到日历 · Calendar</div><div class="comp-desc">7 日签到,--done 已领 / --today 当天。</div>
+    <div class="showcase" style="display:block;">
+      <div class="cy-calendar" style="max-width:400px;">
+        <div class="cy-calendar__day cy-calendar__day--done"><span class="r">₡</span>1</div>
+        <div class="cy-calendar__day cy-calendar__day--done"><span class="r">🔋</span>2</div>
+        <div class="cy-calendar__day cy-calendar__day--done"><span class="r">💾</span>3</div>
+        <div class="cy-calendar__day cy-calendar__day--today"><span class="r">🎁</span>4</div>
+        <div class="cy-calendar__day"><span class="r">◈</span>5</div>
+        <div class="cy-calendar__day"><span class="r">🧬</span>6</div>
+        <div class="cy-calendar__day"><span class="r">🦾</span>7</div>
+      </div>
+    </div>
+    <div class="classline"><b>cy-calendar</b> &gt; <b>cy-calendar__day</b> ( <b>--done / --today</b> )</div>
+  </div>
+
+  <!-- 38 -->
+  <div class="comp"><div class="comp-title">任务链 · Quest Chain</div><div class="comp-desc">连锁节点,--done/--now + 连接线。</div>
+    <div class="showcase" style="display:block;">
+      <div class="cy-questchain" style="max-width:400px;">
+        <div class="cy-questchain__node cy-questchain__node--done">✓</div>
+        <div class="cy-questchain__link cy-questchain__link--done"></div>
+        <div class="cy-questchain__node cy-questchain__node--done">✓</div>
+        <div class="cy-questchain__link cy-questchain__link--done"></div>
+        <div class="cy-questchain__node cy-questchain__node--now">🎯</div>
+        <div class="cy-questchain__link"></div>
+        <div class="cy-questchain__node">🎁</div>
+      </div>
+    </div>
+    <div class="classline"><b>cy-questchain</b> &gt; <b>__node</b>( <b>--done/--now</b> ) 与 <b>__link</b>( <b>--done</b> ) 交替</div>
+  </div>
+
+  <!-- 39 -->
+  <div class="comp"><div class="comp-title">成就解锁 · Achievement</div><div class="comp-desc">奖章+标题+描述,--locked 灰化。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:400px;">
+      <div class="cy-achievement"><div class="cy-achievement__medal">🏆</div><div class="cy-achievement__tx"><b>传奇夜行者</b><small>完成 100 个合约</small></div></div>
+      <div class="cy-achievement cy-achievement--locked"><div class="cy-achievement__medal">🔒</div><div class="cy-achievement__tx"><b>???</b><small>达成隐藏条件解锁</small></div></div>
+    </div>
+    <div class="classline"><b>cy-achievement</b> ( <b>--locked</b> ) &gt; <b>__medal</b> + <b>__tx</b>(b+small)</div>
+  </div>
+
+  <!-- 40 -->
+  <div class="comp"><div class="comp-title">翻牌 · Flip Card</div><div class="comp-desc">CSS 3D 翻转,点击揭晓。</div>
+    <div class="showcase">
+      <div class="cy-flipcard" onclick="this.classList.toggle('flipped')"><div class="cy-flipcard__inner"><div class="cy-flipcard__face cy-flipcard__back">◈</div><div class="cy-flipcard__face cy-flipcard__front"><span class="em">🧬</span><span class="nm">基因改造</span></div></div></div>
+      <div class="cy-flipcard" onclick="this.classList.toggle('flipped')"><div class="cy-flipcard__inner"><div class="cy-flipcard__face cy-flipcard__back">◈</div><div class="cy-flipcard__face cy-flipcard__front"><span class="em">🦾</span><span class="nm">强化义肢</span></div></div></div>
+      <span style="font-family:var(--cy-mono); font-size:12px; color:var(--cy-dim);">← 点击翻牌</span>
+    </div>
+    <div class="classline"><b>cy-flipcard</b> &gt; <b>__inner</b> &gt; <b>__face __back</b> + <b>__face __front</b>　·　加 <b>.flipped</b></div>
+  </div>
+
+  <!-- 41 -->
+  <div class="comp"><div class="comp-title">解密缓存 · Cache</div><div class="comp-desc">点击解密开启,揭示战利品。</div>
+    <div class="showcase">
+      <div class="cy-chest" onclick="cyOpenChest(this)">
+        <div class="cy-chest__box">🗄️</div>
+        <div class="cy-chest__label">点击解密</div>
+        <div class="cy-chest__glow"><div style="display:flex; gap:6px; justify-content:center;"><div class="cy-icon cy-icon--legend">🧬</div><div class="cy-icon">₡</div></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>cy-chest</b> &gt; <b>__box</b> + <b>__label</b> + <b>__glow</b>　·　加 <b>.opened</b></div>
+  </div>
+
+  <!-- 42 -->
+  <div class="comp"><div class="comp-title">背包网格 · Inventory Grid</div><div class="comp-desc">格子背包,稀有度描边、数量角标、空格。</div>
+    <div class="showcase" style="display:block;">
+      <div class="cy-invgrid">
+        <div class="cy-invgrid__cell cy-invgrid__cell--legend">🧬</div>
+        <div class="cy-invgrid__cell cy-invgrid__cell--rare">🔫</div>
+        <div class="cy-invgrid__cell">💉<span class="cy-invgrid__qty">12</span></div>
+        <div class="cy-invgrid__cell">🔋<span class="cy-invgrid__qty">6</span></div>
+        <div class="cy-invgrid__cell">💾<span class="cy-invgrid__qty">99</span></div>
+        <div class="cy-invgrid__cell">🗝️</div>
+        <div class="cy-invgrid__cell cy-invgrid__cell--rare">👁️</div>
+        <div class="cy-invgrid__cell cy-invgrid__cell--empty"></div>
+        <div class="cy-invgrid__cell cy-invgrid__cell--empty"></div>
+        <div class="cy-invgrid__cell cy-invgrid__cell--empty"></div>
+      </div>
+    </div>
+    <div class="classline"><b>cy-invgrid</b> &gt; <b>cy-invgrid__cell</b> ( <b>--rare/--legend/--empty</b> ) + <b>cy-invgrid__qty</b></div>
+  </div>
+
+  <!-- 43 -->
+  <div class="comp"><div class="comp-title">装备对比 · Compare</div><div class="comp-desc">当前 vs 新装,属性升降绿/红标注。</div>
+    <div class="showcase" style="display:block;">
+      <div class="cy-compare" style="max-width:460px;">
+        <div class="cy-compare__side"><div class="cy-icon">🔫</div><div class="cy-compare__nm">旧:量产手枪</div>
+          <div class="cy-compare__stat"><span>伤害</span><span>120</span></div><div class="cy-compare__stat"><span>暴击</span><span>5%</span></div></div>
+        <div class="cy-compare__vs">VS</div>
+        <div class="cy-compare__side"><div class="cy-icon cy-icon--legend">🔫</div><div class="cy-compare__nm" style="color:var(--cy-mag-lt)">新:军用铁马</div>
+          <div class="cy-compare__stat"><span>伤害</span><span class="cy-compare__up">185 ▲</span></div><div class="cy-compare__stat"><span>暴击</span><span class="cy-compare__up">18% ▲</span></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>cy-compare</b> &gt; <b>__side</b> + <b>__vs</b> + <b>__side</b>　·　升降:<b>cy-compare__up / __down</b></div>
+  </div>
+
+</div>
+
+<!-- modal -->
+<div class="cy-modal-mask" id="cyModal" style="display:none;">
+  <div class="cy-modal">
+    <div class="cy-modal__close" onclick="document.getElementById('cyModal').style.display='none'">✕</div>
+    <div class="cy-panel">
+      <span class="cy-bracket tl"></span><span class="cy-bracket tr"></span><span class="cy-bracket bl"></span><span class="cy-bracket br"></span>
+      <div class="cy-panel__hd">确认接入 <span class="k">// JACK IN</span></div>
+      <div class="cy-panel__bd"><p style="text-align:center;">即将接入敌方网络。检测到高强度 ICE,失败可能造成脑损伤。是否继续?</p>
+        <div style="margin-top:16px; display:flex; gap:10px; justify-content:center;">
+          <button class="cy-btn cy-btn--exec" onclick="document.getElementById('cyModal').style.display='none'">JACK IN</button>
+          <button class="cy-btn cy-btn--ghost" onclick="document.getElementById('cyModal').style.display='none'">ABORT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- drawer -->
+<div class="cy-drawer-mask" id="cyDrawerMask" onclick="cyCloseDrawer()"></div>
+<div class="cy-drawer" id="cyDrawer">
+  <div class="cy-drawer__hd">INVENTORY <span onclick="cyCloseDrawer()">✕</span></div>
+  <div class="cy-drawer__bd">
+    <div class="cy-list">
+      <div class="cy-list__item"><div class="cy-list__ic">💉</div><div class="cy-list__tx"><b>医疗针</b><small>RESTORE HP</small></div><span class="cy-list__val">×12</span></div>
+      <div class="cy-list__item"><div class="cy-list__ic">🔋</div><div class="cy-list__tx"><b>能量电芯</b><small>DECK CHARGE</small></div><span class="cy-list__val">×6</span></div>
+      <div class="cy-list__item"><div class="cy-list__ic">💾</div><div class="cy-list__tx"><b>破解程序</b><small>ICE BREAKER</small></div><span class="cy-list__val">×2</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function cyOpenDrawer(){document.getElementById('cyDrawer').classList.add('open');document.getElementById('cyDrawerMask').classList.add('open');}
+  function cyCloseDrawer(){document.getElementById('cyDrawer').classList.remove('open');document.getElementById('cyDrawerMask').classList.remove('open');}
+  function cyOpenChest(el){el.classList.add('opened');el.querySelector('.cy-chest__label').textContent='已解密!';}
+  document.querySelectorAll('[data-stepper]').forEach(s=>{const v=s.querySelector('[data-val]');let n=parseInt(v.textContent,10);
+    s.querySelector('[data-inc]').onclick=()=>{n=Math.min(99,n+1);v.textContent=n;};
+    s.querySelector('[data-dec]').onclick=()=>{n=Math.max(1,n-1);v.textContent=n;};});
+  document.querySelectorAll('#cyNav [data-nav]').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('#cyNav [data-nav]').forEach(x=>x.classList.remove('cy-nav__tab--active'));t.classList.add('cy-nav__tab--active');}));
+  const cyTB={0:'STATS // 身体 8 · 智力 12 · 反应 10 · 冷静 9 · 技术 11',1:'CYBERWARE // 已安装 6 项义体,神经容量 78%。',2:'SKILLS // 黑客精通 · 手枪专精 · 潜行大师'};
+  document.querySelectorAll('#cyTabs [data-tab]').forEach((t,i)=>t.addEventListener('click',()=>{
+    document.querySelectorAll('#cyTabs [data-tab]').forEach(x=>x.classList.remove('cy-tabs__tab--active'));t.classList.add('cy-tabs__tab--active');
+    document.getElementById('cyTabsBody').textContent=cyTB[i];}));
+  document.querySelectorAll('#cyPage [data-pg]').forEach(p=>p.addEventListener('click',()=>{
+    document.querySelectorAll('#cyPage [data-pg]').forEach(x=>x.classList.remove('cy-pagination__pg--active'));p.classList.add('cy-pagination__pg--active');}));
+  document.getElementById('cyModal').addEventListener('click',e=>{if(e.target.id==='cyModal')e.target.style.display='none';});
+  (function(){const t=document.getElementById('cyEnergyTimer');if(!t)return;let s=299;
+    setInterval(()=>{s=s<=0?299:s-1;const m=String(Math.floor(s/60)).padStart(2,'0'),ss=String(s%60).padStart(2,'0');t.textContent='+1 · '+m+':'+ss;},1000);})();
+</script>
+</body>
+</html>

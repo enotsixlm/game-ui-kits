@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iOS 休闲风 UI 组件库 · iOS Casual Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================================
+   iOS CASUAL UI KIT — reusable component library
+   ----------------------------------------------------------------------------
+   全部 ios- 前缀。改主题只改下面 :root 令牌即可。
+   招牌:柔和马卡龙 · 超大圆角 · 轻柔弥散投影 · 克制留白
+   ============================================================================ */
+:root{
+  --ios-purple:#8a7cff; --ios-purple-lt:#b3a8ff; --ios-purple-dk:#6a5ce0;
+  --ios-pink:#ff8fb8;   --ios-pink-lt:#ffb8d2;   --ios-pink-dk:#e86a99;
+  --ios-mint:#4fd8a8;   --ios-mint-lt:#84e8c4;   --ios-mint-dk:#2eb888;
+  --ios-blue:#5bb8ff;   --ios-blue-lt:#8fd0ff;   --ios-blue-dk:#3a96e0;
+  --ios-amber:#ffc24a;  --ios-amber-lt:#ffd884;  --ios-amber-dk:#e6a020;
+  --ios-red:#ff6b6b;
+
+  --ios-ink:#3a3f55;    --ios-text:#3a3f55;   --ios-dim:#8b93ad;
+  --ios-faint:#b8c0d8;  --ios-white:#ffffff;  --ios-surface:#ffffff;
+  --ios-bg1:#eef1ff;    --ios-bg2:#faf0fc;    --ios-track:#e7eaf5;
+
+  --ios-font:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --ios-round:'Quicksand','Nunito',sans-serif;
+
+  --ios-sh-sm:0 4px 12px rgba(120,130,180,.16);
+  --ios-sh:0 8px 20px rgba(120,130,180,.2);
+  --ios-sh-lg:0 14px 30px rgba(120,110,220,.28);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:var(--ios-font); color:var(--ios-text); line-height:1.5;
+  background:linear-gradient(160deg,#eef1ff 0%,#f4eefc 50%,#fdf0f6 100%);
+  background-attachment:fixed; min-height:100vh; padding:0 0 90px;
+}
+.doc{max-width:960px; margin:0 auto; padding:0 20px;}
+.doc-head{text-align:center; padding:52px 20px 26px;}
+.doc-head .eb{display:inline-block; margin-bottom:16px; font-family:var(--ios-round); font-weight:700; font-size:12px;
+  letter-spacing:.14em; color:var(--ios-purple-dk); background:#fff; padding:7px 18px; border-radius:999px;
+  box-shadow:var(--ios-sh-sm);}
+.doc-head h1{font-family:var(--ios-round); font-weight:700; font-size:clamp(28px,5vw,46px); color:var(--ios-ink);
+  letter-spacing:-.01em;}
+.doc-head h1 .g{background:linear-gradient(120deg,var(--ios-purple),var(--ios-pink));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+.doc-head p{margin-top:12px; color:var(--ios-dim); font-weight:700;}
+
+.tokens{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:22px;}
+.tok{display:flex; align-items:center; gap:7px; font-family:var(--ios-font); font-weight:800; font-size:11px; color:var(--ios-text);
+  background:#fff; padding:5px 12px; border-radius:999px; box-shadow:var(--ios-sh-sm);}
+.tok i{width:14px;height:14px; border-radius:6px;}
+
+.comp{margin-top:38px;}
+.comp-title{font-family:var(--ios-round); font-weight:700; font-size:19px; color:var(--ios-ink);
+  display:flex; align-items:center; gap:10px; margin-bottom:4px;}
+.comp-title::before{content:""; width:10px; height:10px; border-radius:4px;
+  background:linear-gradient(135deg,var(--ios-purple),var(--ios-pink));}
+.comp-desc{color:var(--ios-dim); font-weight:700; font-size:13px; margin-bottom:16px;}
+.showcase{display:flex; flex-wrap:wrap; gap:16px; align-items:center; padding:26px;
+  background:rgba(255,255,255,.6); border-radius:24px; box-shadow:var(--ios-sh-sm);}
+.classline{margin-top:10px; font-family:ui-monospace,monospace; font-size:12px; color:var(--ios-purple-dk);
+  background:#fff; border-radius:12px; padding:9px 14px; overflow-x:auto; font-weight:600; box-shadow:var(--ios-sh-sm);}
+.classline b{color:var(--ios-pink-dk);}
+
+/* ============================================================================
+   ============  COMPONENTS  ============
+   ============================================================================ */
+
+/* ----- 1. 按钮 ios-btn ----- */
+.ios-btn{font-family:var(--ios-font); font-weight:800; font-size:15px; color:#fff; cursor:pointer; user-select:none;
+  display:inline-flex; align-items:center; gap:8px; padding:13px 26px; border:none; border-radius:16px; text-align:center;
+  background:linear-gradient(135deg,var(--b1,var(--ios-purple)),var(--b2,var(--ios-purple-dk)));
+  box-shadow:0 8px 18px var(--bsh,rgba(138,124,255,.4)); transition:transform .12s, box-shadow .12s, filter .12s;}
+.ios-btn:hover{filter:brightness(1.04);}
+.ios-btn:active{transform:translateY(2px) scale(.98); box-shadow:0 4px 10px var(--bsh,rgba(138,124,255,.4));}
+.ios-btn--purple{--b1:var(--ios-purple);--b2:var(--ios-purple-dk);--bsh:rgba(138,124,255,.4);}
+.ios-btn--pink{--b1:var(--ios-pink);--b2:var(--ios-pink-dk);--bsh:rgba(255,143,184,.42);}
+.ios-btn--mint{--b1:var(--ios-mint);--b2:var(--ios-mint-dk);--bsh:rgba(79,216,168,.42);}
+.ios-btn--blue{--b1:var(--ios-blue);--b2:var(--ios-blue-dk);--bsh:rgba(91,184,255,.42);}
+.ios-btn--soft{background:#fff; color:var(--ios-purple-dk); box-shadow:var(--ios-sh-sm);}
+.ios-btn--ghost{background:transparent; color:var(--ios-dim); box-shadow:none;}
+.ios-btn--sm{font-size:13px; padding:9px 18px; border-radius:13px;}
+.ios-btn--lg{font-size:17px; padding:16px 32px; border-radius:20px;}
+.ios-btn--block{width:100%; justify-content:center;}
+.ios-btn--pill{border-radius:999px;}
+.ios-btn[disabled],.ios-btn--disabled{opacity:.5; cursor:not-allowed;}
+.ios-btn[disabled]:active,.ios-btn--disabled:active{transform:none;}
+
+/* ----- 2. 面板 ios-panel ----- */
+.ios-panel{background:var(--ios-surface); border-radius:24px; box-shadow:var(--ios-sh); overflow:hidden;}
+.ios-panel__hd{font-family:var(--ios-round); font-weight:700; font-size:17px; color:var(--ios-ink); padding:18px 20px 10px;}
+.ios-panel__bd{padding:4px 20px 20px;}
+.ios-panel__bd p{font-weight:700; font-size:13px; color:var(--ios-dim); line-height:1.6;}
+
+/* ----- 3. 弹窗 ios-modal ----- */
+.ios-modal-mask{position:fixed; inset:0; background:rgba(60,60,90,.35); backdrop-filter:blur(6px);
+  display:grid; place-items:center; z-index:100; padding:20px;}
+.ios-modal{width:min(360px,92vw); background:#fff; border-radius:28px; box-shadow:var(--ios-sh-lg); overflow:hidden;
+  text-align:center;}
+.ios-modal__hd{padding:24px 24px 6px; font-family:var(--ios-round); font-weight:700; font-size:20px; color:var(--ios-ink);}
+.ios-modal__bd{padding:4px 24px 12px; font-weight:700; font-size:13px; color:var(--ios-dim);}
+.ios-modal__ft{display:flex; border-top:1px solid #eef1f8;}
+.ios-modal__ft .ios-btn{flex:1; border-radius:0; background:none; color:var(--ios-purple-dk); box-shadow:none; padding:16px;}
+.ios-modal__ft .ios-btn:active{transform:none; background:#f7f8ff;}
+.ios-modal__ft .ios-btn + .ios-btn{border-left:1px solid #eef1f8;}
+.ios-modal__ft .ios-btn.primary{color:var(--ios-purple); font-weight:900;}
+
+/* ----- 4. 进度条 ios-bar ----- */
+.ios-bar{position:relative; height:12px; background:var(--ios-track); border-radius:999px; overflow:hidden;}
+.ios-bar__fill{height:100%; border-radius:999px;}
+.ios-bar__fill--purple{background:linear-gradient(90deg,var(--ios-purple),var(--ios-pink));}
+.ios-bar__fill--mint{background:linear-gradient(90deg,var(--ios-mint),var(--ios-blue));}
+.ios-bar__fill--amber{background:linear-gradient(90deg,var(--ios-amber),var(--ios-pink));}
+.ios-bar__cap{display:flex; justify-content:space-between; font-weight:800; font-size:12px; color:var(--ios-dim); margin-bottom:6px;}
+.ios-bar--tall{height:16px;}
+
+/* ----- 5. 货币条 ios-currency ----- */
+.ios-currency{display:inline-flex; align-items:center; gap:6px; font-weight:900; font-size:15px; color:var(--ios-text);
+  background:#fff; padding:5px 14px 5px 6px; border-radius:999px; box-shadow:var(--ios-sh-sm);}
+.ios-currency__ic{width:24px; height:24px; border-radius:50%; flex:none; display:grid; place-items:center; font-size:13px;}
+.ios-currency__ic--coin{background:#fff2cc;} .ios-currency__ic--gem{background:#e3e0ff;} .ios-currency__ic--heart{background:#ffe0e6;}
+
+/* ----- 6. 状态计量表 ios-ring(环形) ----- */
+.ios-ring{width:64px; height:64px; position:relative; flex:none;}
+.ios-ring svg{transform:rotate(-90deg);}
+.ios-ring__track{fill:none; stroke:var(--ios-track); stroke-width:7;}
+.ios-ring__val{fill:none; stroke-width:7; stroke-linecap:round;}
+.ios-ring__val--purple{stroke:url(#iosGrad1);} .ios-ring__val--mint{stroke:url(#iosGrad2);}
+.ios-ring__num{position:absolute; inset:0; display:grid; place-items:center; font-family:var(--ios-round); font-weight:700;
+  font-size:15px; color:var(--ios-ink);}
+
+/* ----- 7. 图标底座 ios-icon ----- */
+.ios-icon{width:52px; height:52px; border-radius:16px; display:grid; place-items:center; font-size:24px; position:relative;
+  background:linear-gradient(135deg,var(--ios-purple-lt),var(--ios-purple)); box-shadow:0 6px 14px rgba(138,124,255,.3);}
+.ios-icon--pink{background:linear-gradient(135deg,var(--ios-pink-lt),var(--ios-pink)); box-shadow:0 6px 14px rgba(255,143,184,.3);}
+.ios-icon--mint{background:linear-gradient(135deg,var(--ios-mint-lt),var(--ios-mint)); box-shadow:0 6px 14px rgba(79,216,168,.3);}
+.ios-icon--amber{background:linear-gradient(135deg,var(--ios-amber-lt),var(--ios-amber)); box-shadow:0 6px 14px rgba(255,194,74,.3);}
+.ios-icon__cd{position:absolute; inset:0; background:rgba(58,63,85,.55); border-radius:16px; display:grid; place-items:center;
+  font-family:var(--ios-round); font-weight:700; font-size:16px; color:#fff;}
+
+/* ----- 8. 卡片 ios-card ----- */
+.ios-card{width:150px; background:#fff; border-radius:20px; overflow:hidden; cursor:pointer; box-shadow:var(--ios-sh);
+  transition:transform .12s, box-shadow .12s; position:relative;}
+.ios-card:hover{transform:translateY(-4px); box-shadow:var(--ios-sh-lg);}
+.ios-card__art{height:100px; display:grid; place-items:center; font-size:46px; position:relative;
+  background:linear-gradient(135deg,var(--c1,var(--ios-purple-lt)),var(--c2,var(--ios-pink)));}
+.ios-card--mint{--c1:var(--ios-mint-lt);--c2:var(--ios-blue);} .ios-card--amber{--c1:var(--ios-amber-lt);--c2:var(--ios-pink);}
+.ios-card--blue{--c1:var(--ios-blue-lt);--c2:var(--ios-purple);}
+.ios-card__tag{position:absolute; top:8px; left:8px; font-weight:800; font-size:9px; color:var(--ios-purple-dk);
+  background:rgba(255,255,255,.9); padding:3px 9px; border-radius:999px;}
+.ios-card__name{font-family:var(--ios-round); font-weight:700; font-size:14px; color:var(--ios-ink); text-align:center; padding:10px 6px 4px;}
+.ios-card__foot{padding:0 12px 12px;}
+
+/* ----- 9. 列表项 ios-list ----- */
+.ios-list{background:#fff; border-radius:18px; overflow:hidden; box-shadow:var(--ios-sh-sm);}
+.ios-list__item{display:flex; align-items:center; gap:12px; padding:12px 16px; cursor:pointer; transition:.1s;}
+.ios-list__item:not(:last-child){border-bottom:1px solid #f0f2fa;}
+.ios-list__item:hover{background:#faf9ff;}
+.ios-list__ic{width:38px; height:38px; border-radius:12px; flex:none; display:grid; place-items:center; font-size:18px;
+  background:linear-gradient(135deg,var(--ios-purple-lt),var(--ios-purple)); color:#fff;}
+.ios-list__tx{flex:1;}
+.ios-list__tx b{font-family:var(--ios-round); font-weight:700; font-size:14px; color:var(--ios-ink); display:block;}
+.ios-list__tx small{font-weight:700; font-size:12px; color:var(--ios-dim);}
+.ios-list__val{font-weight:900; font-size:14px; color:var(--ios-purple-dk);}
+.ios-list__chev{color:var(--ios-faint); font-size:16px;}
+
+/* ----- 10. 顶部 HUD ios-hud ----- */
+.ios-hud{display:flex; align-items:center; gap:12px; padding:14px 16px; background:#fff; border-radius:20px; box-shadow:var(--ios-sh-sm);}
+.ios-hud__ava{width:44px; height:44px; border-radius:16px; flex:none; display:grid; place-items:center; font-size:22px;
+  background:linear-gradient(135deg,var(--ios-purple-lt),var(--ios-pink));}
+.ios-hud__who b{font-family:var(--ios-round); font-weight:700; font-size:15px; color:var(--ios-ink); display:block;}
+.ios-hud__who small{font-weight:700; font-size:11px; color:var(--ios-dim);}
+.ios-hud__spacer{flex:1;}
+
+/* ----- 11. 导航栏 ios-nav ----- */
+.ios-nav{display:flex; padding:8px 8px 10px; background:rgba(255,255,255,.85); backdrop-filter:blur(10px);
+  border-radius:22px; box-shadow:var(--ios-sh);}
+.ios-nav__tab{flex:1; text-align:center; font-weight:800; font-size:11px; color:var(--ios-faint); cursor:pointer;
+  padding-top:4px; transition:.12s;}
+.ios-nav__tab .i{display:block; font-size:22px; margin-bottom:2px; filter:grayscale(.5); opacity:.55; transition:.12s;}
+.ios-nav__tab--active{color:var(--ios-purple);}
+.ios-nav__tab--active .i{filter:none; opacity:1; transform:translateY(-2px);}
+
+/* ----- 12. 标签页 ios-tabs(分段控件) ----- */
+.ios-tabs{display:inline-flex; background:var(--ios-track); border-radius:14px; padding:4px; gap:2px;}
+.ios-tabs__tab{font-weight:800; font-size:13px; color:var(--ios-dim); padding:8px 18px; cursor:pointer; border-radius:11px; transition:.15s;}
+.ios-tabs__tab--active{color:var(--ios-ink); background:#fff; box-shadow:var(--ios-sh-sm);}
+
+/* ----- 13. 输入框 ios-input ----- */
+.ios-input{font-family:var(--ios-font); font-weight:700; font-size:14px; color:var(--ios-text); background:var(--ios-track);
+  border:2px solid transparent; border-radius:14px; padding:12px 16px; width:100%; outline:none; transition:.15s;}
+.ios-input::placeholder{color:var(--ios-faint);}
+.ios-input:focus{background:#fff; border-color:var(--ios-purple); box-shadow:0 0 0 4px rgba(138,124,255,.15);}
+.ios-field{position:relative;}
+.ios-field__ic{position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:15px; color:var(--ios-dim);}
+.ios-field .ios-input{padding-left:40px;}
+
+/* ----- 14. 下拉选择 ios-select ----- */
+.ios-select{position:relative; display:inline-block;}
+.ios-select select{appearance:none; -webkit-appearance:none; font-family:var(--ios-font); font-weight:700; font-size:14px;
+  color:var(--ios-text); background:#fff; border:none; border-radius:14px; padding:12px 40px 12px 16px; cursor:pointer;
+  outline:none; box-shadow:var(--ios-sh-sm);}
+.ios-select::after{content:"⌄"; position:absolute; right:16px; top:42%; transform:translateY(-50%); color:var(--ios-purple);
+  pointer-events:none; font-weight:900; font-size:16px;}
+
+/* ----- 15. 开关 ios-switch ----- */
+.ios-switch{position:relative; display:inline-flex; align-items:center; cursor:pointer; user-select:none;}
+.ios-switch input{position:absolute; opacity:0; pointer-events:none;}
+.ios-switch__track{width:52px; height:31px; border-radius:999px; background:var(--ios-track); position:relative; transition:.2s;}
+.ios-switch__track::before{content:""; position:absolute; top:3px; left:3px; width:25px; height:25px; border-radius:50%;
+  background:#fff; box-shadow:0 2px 5px rgba(0,0,0,.2); transition:.2s;}
+.ios-switch input:checked + .ios-switch__track{background:var(--ios-mint);}
+.ios-switch input:checked + .ios-switch__track::before{left:24px;}
+
+/* ----- 16. 滑条 ios-slider ----- */
+.ios-slider{-webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:999px; background:var(--ios-track);
+  outline:none; cursor:pointer;}
+.ios-slider::-webkit-slider-thumb{-webkit-appearance:none; width:26px; height:26px; border-radius:50%; background:#fff;
+  box-shadow:0 3px 8px rgba(0,0,0,.2); cursor:pointer; border:1px solid #eef1f8;}
+.ios-slider::-moz-range-thumb{width:26px; height:26px; border-radius:50%; background:#fff; border:1px solid #eef1f8;
+  box-shadow:0 3px 8px rgba(0,0,0,.2); cursor:pointer;}
+
+/* ----- 17. 徽章 ios-badge ----- */
+.ios-badge{display:inline-grid; place-items:center; min-width:20px; height:20px; padding:0 6px; border-radius:999px;
+  font-weight:900; font-size:11px; color:#fff; background:var(--ios-red); box-shadow:0 2px 6px rgba(255,107,107,.4);}
+.ios-badge--purple{background:var(--ios-purple); box-shadow:0 2px 6px rgba(138,124,255,.4);}
+.ios-badge-wrap{position:relative; display:inline-flex;}
+.ios-badge-wrap > .ios-badge{position:absolute; top:-6px; right:-6px;}
+
+/* ----- 18. 角标 ios-ribbon ----- */
+.ios-ribbon{position:absolute; top:10px; right:10px; font-weight:800; font-size:10px; color:#fff;
+  background:linear-gradient(135deg,var(--ios-pink),var(--ios-purple)); padding:4px 12px; border-radius:999px; z-index:3;
+  box-shadow:0 3px 8px rgba(138,124,255,.4);}
+.ios-ribbon--amber{background:linear-gradient(135deg,var(--ios-amber),var(--ios-pink));}
+
+/* ----- 19. 标签 ios-tag ----- */
+.ios-tag{display:inline-flex; align-items:center; gap:5px; font-weight:800; font-size:11px; color:var(--ios-purple-dk);
+  background:#efecff; padding:4px 11px; border-radius:999px;}
+.ios-tag--pink{color:var(--ios-pink-dk); background:#ffe9f1;}
+.ios-tag--mint{color:var(--ios-mint-dk); background:#dcf7ee;}
+.ios-tag--amber{color:#a87500; background:#fff2d6;}
+
+/* ----- 20. Tooltip ios-tooltip ----- */
+.ios-tooltip{position:relative; display:inline-flex; cursor:help; border-bottom:2px dotted var(--ios-faint);}
+.ios-tooltip::after{content:attr(data-tip); position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%);
+  font-weight:700; font-size:12px; color:#fff; white-space:nowrap; background:var(--ios-ink); border-radius:12px; padding:8px 12px;
+  opacity:0; pointer-events:none; transition:.15s; z-index:20; box-shadow:var(--ios-sh);}
+.ios-tooltip::before{content:""; position:absolute; bottom:calc(100% + 4px); left:50%; transform:translateX(-50%);
+  border:6px solid transparent; border-top-color:var(--ios-ink); opacity:0; transition:.15s; z-index:20;}
+.ios-tooltip:hover::after,.ios-tooltip:hover::before{opacity:1;}
+
+/* ----- 21. Toast ios-toast ----- */
+.ios-toast{display:flex; align-items:center; gap:12px; font-weight:700; font-size:13px; color:var(--ios-text);
+  background:#fff; border-radius:18px; padding:12px 16px; max-width:340px; box-shadow:var(--ios-sh);}
+.ios-toast__ic{width:36px; height:36px; border-radius:12px; flex:none; display:grid; place-items:center; font-size:18px; color:#fff;
+  background:linear-gradient(135deg,var(--ios-mint-lt),var(--ios-mint));}
+.ios-toast--danger .ios-toast__ic{background:linear-gradient(135deg,var(--ios-pink),var(--ios-red));}
+.ios-toast--info .ios-toast__ic{background:linear-gradient(135deg,var(--ios-blue-lt),var(--ios-blue));}
+.ios-toast b{font-family:var(--ios-round); font-weight:700; font-size:13px; color:var(--ios-ink); display:block;}
+
+/* ----- 22. 对话气泡 ios-bubble ----- */
+.ios-bubble{position:relative; font-weight:700; font-size:13px; color:var(--ios-text); max-width:280px;
+  background:linear-gradient(135deg,var(--ios-purple),var(--ios-purple-dk)); color:#fff; padding:12px 16px;
+  border-radius:20px 20px 20px 6px; box-shadow:var(--ios-sh);}
+.ios-bubble__who{font-family:var(--ios-round); font-weight:700; font-size:11px; opacity:.85; margin-bottom:4px;}
+
+/* ----- 23. 加载 ios-spinner ----- */
+.ios-spinner{width:36px; height:36px; border-radius:50%; border:4px solid var(--ios-track);
+  border-top-color:var(--ios-purple); animation:ios-spin .7s linear infinite;}
+@keyframes ios-spin{to{transform:rotate(360deg);}}
+.ios-dots{display:inline-flex; gap:6px;}
+.ios-dots i{width:9px; height:9px; border-radius:50%; background:var(--ios-purple); animation:ios-bounce 1.2s ease-in-out infinite;}
+.ios-dots i:nth-child(2){animation-delay:.15s; background:var(--ios-pink);}
+.ios-dots i:nth-child(3){animation-delay:.3s; background:var(--ios-mint);}
+@keyframes ios-bounce{0%,60%,100%{transform:translateY(0); opacity:.5}30%{transform:translateY(-8px); opacity:1}}
+
+/* ----- 24. 头像组 ios-avatars ----- */
+.ios-avatars{display:inline-flex;}
+.ios-avatars__a{width:38px; height:38px; border-radius:50%; display:grid; place-items:center; font-size:18px; margin-left:-10px;
+  background:linear-gradient(135deg,var(--ios-purple-lt),var(--ios-pink)); border:3px solid #fff; box-shadow:var(--ios-sh-sm);}
+.ios-avatars__a:first-child{margin-left:0;}
+.ios-avatars__more{width:38px; height:38px; border-radius:50%; display:grid; place-items:center; margin-left:-10px;
+  font-weight:900; font-size:11px; color:var(--ios-purple-dk); background:#efecff; border:3px solid #fff; box-shadow:var(--ios-sh-sm);}
+
+/* ----- 25. 星级评分 ios-stars ----- */
+.ios-stars{display:inline-flex; gap:4px; font-size:20px; color:var(--ios-track);}
+.ios-stars .on{color:var(--ios-amber);}
+
+/* ----- 26. 分隔线 ios-divider ----- */
+.ios-divider{display:flex; align-items:center; gap:12px; margin:6px 0; color:var(--ios-faint);}
+.ios-divider::before,.ios-divider::after{content:""; height:1.5px; flex:1; border-radius:999px; background:#e7eaf5;}
+.ios-divider__mark{font-weight:800; font-size:12px; color:var(--ios-dim);}
+
+/* ----- 27. 空状态 ios-empty ----- */
+.ios-empty{text-align:center; padding:32px 20px; color:var(--ios-dim);}
+.ios-empty__ic{width:80px; height:80px; margin:0 auto; border-radius:28px; display:grid; place-items:center; font-size:40px;
+  background:linear-gradient(135deg,#f0edff,#ffeef6);}
+.ios-empty__tt{font-family:var(--ios-round); font-weight:700; font-size:16px; color:var(--ios-ink); margin:14px 0 4px;}
+.ios-empty__ds{font-weight:700; font-size:12px;}
+
+/* ----- 28. 步进器 ios-stepper ----- */
+.ios-stepper{display:inline-flex; align-items:center; background:var(--ios-track); border-radius:14px; padding:3px;}
+.ios-stepper__btn{width:34px; height:34px; border-radius:11px; font-family:var(--ios-round); font-weight:700; font-size:18px;
+  color:var(--ios-purple-dk); background:#fff; border:none; cursor:pointer; display:grid; place-items:center;
+  box-shadow:var(--ios-sh-sm); transition:.1s;}
+.ios-stepper__btn:active{transform:scale(.92);}
+.ios-stepper__val{min-width:44px; text-align:center; font-weight:900; font-size:16px; color:var(--ios-ink);}
+
+/* ----- 29. 面包屑 ios-breadcrumb ----- */
+.ios-breadcrumb{display:flex; align-items:center; gap:7px; font-weight:700; font-size:13px; flex-wrap:wrap;}
+.ios-breadcrumb a{color:var(--ios-dim); text-decoration:none; cursor:pointer;}
+.ios-breadcrumb a:hover{color:var(--ios-purple);}
+.ios-breadcrumb__sep{color:var(--ios-faint);}
+.ios-breadcrumb__cur{color:var(--ios-ink); font-weight:800;}
+
+/* ----- 30. 手风琴 ios-accordion ----- */
+.ios-accordion{background:#fff; border-radius:18px; overflow:hidden; box-shadow:var(--ios-sh-sm);}
+.ios-accordion details:not(:last-child){border-bottom:1px solid #f0f2fa;}
+.ios-accordion summary{list-style:none; cursor:pointer; padding:14px 16px; font-family:var(--ios-round); font-weight:700; font-size:14px;
+  color:var(--ios-ink); display:flex; align-items:center; justify-content:space-between;}
+.ios-accordion summary::-webkit-details-marker{display:none;}
+.ios-accordion summary::after{content:"⌄"; color:var(--ios-faint); font-size:16px; font-weight:900; transition:.2s;}
+.ios-accordion details[open] summary::after{transform:rotate(180deg);}
+.ios-accordion__bd{padding:0 16px 14px; font-weight:700; font-size:12px; color:var(--ios-dim); line-height:1.6;}
+
+/* ----- 31. 侧边抽屉 ios-drawer ----- */
+.ios-drawer-mask{position:fixed; inset:0; background:rgba(60,60,90,.3); backdrop-filter:blur(3px); z-index:110;
+  opacity:0; pointer-events:none; transition:.2s;}
+.ios-drawer-mask.open{opacity:1; pointer-events:auto;}
+.ios-drawer{position:fixed; top:0; right:0; bottom:0; width:min(300px,86vw); z-index:120; background:var(--ios-bg1);
+  box-shadow:-8px 0 30px rgba(60,60,90,.2); transform:translateX(100%); transition:.24s cubic-bezier(.3,.8,.3,1);
+  display:flex; flex-direction:column;}
+.ios-drawer.open{transform:translateX(0);}
+.ios-drawer__hd{font-family:var(--ios-round); font-weight:700; font-size:17px; color:var(--ios-ink); padding:18px;
+  display:flex; align-items:center; justify-content:space-between;}
+.ios-drawer__hd span{cursor:pointer; color:var(--ios-dim); font-size:20px;}
+.ios-drawer__bd{padding:0 14px 14px; overflow-y:auto;}
+
+/* ----- 32. 数据表格 ios-table ----- */
+.ios-table{width:100%; border-collapse:collapse; font-weight:700; font-size:13px; background:#fff; border-radius:16px; overflow:hidden;
+  box-shadow:var(--ios-sh-sm);}
+.ios-table thead th{font-family:var(--ios-round); font-weight:700; font-size:11px; color:var(--ios-dim); text-align:left;
+  padding:12px 14px; background:#f7f8ff;}
+.ios-table tbody td{padding:12px 14px; color:var(--ios-text); border-top:1px solid #f0f2fa;}
+.ios-table tbody tr:hover{background:#faf9ff;}
+.ios-table__rank{font-family:var(--ios-round); font-weight:700; color:var(--ios-purple);}
+
+/* ----- 33. 分页器 ios-pagination ----- */
+.ios-pagination{display:inline-flex; gap:6px;}
+.ios-pagination__pg{min-width:34px; height:34px; padding:0 6px; display:grid; place-items:center; cursor:pointer;
+  font-weight:800; font-size:13px; color:var(--ios-dim); background:#fff; border-radius:11px; box-shadow:var(--ios-sh-sm); transition:.12s;}
+.ios-pagination__pg:hover{color:var(--ios-ink);}
+.ios-pagination__pg--active{color:#fff; background:linear-gradient(135deg,var(--ios-purple),var(--ios-purple-dk));
+  box-shadow:0 4px 10px rgba(138,124,255,.4);}
+.ios-pagination__pg--dis{opacity:.4; cursor:not-allowed;}
+
+/* ----- 34. 时间轴 ios-timeline ----- */
+.ios-timeline{position:relative; padding-left:26px;}
+.ios-timeline::before{content:""; position:absolute; left:7px; top:8px; bottom:8px; width:2px; background:#e7eaf5;}
+.ios-timeline__item{position:relative; padding-bottom:16px;}
+.ios-timeline__item:last-child{padding-bottom:0;}
+.ios-timeline__item::before{content:""; position:absolute; left:-23px; top:3px; width:14px; height:14px; border-radius:50%;
+  background:#fff; border:3px solid var(--ios-faint);}
+.ios-timeline__item--done::before{background:var(--ios-mint); border-color:var(--ios-mint);}
+.ios-timeline__item--now::before{background:var(--ios-purple); border-color:var(--ios-purple); box-shadow:0 0 0 4px rgba(138,124,255,.2);}
+.ios-timeline__t{font-family:var(--ios-round); font-weight:700; font-size:13px; color:var(--ios-ink);}
+.ios-timeline__d{font-weight:700; font-size:11px; color:var(--ios-dim); margin-top:2px;}
+
+/* ----- 35. 树形菜单 ios-tree ----- */
+.ios-tree{font-weight:700; font-size:13px;}
+.ios-tree details{margin-left:4px;}
+.ios-tree summary{list-style:none; cursor:pointer; padding:6px 0; color:var(--ios-ink); display:flex; align-items:center; gap:6px;}
+.ios-tree summary::-webkit-details-marker{display:none;}
+.ios-tree summary::before{content:"›"; color:var(--ios-purple); font-size:16px; font-weight:900; transition:.15s;}
+.ios-tree details[open] > summary::before{transform:rotate(90deg);}
+.ios-tree summary:hover{color:var(--ios-purple);}
+.ios-tree__leaf{padding:6px 0 6px 22px; color:var(--ios-dim); cursor:pointer;}
+.ios-tree__leaf:hover{color:var(--ios-ink);}
+.ios-tree details > *:not(summary){margin-left:14px; border-left:1.5px solid #eef1f8; padding-left:6px;}
+
+/* ----- 36. 能量条倒计时 ios-energy ----- */
+.ios-energy{display:flex; align-items:center; gap:12px;}
+.ios-energy__orb{width:32px; height:32px; border-radius:12px; display:grid; place-items:center; font-size:15px; flex:none; color:#fff;
+  background:linear-gradient(135deg,var(--ios-pink-lt),var(--ios-pink));}
+.ios-energy__body{flex:1;}
+.ios-energy__top{display:flex; justify-content:space-between; font-weight:800; font-size:11px; color:var(--ios-dim); margin-bottom:4px;}
+.ios-energy__timer{color:var(--ios-pink-dk); font-variant-numeric:tabular-nums;}
+.ios-energy .ios-bar__fill{background:linear-gradient(90deg,var(--ios-pink),var(--ios-purple));}
+
+/* ----- 37. 签到日历 ios-calendar ----- */
+.ios-calendar{display:grid; grid-template-columns:repeat(7,1fr); gap:8px;}
+.ios-calendar__day{aspect-ratio:1; border-radius:16px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; font-weight:800; font-size:10px; color:var(--ios-dim); background:#fff; box-shadow:var(--ios-sh-sm); position:relative;}
+.ios-calendar__day .r{font-size:16px;}
+.ios-calendar__day--done{background:linear-gradient(135deg,#dcf7ee,#e3f5ff);}
+.ios-calendar__day--done::after{content:"✓"; position:absolute; inset:0; display:grid; place-items:center; border-radius:16px;
+  background:rgba(79,216,168,.85); color:#fff; font-size:22px; font-weight:900;}
+.ios-calendar__day--today{background:linear-gradient(135deg,var(--ios-purple-lt),var(--ios-purple)); color:#fff;
+  box-shadow:0 6px 14px rgba(138,124,255,.4);}
+.ios-calendar__day--today .r{filter:brightness(1.2);}
+
+/* ----- 38. 任务链 ios-questchain ----- */
+.ios-questchain{display:flex; align-items:center;}
+.ios-questchain__node{width:42px; height:42px; border-radius:16px; display:grid; place-items:center; font-size:18px; flex:none; z-index:2;
+  background:#fff; box-shadow:var(--ios-sh-sm); color:var(--ios-dim);}
+.ios-questchain__node--done{background:linear-gradient(135deg,var(--ios-mint-lt),var(--ios-mint)); color:#fff;}
+.ios-questchain__node--now{background:linear-gradient(135deg,var(--ios-purple-lt),var(--ios-purple)); color:#fff;
+  box-shadow:0 6px 14px rgba(138,124,255,.4);}
+.ios-questchain__link{height:3px; flex:1; min-width:16px; border-radius:999px; background:#e7eaf5;}
+.ios-questchain__link--done{background:var(--ios-mint);}
+
+/* ----- 39. 成就解锁 ios-achievement ----- */
+.ios-achievement{display:flex; align-items:center; gap:14px; padding:14px 16px; background:#fff; border-radius:18px; box-shadow:var(--ios-sh-sm);}
+.ios-achievement__medal{width:52px; height:52px; border-radius:18px; display:grid; place-items:center; font-size:26px; flex:none; color:#fff;
+  background:linear-gradient(135deg,var(--ios-amber-lt),var(--ios-amber)); box-shadow:0 6px 14px rgba(255,194,74,.35);}
+.ios-achievement__tx b{font-family:var(--ios-round); font-weight:700; font-size:14px; color:var(--ios-ink); display:block;}
+.ios-achievement__tx small{font-weight:700; font-size:11px; color:var(--ios-dim);}
+.ios-achievement--locked{opacity:.6;}
+.ios-achievement--locked .ios-achievement__medal{background:var(--ios-track); color:var(--ios-faint); box-shadow:none;}
+
+/* ----- 40. 翻牌 ios-flipcard ----- */
+.ios-flipcard{width:120px; height:168px; perspective:900px; cursor:pointer;}
+.ios-flipcard__inner{position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .5s;}
+.ios-flipcard.flipped .ios-flipcard__inner{transform:rotateY(180deg);}
+.ios-flipcard__face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  border-radius:20px; display:grid; place-items:center; overflow:hidden; box-shadow:var(--ios-sh);}
+.ios-flipcard__back{background:linear-gradient(135deg,var(--ios-purple),var(--ios-pink)); color:#fff; font-size:34px;}
+.ios-flipcard__front{transform:rotateY(180deg); flex-direction:column; background:linear-gradient(135deg,var(--ios-mint-lt),var(--ios-blue));}
+.ios-flipcard__front .em{font-size:46px;} .ios-flipcard__front .nm{font-family:var(--ios-round); font-weight:700; font-size:13px; color:#fff; margin-top:6px;}
+
+/* ----- 41. 开礼盒 ios-chest ----- */
+.ios-chest{width:120px; text-align:center; cursor:pointer; user-select:none;}
+.ios-chest__box{width:78px; height:78px; margin:0 auto; border-radius:22px; display:grid; place-items:center; font-size:40px;
+  background:linear-gradient(135deg,var(--ios-pink-lt),var(--ios-pink)); box-shadow:0 8px 18px rgba(255,143,184,.4); transition:.2s;}
+.ios-chest:hover .ios-chest__box{transform:translateY(-4px) rotate(-3deg);}
+.ios-chest.opened .ios-chest__box{animation:ios-pop .5s ease;}
+@keyframes ios-pop{0%{transform:scale(1)}40%{transform:scale(1.25) rotate(6deg)}100%{transform:scale(1)}}
+.ios-chest__glow{height:0; overflow:hidden; opacity:0; transition:.3s;}
+.ios-chest.opened .ios-chest__glow{height:auto; opacity:1; padding-top:8px;}
+.ios-chest__label{font-family:var(--ios-round); font-weight:700; font-size:12px; color:var(--ios-ink); margin-top:8px;}
+
+/* ----- 42. 背包网格 ios-invgrid ----- */
+.ios-invgrid{display:grid; grid-template-columns:repeat(5,1fr); gap:8px; padding:12px; background:#fff; border-radius:20px;
+  width:max-content; box-shadow:var(--ios-sh-sm);}
+.ios-invgrid__cell{width:46px; height:46px; border-radius:14px; display:grid; place-items:center; font-size:22px; position:relative;
+  background:#f4f5fb;}
+.ios-invgrid__cell:hover{background:#efecff;}
+.ios-invgrid__cell--rare{background:linear-gradient(135deg,#e3f0ff,#dcf7ee);}
+.ios-invgrid__cell--legend{background:linear-gradient(135deg,#f0edff,#ffeef6);}
+.ios-invgrid__cell--empty{background:#f7f8fc; opacity:.6;}
+.ios-invgrid__qty{position:absolute; bottom:2px; right:4px; font-weight:900; font-size:10px; color:var(--ios-dim);}
+
+/* ----- 43. 装备对比 ios-compare ----- */
+.ios-compare{display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center; background:#fff; border-radius:20px;
+  padding:16px; box-shadow:var(--ios-sh-sm);}
+.ios-compare__side{text-align:center;}
+.ios-compare__side .ios-icon{margin:0 auto 10px;}
+.ios-compare__nm{font-family:var(--ios-round); font-weight:700; font-size:12px; color:var(--ios-ink); margin-bottom:8px;}
+.ios-compare__stat{display:flex; justify-content:space-between; font-weight:700; font-size:11px; padding:4px 0; border-bottom:1px solid #f0f2fa;}
+.ios-compare__stat span:first-child{color:var(--ios-dim);}
+.ios-compare__up{color:var(--ios-mint-dk);} .ios-compare__down{color:var(--ios-red);}
+.ios-compare__vs{font-family:var(--ios-round); font-weight:700; font-size:15px; color:var(--ios-purple);}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important;}}
+</style>
+</head>
+<body>
+
+<!-- svg gradient defs for rings -->
+<svg width="0" height="0" style="position:absolute;"><defs>
+  <linearGradient id="iosGrad1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a7cff"/><stop offset="1" stop-color="#ff8fb8"/></linearGradient>
+  <linearGradient id="iosGrad2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4fd8a8"/><stop offset="1" stop-color="#5bb8ff"/></linearGradient>
+</defs></svg>
+
+<div class="doc-head">
+  <span class="eb">iOS CASUAL · SOFT UI KIT</span>
+  <h1>iOS 休闲风 <span class="g">UI 组件库</span></h1>
+  <p>43 个组件 · ios- 前缀 · 柔和马卡龙 + 超大圆角 + 轻柔投影</p>
+  <div class="tokens">
+    <span class="tok"><i style="background:#8a7cff"></i>--ios-purple</span>
+    <span class="tok"><i style="background:#ff8fb8"></i>--ios-pink</span>
+    <span class="tok"><i style="background:#4fd8a8"></i>--ios-mint</span>
+    <span class="tok"><i style="background:#5bb8ff"></i>--ios-blue</span>
+    <span class="tok"><i style="background:#ffc24a"></i>--ios-amber</span>
+  </div>
+</div>
+
+<div class="doc">
+
+  <!-- 1 -->
+  <div class="comp"><div class="comp-title">按钮 · Button</div><div class="comp-desc">柔和渐变钮,紫/粉/薄荷/蓝,轻投影,按下微缩。soft/ghost/pill 变体。</div>
+    <div class="showcase">
+      <button class="ios-btn ios-btn--purple ios-btn--lg">开始游戏</button>
+      <button class="ios-btn ios-btn--pink">收集</button>
+      <button class="ios-btn ios-btn--mint">确认</button>
+      <button class="ios-btn ios-btn--soft">软按钮</button>
+      <button class="ios-btn ios-btn--purple ios-btn--pill ios-btn--sm">胶囊</button>
+      <button class="ios-btn ios-btn--ghost">取消</button>
+      <button class="ios-btn ios-btn--purple" disabled>已锁定</button>
+    </div>
+    <div class="classline"><b>ios-btn</b> ( <b>--purple/--pink/--mint/--blue · --soft/--ghost/--pill/--sm/--lg/--block</b> )</div>
+  </div>
+
+  <!-- 2 -->
+  <div class="comp"><div class="comp-title">面板 · Panel</div><div class="comp-desc">纯白卡片,超大圆角,轻柔弥散投影。</div>
+    <div class="showcase">
+      <div class="ios-panel" style="width:300px">
+        <div class="ios-panel__hd">每日挑战</div>
+        <div class="ios-panel__bd"><p>完成 3 个关卡即可领取今日宝箱奖励,连续登录还有额外惊喜哦!</p>
+          <div style="margin-top:14px; display:flex; gap:10px;">
+            <button class="ios-btn ios-btn--purple ios-btn--sm">去挑战</button>
+            <button class="ios-btn ios-btn--soft ios-btn--sm">稍后</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>ios-panel</b> &gt; <b>ios-panel__hd</b> + <b>ios-panel__bd</b></div>
+  </div>
+
+  <!-- 3 -->
+  <div class="comp"><div class="comp-title">弹窗 · Modal</div><div class="comp-desc">居中卡片 + 底部分段按钮(iOS Alert 风)。点击预览。</div>
+    <div class="showcase"><button class="ios-btn ios-btn--purple" onclick="document.getElementById('iosModal').style.display='grid'">打开弹窗</button></div>
+    <div class="classline"><b>ios-modal-mask</b> &gt; <b>ios-modal</b> ( <b>__hd</b> + <b>__bd</b> + <b>__ft</b> &gt; ios-btn )</div>
+  </div>
+
+  <!-- 4 -->
+  <div class="comp"><div class="comp-title">进度条 · Bar</div><div class="comp-desc">圆头渐变条,紫粉/薄荷蓝/琥珀三色,可加 cap 标题。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch;">
+      <div><div class="ios-bar__cap"><span>今日进度</span><span>2 / 3</span></div><div class="ios-bar ios-bar--tall"><div class="ios-bar__fill ios-bar__fill--purple" style="width:66%"></div></div></div>
+      <div><div class="ios-bar__cap"><span>能量</span><span>90%</span></div><div class="ios-bar ios-bar--tall"><div class="ios-bar__fill ios-bar__fill--mint" style="width:90%"></div></div></div>
+      <div><div class="ios-bar__cap"><span>经验</span><span>45%</span></div><div class="ios-bar ios-bar--tall"><div class="ios-bar__fill ios-bar__fill--amber" style="width:45%"></div></div></div>
+    </div>
+    <div class="classline"><b>ios-bar__cap</b> + <b>ios-bar</b> &gt; <b>ios-bar__fill --purple/--mint/--amber</b></div>
+  </div>
+
+  <!-- 5 -->
+  <div class="comp"><div class="comp-title">货币条 · Currency</div><div class="comp-desc">金币/宝石/爱心,白底柔和胶囊。</div>
+    <div class="showcase">
+      <span class="ios-currency"><span class="ios-currency__ic ios-currency__ic--coin">🪙</span>1,240</span>
+      <span class="ios-currency"><span class="ios-currency__ic ios-currency__ic--gem">💎</span>86</span>
+      <span class="ios-currency"><span class="ios-currency__ic ios-currency__ic--heart">❤️</span>5</span>
+    </div>
+    <div class="classline"><b>ios-currency</b> &gt; <b>ios-currency__ic --coin/--gem/--heart</b> + 数值</div>
+  </div>
+
+  <!-- 6 -->
+  <div class="comp"><div class="comp-title">状态计量表 · Ring</div><div class="comp-desc">环形 SVG 进度(渐变描边),stroke-dashoffset 控制百分比。</div>
+    <div class="showcase" style="gap:30px;">
+      <div class="ios-ring"><svg width="64" height="64" viewBox="0 0 64 64"><circle class="ios-ring__track" cx="32" cy="32" r="27"/><circle class="ios-ring__val ios-ring__val--purple" cx="32" cy="32" r="27" stroke-dasharray="170" stroke-dashoffset="48"/></svg><div class="ios-ring__num">72%</div></div>
+      <div class="ios-ring"><svg width="64" height="64" viewBox="0 0 64 64"><circle class="ios-ring__track" cx="32" cy="32" r="27"/><circle class="ios-ring__val ios-ring__val--mint" cx="32" cy="32" r="27" stroke-dasharray="170" stroke-dashoffset="90"/></svg><div class="ios-ring__num">48%</div></div>
+    </div>
+    <div class="classline"><b>ios-ring</b> &gt; svg(<b>ios-ring__track</b> + <b>ios-ring__val --purple/--mint</b>) + <b>ios-ring__num</b></div>
+  </div>
+
+  <!-- 7 -->
+  <div class="comp"><div class="comp-title">图标底座 · Icon</div><div class="comp-desc">圆角渐变图标,紫/粉/薄荷/琥珀 + 冷却遮罩。</div>
+    <div class="showcase">
+      <div class="ios-icon">🎮</div>
+      <div class="ios-icon ios-icon--pink">🎁</div>
+      <div class="ios-icon ios-icon--mint">🧩</div>
+      <div class="ios-icon ios-icon--amber">⭐<div class="ios-icon__cd">3</div></div>
+    </div>
+    <div class="classline"><b>ios-icon</b> ( <b>--pink/--mint/--amber</b> )　·　冷却:<b>ios-icon__cd</b></div>
+  </div>
+
+  <!-- 8 -->
+  <div class="comp"><div class="comp-title">卡片 · Card</div><div class="comp-desc">柔和渐变卡,含标签、名称、底部插槽,悬停上浮。</div>
+    <div class="showcase">
+      <div class="ios-card"><div class="ios-card__art"><span class="ios-card__tag">角色</span>🐣</div><div class="ios-card__name">小黄鸡</div><div class="ios-card__foot"><div class="ios-bar"><div class="ios-bar__fill ios-bar__fill--purple" style="width:80%"></div></div></div></div>
+      <div class="ios-card ios-card--mint"><div class="ios-card__art"><span class="ios-card__tag">道具</span>🍬</div><div class="ios-card__name">彩虹糖</div><div class="ios-card__foot"><div class="ios-bar"><div class="ios-bar__fill ios-bar__fill--mint" style="width:55%"></div></div></div></div>
+    </div>
+    <div class="classline"><b>ios-card</b> ( <b>--mint/--amber/--blue</b> ) &gt; <b>__art</b>(含 <b>__tag</b>) + <b>__name</b> + <b>__foot</b></div>
+  </div>
+
+  <!-- 9 -->
+  <div class="comp"><div class="comp-title">列表项 · List</div><div class="comp-desc">柔和行,左图标 + 主副标题 + 右值 + 箭头。</div>
+    <div class="showcase" style="display:block;">
+      <div class="ios-list" style="max-width:420px;">
+        <div class="ios-list__item"><div class="ios-list__ic">🎁</div><div class="ios-list__tx"><b>每日礼包</b><small>还有 4 小时刷新</small></div><span class="ios-list__chev">›</span></div>
+        <div class="ios-list__item"><div class="ios-list__ic" style="background:linear-gradient(135deg,var(--ios-pink-lt),var(--ios-pink))">💎</div><div class="ios-list__tx"><b>宝石商店</b><small>限时 8 折</small></div><span class="ios-list__chev">›</span></div>
+        <div class="ios-list__item"><div class="ios-list__ic" style="background:linear-gradient(135deg,var(--ios-mint-lt),var(--ios-mint))">🏆</div><div class="ios-list__tx"><b>排行榜</b><small>你排第 12 名</small></div><span class="ios-list__chev">›</span></div>
+      </div>
+    </div>
+    <div class="classline"><b>ios-list</b> &gt; <b>ios-list__item</b> ( <b>__ic</b> + <b>__tx</b>(b+small) + <b>__val/__chev</b> )</div>
+  </div>
+
+  <!-- 10 -->
+  <div class="comp"><div class="comp-title">顶部 HUD · HUD Bar</div><div class="comp-desc">头像 + 问候/信息 + 右侧货币。</div>
+    <div class="showcase" style="display:block;">
+      <div class="ios-hud"><div class="ios-hud__ava">🐣</div><div class="ios-hud__who"><b>早上好!</b><small>连续登录 7 天</small></div><div class="ios-hud__spacer"></div><span class="ios-currency"><span class="ios-currency__ic ios-currency__ic--coin">🪙</span>1,240</span></div>
+    </div>
+    <div class="classline"><b>ios-hud</b> &gt; <b>ios-hud__ava</b> + <b>ios-hud__who</b>(b+small) + <b>ios-hud__spacer</b> + 右侧组件</div>
+  </div>
+
+  <!-- 11 -->
+  <div class="comp"><div class="comp-title">导航栏 · Nav Bar</div><div class="comp-desc">毛玻璃底栏,--active 高亮上浮。点击切换。</div>
+    <div class="showcase" style="display:block;">
+      <div class="ios-nav" id="iosNav">
+        <div class="ios-nav__tab ios-nav__tab--active" data-nav><span class="i">🏠</span>首页</div>
+        <div class="ios-nav__tab" data-nav><span class="i">🗺️</span>关卡</div>
+        <div class="ios-nav__tab" data-nav><span class="i">🛍️</span>商店</div>
+        <div class="ios-nav__tab" data-nav><span class="i">👤</span>我的</div>
+      </div>
+    </div>
+    <div class="classline"><b>ios-nav</b> &gt; <b>ios-nav__tab</b> ( <b>--active</b> ) &gt; <b>span.i</b> + 文字</div>
+  </div>
+
+  <!-- 12 -->
+  <div class="comp"><div class="comp-title">标签页 · Segmented</div><div class="comp-desc">iOS 分段控件,滑块高亮。点击切换。</div>
+    <div class="showcase" style="display:block;">
+      <div style="max-width:420px;">
+        <div class="ios-tabs" id="iosTabs">
+          <div class="ios-tabs__tab ios-tabs__tab--active" data-tab>全部</div>
+          <div class="ios-tabs__tab" data-tab>进行中</div>
+          <div class="ios-tabs__tab" data-tab>已完成</div>
+        </div>
+        <div class="ios-panel" style="margin-top:12px;"><div class="ios-panel__bd" style="padding-top:16px;"><p id="iosTabsBody">显示全部任务:3 个进行中,5 个已完成。</p></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>ios-tabs</b> &gt; <b>ios-tabs__tab</b> ( <b>--active</b> )</div>
+  </div>
+
+  <!-- 13 -->
+  <div class="comp"><div class="comp-title">输入框 · Input</div><div class="comp-desc">填充式圆角框,聚焦变白 + 紫光环;可选前置图标。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:360px;">
+      <input class="ios-input" placeholder="输入昵称…">
+      <div class="ios-field"><span class="ios-field__ic">🔍</span><input class="ios-input" placeholder="搜索好友…"></div>
+    </div>
+    <div class="classline"><b>&lt;input class="ios-input"&gt;</b>　·　带图标:<b>ios-field</b> &gt; <b>ios-field__ic</b> + <b>ios-input</b></div>
+  </div>
+
+  <!-- 14 -->
+  <div class="comp"><div class="comp-title">下拉选择 · Select</div><div class="comp-desc">柔和白底 + 箭头。</div>
+    <div class="showcase">
+      <div class="ios-select"><select><option>难度:轻松</option><option>难度:标准</option><option>难度:挑战</option></select></div>
+      <div class="ios-select"><select><option>主题:糖果</option><option>主题:海洋</option><option>主题:森林</option></select></div>
+    </div>
+    <div class="classline"><b>ios-select</b> &gt; <b>&lt;select&gt;</b> &gt; <b>&lt;option&gt;</b></div>
+  </div>
+
+  <!-- 15 -->
+  <div class="comp"><div class="comp-title">开关 · Switch</div><div class="comp-desc">经典 iOS 开关,开启变薄荷绿。点击切换。</div>
+    <div class="showcase" style="gap:26px;">
+      <label class="ios-switch"><input type="checkbox" checked><span class="ios-switch__track"></span><span style="margin-left:12px; font-weight:700; font-size:13px;">推送通知</span></label>
+      <label class="ios-switch"><input type="checkbox"><span class="ios-switch__track"></span><span style="margin-left:12px; font-weight:700; font-size:13px;">音效</span></label>
+    </div>
+    <div class="classline"><b>&lt;label class="ios-switch"&gt;</b> &gt; <b>input[checkbox]</b> + <b>span.ios-switch__track</b></div>
+  </div>
+
+  <!-- 16 -->
+  <div class="comp"><div class="comp-title">滑条 · Slider</div><div class="comp-desc">大白钮 + 柔和轨。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:360px;">
+      <input type="range" class="ios-slider" min="0" max="100" value="65">
+      <input type="range" class="ios-slider" min="0" max="100" value="30">
+    </div>
+    <div class="classline"><b>&lt;input type="range" class="ios-slider"&gt;</b></div>
+  </div>
+
+  <!-- 17 -->
+  <div class="comp"><div class="comp-title">徽章 · Badge</div><div class="comp-desc">红/紫柔和徽章,可贴图标右上。</div>
+    <div class="showcase" style="gap:24px;">
+      <span class="ios-badge">3</span>
+      <span class="ios-badge ios-badge--purple">99+</span>
+      <span class="ios-badge-wrap"><div class="ios-icon">✉️</div><span class="ios-badge">5</span></span>
+      <span class="ios-badge-wrap"><div class="ios-icon ios-icon--pink">🔔</div><span class="ios-badge ios-badge--purple">!</span></span>
+    </div>
+    <div class="classline"><b>ios-badge</b> ( <b>--purple</b> )　·　贴角:<b>ios-badge-wrap</b> &gt; 内容 + <b>ios-badge</b></div>
+  </div>
+
+  <!-- 18 -->
+  <div class="comp"><div class="comp-title">角标 · Ribbon</div><div class="comp-desc">卡片右上圆润角标(渐变胶囊)。放 relative 容器内。</div>
+    <div class="showcase">
+      <div class="ios-card" style="position:relative;"><span class="ios-ribbon">限时</span><div class="ios-card__art">🎀</div><div class="ios-card__name">礼盒</div></div>
+      <div class="ios-card ios-card--mint" style="position:relative;"><span class="ios-ribbon ios-ribbon--amber">NEW</span><div class="ios-card__art">🍭</div><div class="ios-card__name">棒棒糖</div></div>
+    </div>
+    <div class="classline"><b>ios-ribbon</b> ( <b>--amber</b> )　·　置于 relative 容器内</div>
+  </div>
+
+  <!-- 19 -->
+  <div class="comp"><div class="comp-title">标签 · Tag</div><div class="comp-desc">柔和色底小标签,紫/粉/薄荷/琥珀。</div>
+    <div class="showcase">
+      <span class="ios-tag">休闲</span>
+      <span class="ios-tag ios-tag--pink">💖 收藏</span>
+      <span class="ios-tag ios-tag--mint">✨ 新品</span>
+      <span class="ios-tag ios-tag--amber">⭐ 热门</span>
+    </div>
+    <div class="classline"><b>ios-tag</b> ( <b>--pink/--mint/--amber</b> )</div>
+  </div>
+
+  <!-- 20 -->
+  <div class="comp"><div class="comp-title">提示 · Tooltip</div><div class="comp-desc">悬停显示,内容取 data-tip。悬停试试。</div>
+    <div class="showcase">
+      <span class="ios-tooltip" data-tip="连击可获得额外分数">连击</span>
+      <span class="ios-tooltip" data-tip="每 5 分钟恢复 1 点体力">体力</span>
+      <span class="ios-tooltip" data-tip="邀请好友可得宝石">邀请</span>
+    </div>
+    <div class="classline"><b>&lt;span class="ios-tooltip" data-tip="内容"&gt;</b></div>
+  </div>
+
+  <!-- 21 -->
+  <div class="comp"><div class="comp-title">通知 · Toast</div><div class="comp-desc">柔和卡片提示,成功/危险/信息三色图标。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch;">
+      <div class="ios-toast"><span class="ios-toast__ic">✅</span><div><b>关卡完成!</b>获得 3 颗星和 120 金币。</div></div>
+      <div class="ios-toast ios-toast--danger"><span class="ios-toast__ic">💔</span><div><b>体力不足</b>等待恢复或用宝石补充。</div></div>
+      <div class="ios-toast ios-toast--info"><span class="ios-toast__ic">🎉</span><div><b>好友上线</b>快去一起挑战吧!</div></div>
+    </div>
+    <div class="classline"><b>ios-toast</b> ( <b>--danger / --info</b> ) &gt; <b>ios-toast__ic</b> + 内容(b 标题)</div>
+  </div>
+
+  <!-- 22 -->
+  <div class="comp"><div class="comp-title">对话气泡 · Bubble</div><div class="comp-desc">渐变气泡(聊天风),含说话人名与尖角。</div>
+    <div class="showcase"><div class="ios-bubble"><div class="ios-bubble__who">小助手</div>欢迎回来!今天也要元气满满地闯关哦,先来领取每日礼包吧 🎁</div></div>
+    <div class="classline"><b>ios-bubble</b> &gt; <b>ios-bubble__who</b> + 对话文字</div>
+  </div>
+
+  <!-- 23 -->
+  <div class="comp"><div class="comp-title">加载 · Spinner</div><div class="comp-desc">柔和旋转圈 + 三色跳动圆点两种。</div>
+    <div class="showcase" style="gap:30px;">
+      <div class="ios-spinner"></div>
+      <div class="ios-dots"><i></i><i></i><i></i></div>
+      <span style="font-weight:700; color:var(--ios-dim); font-size:13px;">加载中…</span>
+    </div>
+    <div class="classline"><b>ios-spinner</b>　或　<b>ios-dots</b> &gt; 三个 <b>&lt;i&gt;</b></div>
+  </div>
+
+  <!-- 24 -->
+  <div class="comp"><div class="comp-title">头像组 · Avatar Group</div><div class="comp-desc">白边圆形叠放 + 溢出计数。</div>
+    <div class="showcase"><div class="ios-avatars"><div class="ios-avatars__a">🐣</div><div class="ios-avatars__a">🐰</div><div class="ios-avatars__a">🐨</div><div class="ios-avatars__a">🦊</div><div class="ios-avatars__more">+6</div></div></div>
+    <div class="classline"><b>ios-avatars</b> &gt; 多个 <b>ios-avatars__a</b> + <b>ios-avatars__more</b></div>
+  </div>
+
+  <!-- 25 -->
+  <div class="comp"><div class="comp-title">星级评分 · Stars</div><div class="comp-desc">关卡评级,.on 点亮琥珀星。</div>
+    <div class="showcase" style="gap:26px;">
+      <span class="ios-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span>★</span><span>★</span></span>
+      <span class="ios-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></span>
+    </div>
+    <div class="classline"><b>ios-stars</b> &gt; 多个 <b>&lt;span&gt;★</b>,点亮加 <b>.on</b></div>
+  </div>
+
+  <!-- 26 -->
+  <div class="comp"><div class="comp-title">分隔线 · Divider</div><div class="comp-desc">淡线,可带中心标签。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:420px;">
+      <div class="ios-divider"><span class="ios-divider__mark">今日</span></div>
+      <div class="ios-divider"><span class="ios-divider__mark">✨</span></div>
+    </div>
+    <div class="classline"><b>ios-divider</b> &gt; <b>ios-divider__mark</b></div>
+  </div>
+
+  <!-- 27 -->
+  <div class="comp"><div class="comp-title">空状态 · Empty</div><div class="comp-desc">柔和圆角图标底 + 标题 + 说明。</div>
+    <div class="showcase" style="display:block;">
+      <div class="ios-panel" style="max-width:420px; margin:0 auto;"><div class="ios-empty"><div class="ios-empty__ic">🎈</div><div class="ios-empty__tt">还没有内容</div><div class="ios-empty__ds">完成关卡来解锁你的第一个奖励吧!</div></div></div>
+    </div>
+    <div class="classline"><b>ios-empty</b> &gt; <b>ios-empty__ic</b> + <b>ios-empty__tt</b> + <b>ios-empty__ds</b></div>
+  </div>
+
+  <!-- ADVANCED -->
+  <div class="comp" style="margin-top:52px;"><div class="comp-title" style="font-size:22px;">进阶组件 · Advanced</div><div class="comp-desc">复杂交互组件,均可操作。</div></div>
+
+  <!-- 28 -->
+  <div class="comp"><div class="comp-title">步进器 · Stepper</div><div class="comp-desc">分段式数量选择,可点增减。</div>
+    <div class="showcase">
+      <div class="ios-stepper" data-stepper><button class="ios-stepper__btn" data-dec>−</button><div class="ios-stepper__val" data-val>1</div><button class="ios-stepper__btn" data-inc>+</button></div>
+      <span style="font-weight:700; font-size:13px; color:var(--ios-dim);">购买体力药水</span>
+    </div>
+    <div class="classline"><b>ios-stepper</b> &gt; <b>ios-stepper__btn</b>(−) + <b>ios-stepper__val</b> + <b>ios-stepper__btn</b>(+)</div>
+  </div>
+
+  <!-- 29 -->
+  <div class="comp"><div class="comp-title">面包屑 · Breadcrumb</div><div class="comp-desc">层级路径,末项高亮。</div>
+    <div class="showcase" style="display:block;">
+      <nav class="ios-breadcrumb"><a>首页</a><span class="ios-breadcrumb__sep">›</span><a>关卡</a><span class="ios-breadcrumb__sep">›</span><a>第 3 章</a><span class="ios-breadcrumb__sep">›</span><span class="ios-breadcrumb__cur">第 42 关</span></nav>
+    </div>
+    <div class="classline"><b>ios-breadcrumb</b> &gt; <b>a</b> + <b>__sep</b> … + <b>__cur</b></div>
+  </div>
+
+  <!-- 30 -->
+  <div class="comp"><div class="comp-title">手风琴 · Accordion</div><div class="comp-desc">原生 details,箭头旋转。</div>
+    <div class="showcase" style="display:block;">
+      <div class="ios-accordion" style="max-width:440px;">
+        <details open><summary>怎么获得更多体力?</summary><div class="ios-accordion__bd">体力每 5 分钟自动恢复 1 点,也可以用宝石立即补满,或邀请好友赠送。</div></details>
+        <details><summary>星星有什么用?</summary><div class="ios-accordion__bd">每关最多 3 星,集齐星星可解锁隐藏关卡和限定皮肤。</div></details>
+        <details><summary>如何添加好友?</summary><div class="ios-accordion__bd">在「我的」页面点击添加好友,输入对方昵称或分享你的邀请码。</div></details>
+      </div>
+    </div>
+    <div class="classline"><b>ios-accordion</b> &gt; <b>&lt;details&gt;</b> ( <b>&lt;summary&gt;</b> + <b>ios-accordion__bd</b> )</div>
+  </div>
+
+  <!-- 31 -->
+  <div class="comp"><div class="comp-title">侧边抽屉 · Drawer</div><div class="comp-desc">右滑面板 + 毛玻璃遮罩。点击预览。</div>
+    <div class="showcase"><button class="ios-btn ios-btn--purple" onclick="iosOpenDrawer()">打开菜单</button></div>
+    <div class="classline"><b>ios-drawer-mask</b> + <b>ios-drawer</b> ( <b>__hd</b> + <b>__bd</b> )　·　加 <b>.open</b> 展开</div>
+  </div>
+
+  <!-- 32 -->
+  <div class="comp"><div class="comp-title">数据表格 · Table</div><div class="comp-desc">柔和排行榜,悬停高亮。</div>
+    <div class="showcase" style="display:block;">
+      <table class="ios-table" style="max-width:480px;">
+        <thead><tr><th>排名</th><th>玩家</th><th>关卡</th><th>星星</th></tr></thead>
+        <tbody>
+          <tr><td class="ios-table__rank">1</td><td>小樱 🌸</td><td>128</td><td>384 ⭐</td></tr>
+          <tr><td class="ios-table__rank">2</td><td>阿布 🐨</td><td>117</td><td>351 ⭐</td></tr>
+          <tr><td class="ios-table__rank">3</td><td>momo 🐰</td><td>106</td><td>318 ⭐</td></tr>
+          <tr><td>4</td><td>你</td><td>42</td><td>126 ⭐</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="classline"><b>table.ios-table</b> &gt; <b>thead th</b> + <b>tbody td</b>　·　名次:<b>ios-table__rank</b></div>
+  </div>
+
+  <!-- 33 -->
+  <div class="comp"><div class="comp-title">分页器 · Pagination</div><div class="comp-desc">翻页,--active 当前 / --dis 禁用。点击切换。</div>
+    <div class="showcase">
+      <div class="ios-pagination" id="iosPage">
+        <div class="ios-pagination__pg ios-pagination__pg--dis">‹</div>
+        <div class="ios-pagination__pg ios-pagination__pg--active" data-pg>1</div>
+        <div class="ios-pagination__pg" data-pg>2</div>
+        <div class="ios-pagination__pg" data-pg>3</div>
+        <div class="ios-pagination__pg" data-pg>4</div>
+        <div class="ios-pagination__pg">›</div>
+      </div>
+    </div>
+    <div class="classline"><b>ios-pagination</b> &gt; <b>ios-pagination__pg</b> ( <b>--active / --dis</b> )</div>
+  </div>
+
+  <!-- 34 -->
+  <div class="comp"><div class="comp-title">时间轴 · Timeline</div><div class="comp-desc">竖向进度,--done 完成 / --now 当前。</div>
+    <div class="showcase" style="display:block;">
+      <div class="ios-timeline" style="max-width:400px;">
+        <div class="ios-timeline__item ios-timeline__item--done"><div class="ios-timeline__t">新手教程</div><div class="ios-timeline__d">已完成</div></div>
+        <div class="ios-timeline__item ios-timeline__item--done"><div class="ios-timeline__t">第 1 章</div><div class="ios-timeline__d">已完成</div></div>
+        <div class="ios-timeline__item ios-timeline__item--now"><div class="ios-timeline__t">第 2 章</div><div class="ios-timeline__d">进行中 · 42/60</div></div>
+        <div class="ios-timeline__item"><div class="ios-timeline__t">第 3 章</div><div class="ios-timeline__d">未解锁</div></div>
+      </div>
+    </div>
+    <div class="classline"><b>ios-timeline</b> &gt; <b>ios-timeline__item</b> ( <b>--done/--now</b> ) ( <b>__t</b> + <b>__d</b> )</div>
+  </div>
+
+  <!-- 35 -->
+  <div class="comp"><div class="comp-title">树形菜单 · Tree</div><div class="comp-desc">嵌套分类,details 折叠。</div>
+    <div class="showcase" style="display:block;">
+      <div class="ios-tree" style="max-width:320px;">
+        <details open><summary>🎨 皮肤</summary>
+          <div class="ios-tree__leaf">糖果系列 (6)</div>
+          <div class="ios-tree__leaf">海洋系列 (4)</div>
+          <details><summary>限定皮肤</summary><div class="ios-tree__leaf">星空 (1)</div><div class="ios-tree__leaf">彩虹 (1)</div></details>
+        </details>
+        <details><summary>🎁 道具</summary><div class="ios-tree__leaf">体力药水 (12)</div><div class="ios-tree__leaf">提示卡 (5)</div></details>
+      </div>
+    </div>
+    <div class="classline"><b>ios-tree</b> &gt; 嵌套 <b>&lt;details&gt;</b> + <b>ios-tree__leaf</b></div>
+  </div>
+
+  <!-- 36 -->
+  <div class="comp"><div class="comp-title">能量条倒计时 · Energy</div><div class="comp-desc">体力,含实时恢复倒计时。</div>
+    <div class="showcase" style="display:block;">
+      <div class="ios-energy" style="max-width:340px;">
+        <div class="ios-energy__orb">⚡</div>
+        <div class="ios-energy__body">
+          <div class="ios-energy__top"><span>体力 <b style="color:var(--ios-ink)">18 / 24</b></span><span class="ios-energy__timer" id="iosEnergyTimer">+1 · 04:59</span></div>
+          <div class="ios-bar"><div class="ios-bar__fill" style="width:75%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>ios-energy</b> &gt; <b>__orb</b> + <b>__body</b> ( <b>__top</b>(含 <b>__timer</b>) + <b>ios-bar</b> )</div>
+  </div>
+
+  <!-- 37 -->
+  <div class="comp"><div class="comp-title">签到日历 · Calendar</div><div class="comp-desc">7 日签到,--done 已领 / --today 当天。</div>
+    <div class="showcase" style="display:block;">
+      <div class="ios-calendar" style="max-width:400px;">
+        <div class="ios-calendar__day ios-calendar__day--done"><span class="r">🪙</span>1</div>
+        <div class="ios-calendar__day ios-calendar__day--done"><span class="r">💎</span>2</div>
+        <div class="ios-calendar__day ios-calendar__day--done"><span class="r">❤️</span>3</div>
+        <div class="ios-calendar__day ios-calendar__day--today"><span class="r">🎁</span>4</div>
+        <div class="ios-calendar__day"><span class="r">⭐</span>5</div>
+        <div class="ios-calendar__day"><span class="r">🍬</span>6</div>
+        <div class="ios-calendar__day"><span class="r">👑</span>7</div>
+      </div>
+    </div>
+    <div class="classline"><b>ios-calendar</b> &gt; <b>ios-calendar__day</b> ( <b>--done / --today</b> )</div>
+  </div>
+
+  <!-- 38 -->
+  <div class="comp"><div class="comp-title">任务链 · Quest Chain</div><div class="comp-desc">连锁节点,--done/--now + 连接线。</div>
+    <div class="showcase" style="display:block;">
+      <div class="ios-questchain" style="max-width:400px;">
+        <div class="ios-questchain__node ios-questchain__node--done">✓</div>
+        <div class="ios-questchain__link ios-questchain__link--done"></div>
+        <div class="ios-questchain__node ios-questchain__node--done">✓</div>
+        <div class="ios-questchain__link ios-questchain__link--done"></div>
+        <div class="ios-questchain__node ios-questchain__node--now">🎯</div>
+        <div class="ios-questchain__link"></div>
+        <div class="ios-questchain__node">🎁</div>
+      </div>
+    </div>
+    <div class="classline"><b>ios-questchain</b> &gt; <b>__node</b>( <b>--done/--now</b> ) 与 <b>__link</b>( <b>--done</b> ) 交替</div>
+  </div>
+
+  <!-- 39 -->
+  <div class="comp"><div class="comp-title">成就解锁 · Achievement</div><div class="comp-desc">奖章+标题+描述,--locked 灰化。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:400px;">
+      <div class="ios-achievement"><div class="ios-achievement__medal">🏆</div><div class="ios-achievement__tx"><b>连胜大师</b><small>连续通关 20 个关卡</small></div></div>
+      <div class="ios-achievement ios-achievement--locked"><div class="ios-achievement__medal">🔒</div><div class="ios-achievement__tx"><b>???</b><small>达成隐藏条件解锁</small></div></div>
+    </div>
+    <div class="classline"><b>ios-achievement</b> ( <b>--locked</b> ) &gt; <b>__medal</b> + <b>__tx</b>(b+small)</div>
+  </div>
+
+  <!-- 40 -->
+  <div class="comp"><div class="comp-title">翻牌 · Flip Card</div><div class="comp-desc">CSS 3D 翻转,点击揭晓。</div>
+    <div class="showcase">
+      <div class="ios-flipcard" onclick="this.classList.toggle('flipped')"><div class="ios-flipcard__inner"><div class="ios-flipcard__face ios-flipcard__back">?</div><div class="ios-flipcard__face ios-flipcard__front"><span class="em">🍬</span><span class="nm">彩虹糖</span></div></div></div>
+      <div class="ios-flipcard" onclick="this.classList.toggle('flipped')"><div class="ios-flipcard__inner"><div class="ios-flipcard__face ios-flipcard__back">?</div><div class="ios-flipcard__face ios-flipcard__front"><span class="em">👑</span><span class="nm">皇冠</span></div></div></div>
+      <span style="font-weight:700; font-size:12px; color:var(--ios-dim);">← 点击翻牌</span>
+    </div>
+    <div class="classline"><b>ios-flipcard</b> &gt; <b>__inner</b> &gt; <b>__face __back</b> + <b>__face __front</b>　·　加 <b>.flipped</b></div>
+  </div>
+
+  <!-- 41 -->
+  <div class="comp"><div class="comp-title">开礼盒 · Chest</div><div class="comp-desc">点击弹跳开启,揭示奖励。</div>
+    <div class="showcase">
+      <div class="ios-chest" onclick="iosOpenChest(this)">
+        <div class="ios-chest__box">🎁</div>
+        <div class="ios-chest__label">点击开启</div>
+        <div class="ios-chest__glow"><div style="display:flex; gap:6px; justify-content:center;"><div class="ios-icon ios-icon--amber">⭐</div><div class="ios-icon">🪙</div></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>ios-chest</b> &gt; <b>__box</b> + <b>__label</b> + <b>__glow</b>　·　加 <b>.opened</b></div>
+  </div>
+
+  <!-- 42 -->
+  <div class="comp"><div class="comp-title">背包网格 · Inventory Grid</div><div class="comp-desc">柔和格子背包,稀有度底色、数量角标、空格。</div>
+    <div class="showcase" style="display:block;">
+      <div class="ios-invgrid">
+        <div class="ios-invgrid__cell ios-invgrid__cell--legend">👑</div>
+        <div class="ios-invgrid__cell ios-invgrid__cell--rare">🎨</div>
+        <div class="ios-invgrid__cell">🧪<span class="ios-invgrid__qty">12</span></div>
+        <div class="ios-invgrid__cell">💡<span class="ios-invgrid__qty">5</span></div>
+        <div class="ios-invgrid__cell">🪙<span class="ios-invgrid__qty">99</span></div>
+        <div class="ios-invgrid__cell">🔑</div>
+        <div class="ios-invgrid__cell ios-invgrid__cell--rare">💎</div>
+        <div class="ios-invgrid__cell ios-invgrid__cell--empty"></div>
+        <div class="ios-invgrid__cell ios-invgrid__cell--empty"></div>
+        <div class="ios-invgrid__cell ios-invgrid__cell--empty"></div>
+      </div>
+    </div>
+    <div class="classline"><b>ios-invgrid</b> &gt; <b>ios-invgrid__cell</b> ( <b>--rare/--legend/--empty</b> ) + <b>ios-invgrid__qty</b></div>
+  </div>
+
+  <!-- 43 -->
+  <div class="comp"><div class="comp-title">道具对比 · Compare</div><div class="comp-desc">当前 vs 新道具,属性升降薄荷/红标注。</div>
+    <div class="showcase" style="display:block;">
+      <div class="ios-compare" style="max-width:460px;">
+        <div class="ios-compare__side"><div class="ios-icon">🎨</div><div class="ios-compare__nm">旧:普通皮肤</div>
+          <div class="ios-compare__stat"><span>加成</span><span>+5%</span></div><div class="ios-compare__stat"><span>稀有</span><span>普通</span></div></div>
+        <div class="ios-compare__vs">VS</div>
+        <div class="ios-compare__side"><div class="ios-icon ios-icon--amber">👑</div><div class="ios-compare__nm" style="color:var(--ios-purple-dk)">新:皇冠皮肤</div>
+          <div class="ios-compare__stat"><span>加成</span><span class="ios-compare__up">+18% ▲</span></div><div class="ios-compare__stat"><span>稀有</span><span class="ios-compare__up">传说 ▲</span></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>ios-compare</b> &gt; <b>__side</b> + <b>__vs</b> + <b>__side</b>　·　升降:<b>ios-compare__up / __down</b></div>
+  </div>
+
+</div>
+
+<!-- modal -->
+<div class="ios-modal-mask" id="iosModal" style="display:none;">
+  <div class="ios-modal">
+    <div class="ios-modal__hd">购买确认</div>
+    <div class="ios-modal__bd">使用 30 宝石购买一瓶体力药水吗?</div>
+    <div class="ios-modal__ft">
+      <button class="ios-btn" onclick="document.getElementById('iosModal').style.display='none'">取消</button>
+      <button class="ios-btn primary" onclick="document.getElementById('iosModal').style.display='none'">购买</button>
+    </div>
+  </div>
+</div>
+
+<!-- drawer -->
+<div class="ios-drawer-mask" id="iosDrawerMask" onclick="iosCloseDrawer()"></div>
+<div class="ios-drawer" id="iosDrawer">
+  <div class="ios-drawer__hd">菜单 <span onclick="iosCloseDrawer()">✕</span></div>
+  <div class="ios-drawer__bd">
+    <div class="ios-list">
+      <div class="ios-list__item"><div class="ios-list__ic">🎁</div><div class="ios-list__tx"><b>每日礼包</b><small>可领取</small></div><span class="ios-list__chev">›</span></div>
+      <div class="ios-list__item"><div class="ios-list__ic" style="background:linear-gradient(135deg,var(--ios-pink-lt),var(--ios-pink))">🛍️</div><div class="ios-list__tx"><b>商店</b><small>限时特惠</small></div><span class="ios-list__chev">›</span></div>
+      <div class="ios-list__item"><div class="ios-list__ic" style="background:linear-gradient(135deg,var(--ios-mint-lt),var(--ios-mint))">⚙️</div><div class="ios-list__tx"><b>设置</b><small></small></div><span class="ios-list__chev">›</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function iosOpenDrawer(){document.getElementById('iosDrawer').classList.add('open');document.getElementById('iosDrawerMask').classList.add('open');}
+  function iosCloseDrawer(){document.getElementById('iosDrawer').classList.remove('open');document.getElementById('iosDrawerMask').classList.remove('open');}
+  function iosOpenChest(el){el.classList.add('opened');el.querySelector('.ios-chest__label').textContent='获得奖励!';el.querySelector('.ios-chest__box').textContent='🎉';}
+  document.querySelectorAll('[data-stepper]').forEach(s=>{const v=s.querySelector('[data-val]');let n=parseInt(v.textContent,10);
+    s.querySelector('[data-inc]').onclick=()=>{n=Math.min(99,n+1);v.textContent=n;};
+    s.querySelector('[data-dec]').onclick=()=>{n=Math.max(1,n-1);v.textContent=n;};});
+  document.querySelectorAll('#iosNav [data-nav]').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('#iosNav [data-nav]').forEach(x=>x.classList.remove('ios-nav__tab--active'));t.classList.add('ios-nav__tab--active');}));
+  const iosTB={0:'显示全部任务:3 个进行中,5 个已完成。',1:'进行中:每日挑战 · 收集 100 金币 · 通关第 42 关',2:'已完成:新手教程 · 第 1 章 · 首次充值等 5 项'};
+  document.querySelectorAll('#iosTabs [data-tab]').forEach((t,i)=>t.addEventListener('click',()=>{
+    document.querySelectorAll('#iosTabs [data-tab]').forEach(x=>x.classList.remove('ios-tabs__tab--active'));t.classList.add('ios-tabs__tab--active');
+    document.getElementById('iosTabsBody').textContent=iosTB[i];}));
+  document.querySelectorAll('#iosPage [data-pg]').forEach(p=>p.addEventListener('click',()=>{
+    document.querySelectorAll('#iosPage [data-pg]').forEach(x=>x.classList.remove('ios-pagination__pg--active'));p.classList.add('ios-pagination__pg--active');}));
+  document.getElementById('iosModal').addEventListener('click',e=>{if(e.target.id==='iosModal')e.target.style.display='none';});
+  (function(){const t=document.getElementById('iosEnergyTimer');if(!t)return;let s=299;
+    setInterval(()=>{s=s<=0?299:s-1;const m=String(Math.floor(s/60)).padStart(2,'0'),ss=String(s%60).padStart(2,'0');t.textContent='+1 · '+m+':'+ss;},1000);})();
+</script>
+</body>
+</html>

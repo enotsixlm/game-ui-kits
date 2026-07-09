@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>暗黑哥特 UI 组件库 · Diablo Style Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================================
+   DIABLO / GOTHIC UI KIT  —  reusable component library
+   ----------------------------------------------------------------------------
+   全部组件用 dg- 前缀,不污染全局。改主题只改下面这组 :root 令牌即可。
+   ============================================================================ */
+:root{
+  /* ---- design tokens ---- */
+  --dg-gold:#c9962f;        /* 主金属描边 */
+  --dg-gold-lt:#ffe08a;     /* 高光金 */
+  --dg-gold-dk:#6e4f21;     /* 暗金边 */
+  --dg-parch:#e8d3a0;       /* 羊皮纸/主文字 */
+  --dg-parch-dim:#b8935a;   /* 次级文字 */
+  --dg-ink:#0a0806;         /* 最深底色 */
+  --dg-stone-1:#1c1712;     /* 石材亮 */
+  --dg-stone-2:#120d09;     /* 石材暗 */
+  --dg-blood:#c0331f;       /* 血红(HP/危险) */
+  --dg-blood-dk:#6e130a;
+  --dg-mana:#3a72d0;        /* 法力蓝 */
+  --dg-mana-dk:#0a3a8a;
+  --dg-line:#6e4f21;        /* 通用金线 */
+
+  --dg-serif:'Cinzel',serif;
+  --dg-sans:'Nunito',system-ui,sans-serif;
+
+  /* 可复用的组合 */
+  --dg-panel-bg:linear-gradient(180deg,rgba(30,22,14,.94),rgba(14,10,6,.96));
+  --dg-metal:linear-gradient(180deg,#3a2a16,#1c130a);
+  --dg-inset:inset 0 0 20px rgba(0,0,0,.7);
+}
+
+/* ---------- 页面外壳(仅文档用,非组件) ---------- */
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:var(--dg-sans); color:var(--dg-parch);
+  background:
+    radial-gradient(90% 50% at 50% 0%, #3a1c14 0%, rgba(0,0,0,0) 55%),
+    repeating-linear-gradient(135deg,#161310 0 6px,#1a1512 6px 12px),
+    linear-gradient(180deg,#1c1712,#0a0806 80%);
+  background-attachment:fixed; min-height:100vh; padding:0 0 90px; line-height:1.5;
+}
+.doc{max-width:960px; margin:0 auto; padding:0 20px;}
+.doc-head{text-align:center; padding:48px 20px 26px;}
+.doc-head h1{font-family:var(--dg-serif); font-weight:900; font-size:clamp(28px,5vw,44px);
+  color:var(--dg-gold-lt); letter-spacing:.04em; text-shadow:0 2px 0 #000,0 0 20px rgba(201,150,47,.4);}
+.doc-head p{margin-top:10px; color:var(--dg-parch-dim); font-weight:700;}
+.doc-head .eb{display:inline-block; margin-bottom:14px; font-family:var(--dg-serif); font-size:12px;
+  letter-spacing:.3em; color:var(--dg-gold); border:1px solid var(--dg-gold-dk); padding:5px 16px; border-radius:3px;}
+
+.tokens{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:20px;}
+.tok{display:flex; align-items:center; gap:7px; font-family:var(--dg-sans); font-weight:800; font-size:11px;
+  color:var(--dg-parch-dim); background:rgba(0,0,0,.35); border:1px solid var(--dg-gold-dk);
+  padding:4px 10px; border-radius:3px;}
+.tok i{width:14px;height:14px;border-radius:3px; border:1px solid #000;}
+
+.comp{margin-top:40px;}
+.comp-title{font-family:var(--dg-serif); font-weight:700; font-size:20px; color:var(--dg-gold-lt);
+  letter-spacing:.1em; display:flex; align-items:center; gap:10px; margin-bottom:4px;}
+.comp-title::before{content:"✦"; color:var(--dg-gold);}
+.comp-desc{color:var(--dg-parch-dim); font-size:13px; font-weight:700; margin-bottom:16px;}
+.showcase{display:flex; flex-wrap:wrap; gap:16px; align-items:center; padding:24px;
+  background:rgba(0,0,0,.32); border:1px solid var(--dg-gold-dk); border-radius:6px;
+  box-shadow:var(--dg-inset);}
+.classline{margin-top:10px; font-family:ui-monospace,monospace; font-size:12px; color:#8fb28f;
+  background:#0a0806; border:1px solid #2a1c0c; border-radius:4px; padding:8px 12px; overflow-x:auto;}
+.classline b{color:var(--dg-gold-lt);}
+
+/* ============================================================================
+   ============  COMPONENTS  (复制下面任意块即可使用)  ============
+   ============================================================================ */
+
+/* ----- 1. 按钮 dg-btn ----- */
+.dg-btn{
+  font-family:var(--dg-serif); font-weight:700; font-size:14px; letter-spacing:.08em;
+  color:var(--dg-parch); padding:11px 22px; cursor:pointer; user-select:none;
+  display:inline-flex; align-items:center; gap:8px; text-align:center;
+  background:var(--dg-metal); border:1px solid var(--dg-line); border-radius:3px;
+  box-shadow:inset 0 1px 0 rgba(255,220,150,.15), 0 2px 5px rgba(0,0,0,.6);
+  text-shadow:0 1px 2px #000; transition:.1s;
+}
+.dg-btn:hover{border-color:var(--dg-gold-lt); color:#fff; box-shadow:inset 0 1px 0 rgba(255,220,150,.2),0 0 12px rgba(232,200,119,.35);}
+.dg-btn:active{transform:translateY(1px);}
+.dg-btn--primary{background:linear-gradient(180deg,#8a2418,#4a0f08); border-color:var(--dg-gold);}
+.dg-btn--ghost{background:transparent; border-color:var(--dg-gold-dk);}
+.dg-btn--gold{background:linear-gradient(180deg,#e6bd54,#a97a1e); color:#2a1c08; text-shadow:0 1px 0 rgba(255,255,255,.3);}
+.dg-btn--sm{font-size:12px; padding:8px 14px;}
+.dg-btn--lg{font-size:17px; padding:14px 30px;}
+.dg-btn--block{width:100%; justify-content:center;}
+.dg-btn[disabled],.dg-btn--disabled{opacity:.5; cursor:not-allowed; filter:grayscale(.6);}
+
+/* ----- 2. 面板 dg-panel ----- */
+.dg-panel{
+  position:relative; background:var(--dg-panel-bg); border:1px solid var(--dg-line);
+  border-radius:4px; box-shadow:var(--dg-inset), 0 0 0 1px #2a1c0c, 0 6px 16px rgba(0,0,0,.5);
+  padding:2px;
+}
+.dg-panel__hd{font-family:var(--dg-serif); font-weight:700; letter-spacing:.14em; font-size:14px;
+  color:var(--dg-gold-lt); text-align:center; padding:12px 16px 10px; text-shadow:0 1px 2px #000;
+  position:relative;}
+.dg-panel__hd::after{content:""; position:absolute; left:14px; right:14px; bottom:2px; height:1px;
+  background:linear-gradient(90deg,transparent,var(--dg-line),transparent);}
+.dg-panel__bd{padding:14px 18px 18px; color:var(--dg-parch);}
+.dg-panel__bd p{font-family:var(--dg-sans); font-weight:700; font-size:13px; color:var(--dg-parch-dim); line-height:1.6;}
+/* 四角装饰(可选):在 dg-panel 内放 <span class="dg-corner tl/tr/bl/br"> */
+.dg-corner{position:absolute; color:var(--dg-gold); font-size:12px; line-height:1; pointer-events:none;}
+.dg-corner.tl{top:5px;left:7px;} .dg-corner.tr{top:5px;right:7px;}
+.dg-corner.bl{bottom:5px;left:7px;} .dg-corner.br{bottom:5px;right:7px;}
+
+/* ----- 3. 弹窗 dg-modal ----- */
+.dg-modal-mask{position:fixed; inset:0; background:rgba(4,2,0,.72); backdrop-filter:blur(2px);
+  display:grid; place-items:center; z-index:100; padding:20px;}
+.dg-modal{width:min(380px,92vw); position:relative;}
+.dg-modal__close{position:absolute; top:-12px; right:-12px; width:34px;height:34px; border-radius:50%;
+  display:grid; place-items:center; font-family:var(--dg-serif); font-weight:700; font-size:15px; cursor:pointer;
+  color:var(--dg-parch); background:linear-gradient(180deg,#8a2418,#4a0f08); border:1px solid var(--dg-gold);
+  box-shadow:0 2px 6px rgba(0,0,0,.6);}
+.dg-modal__close:hover{color:#fff;}
+
+/* ----- 4. 进度条 dg-bar ----- */
+.dg-bar{position:relative; height:14px; background:#0a0604; border:1px solid var(--dg-line);
+  border-radius:2px; overflow:hidden; box-shadow:inset 0 0 8px #000;}
+.dg-bar__fill{height:100%; box-shadow:inset 0 1px 0 rgba(255,255,255,.25);}
+.dg-bar__fill--hp{background:linear-gradient(180deg,#e0553c,var(--dg-blood-dk));}
+.dg-bar__fill--mp{background:linear-gradient(180deg,#5a92e6,var(--dg-mana-dk));}
+.dg-bar__fill--xp{background:linear-gradient(180deg,var(--dg-gold-lt),var(--dg-gold-dk));}
+.dg-bar__label{position:absolute; inset:0; display:grid; place-items:center; font-family:var(--dg-sans);
+  font-weight:900; font-size:9px; color:#fff; text-shadow:0 1px 2px #000; letter-spacing:.1em;}
+.dg-bar--tall{height:20px;}
+
+/* ----- 5. 货币条 dg-currency ----- */
+.dg-currency{display:inline-flex; align-items:center; gap:6px; font-family:var(--dg-sans);
+  font-weight:900; font-size:14px; color:var(--dg-gold-lt); background:linear-gradient(180deg,#241a10,#120c06);
+  padding:5px 12px 5px 5px; border-radius:4px; border:1px solid var(--dg-gold-dk);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08); text-shadow:0 1px 1px #000;}
+.dg-currency__coin{width:20px;height:20px;border-radius:50%; flex:none; border:1px solid #3a2408;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4);}
+.dg-currency__coin--gold{background:radial-gradient(circle at 40% 30%,var(--dg-gold-lt),var(--dg-gold) 60%,#7a5410);}
+.dg-currency__coin--soul{background:radial-gradient(circle at 40% 30%,#9be0ff,#2a86c0 60%,#0a3a6a);}
+.dg-currency__coin--blood{background:radial-gradient(circle at 40% 30%,#ff8a6a,var(--dg-blood) 60%,var(--dg-blood-dk));}
+
+/* ----- 6. 状态条(球体 HP/MP) dg-orb ----- */
+.dg-orb{width:56px;height:56px;border-radius:50%; position:relative; overflow:hidden; flex:none;
+  border:2px solid var(--dg-gold); box-shadow:0 0 0 1px #2a1408, 0 0 12px rgba(0,0,0,.8);}
+.dg-orb__liquid{position:absolute; left:0; right:0; bottom:0;}
+.dg-orb__liquid--hp{background:radial-gradient(circle at 50% 120%,#ff5a3c,var(--dg-blood-dk));}
+.dg-orb__liquid--mp{background:radial-gradient(circle at 50% 120%,#5aa0ff,var(--dg-mana-dk));}
+.dg-orb__gloss{position:absolute; top:7px; left:12px; width:16px;height:11px;border-radius:50%;
+  background:rgba(255,255,255,.4); filter:blur(1.5px);}
+.dg-orb__num{position:absolute; inset:0; display:grid; place-items:center; z-index:2; font-family:var(--dg-sans);
+  font-weight:900; font-size:11px; color:#fff; text-shadow:0 1px 2px #000;}
+
+/* ----- 7. 图标底座 dg-icon ----- */
+.dg-icon{width:52px;height:52px;border-radius:4px; display:grid; place-items:center; font-size:24px; position:relative;
+  background:radial-gradient(circle at 50% 30%,#2a2018,#0e0a06); border:1px solid var(--dg-line);
+  box-shadow:var(--dg-inset),0 0 0 1px #000;}
+.dg-icon:hover{border-color:var(--dg-gold-lt); box-shadow:var(--dg-inset),0 0 10px rgba(232,200,119,.5);}
+.dg-icon--rare{border-color:#3a72d0;} .dg-icon--rare:hover{box-shadow:var(--dg-inset),0 0 10px rgba(90,150,255,.6);}
+.dg-icon--legend{border-color:var(--dg-gold-lt); box-shadow:var(--dg-inset),0 0 12px rgba(232,200,119,.6);}
+.dg-icon__cd{position:absolute; inset:0; background:rgba(0,0,0,.55); display:grid; place-items:center;
+  font-family:var(--dg-sans); font-weight:900; font-size:13px; color:#fff;}
+
+/* ----- 8. 卡片 dg-card ----- */
+.dg-card{width:150px; border:1px solid var(--dg-line); border-radius:4px; overflow:hidden;
+  background:var(--dg-panel-bg); box-shadow:var(--dg-inset),0 4px 10px rgba(0,0,0,.5); cursor:pointer; transition:.12s;}
+.dg-card:hover{border-color:var(--dg-gold); transform:translateY(-3px);}
+.dg-card__art{height:96px; display:grid; place-items:center; font-size:46px; position:relative;
+  background:radial-gradient(circle at 50% 30%,#3a2a1a,#100b06); border-bottom:1px solid var(--dg-line);
+  filter:drop-shadow(0 4px 6px rgba(0,0,0,.6));}
+.dg-card__rank{position:absolute; top:5px; left:5px; font-family:var(--dg-serif); font-weight:700; font-size:9px;
+  letter-spacing:.1em; color:var(--dg-gold-lt); background:rgba(10,6,4,.85); padding:2px 7px; border-radius:2px;
+  border:1px solid var(--dg-gold-dk);}
+.dg-card__name{font-family:var(--dg-serif); font-weight:700; font-size:13px; color:var(--dg-parch);
+  text-align:center; padding:8px 6px 4px; text-shadow:0 1px 2px #000;}
+.dg-card__foot{padding:0 10px 10px;}
+
+/* ----- 9. 列表项 dg-list ----- */
+.dg-list{border:1px solid var(--dg-gold-dk); border-radius:4px; overflow:hidden; background:rgba(10,6,4,.4);}
+.dg-list__item{display:flex; align-items:center; gap:10px; padding:9px 12px; cursor:pointer;
+  border-bottom:1px solid rgba(110,79,33,.3); transition:.1s;}
+.dg-list__item:last-child{border-bottom:none;}
+.dg-list__item:hover{background:rgba(58,42,22,.5);}
+.dg-list__ic{width:30px;height:30px;border-radius:3px; flex:none; display:grid; place-items:center; font-size:16px;
+  background:radial-gradient(circle at 50% 30%,#2a2018,#0e0a06); border:1px solid var(--dg-line);}
+.dg-list__tx{flex:1;}
+.dg-list__tx b{font-family:var(--dg-serif); font-weight:700; font-size:13px; color:var(--dg-parch);}
+.dg-list__tx small{display:block; font-family:var(--dg-sans); font-weight:700; font-size:11px; color:var(--dg-parch-dim);}
+.dg-list__val{font-family:var(--dg-sans); font-weight:900; font-size:13px; color:var(--dg-gold-lt);}
+
+/* ----- 10. 顶部 HUD dg-hud ----- */
+.dg-hud{display:flex; align-items:center; gap:10px; padding:10px 14px;
+  background:linear-gradient(180deg,rgba(28,23,18,.9),rgba(10,8,6,.9)); border:1px solid var(--dg-line);
+  border-radius:4px; box-shadow:var(--dg-inset);}
+.dg-hud__portrait{width:42px;height:42px;border-radius:50%; flex:none; display:grid; place-items:center; font-size:22px;
+  background:radial-gradient(circle at 40% 30%,#7a2a1e,#2a0d08); border:2px solid var(--dg-gold);
+  box-shadow:0 0 0 1px #2a1408,0 0 10px rgba(201,150,47,.4);}
+.dg-hud__who b{font-family:var(--dg-serif); font-weight:700; font-size:14px; color:var(--dg-parch); display:block;}
+.dg-hud__who small{font-family:var(--dg-sans); font-weight:800; font-size:10px; color:var(--dg-gold); letter-spacing:.08em;}
+.dg-hud__spacer{flex:1;}
+
+/* ----- 11. 导航栏 dg-nav ----- */
+.dg-nav{display:flex; gap:4px; padding:6px; background:linear-gradient(180deg,rgba(20,15,10,.9),rgba(8,6,4,.95));
+  border:1px solid var(--dg-line); border-radius:4px; box-shadow:var(--dg-inset);}
+.dg-nav__tab{flex:1; text-align:center; font-family:var(--dg-serif); font-weight:700; font-size:11px;
+  letter-spacing:.06em; color:var(--dg-parch-dim); padding:8px 4px; border-radius:3px; cursor:pointer;
+  border:1px solid transparent; transition:.1s;}
+.dg-nav__tab .i{display:block; font-size:18px; margin-bottom:3px;}
+.dg-nav__tab:hover{color:var(--dg-parch);}
+.dg-nav__tab--active{color:var(--dg-gold-lt); background:var(--dg-metal); border-color:var(--dg-line);
+  box-shadow:inset 0 1px 0 rgba(255,220,150,.12);}
+
+/* ----- 12. 标签页 dg-tabs ----- */
+.dg-tabs{display:flex; gap:2px; border-bottom:1px solid var(--dg-line);}
+.dg-tabs__tab{font-family:var(--dg-serif); font-weight:700; font-size:12px; letter-spacing:.08em;
+  color:var(--dg-parch-dim); padding:9px 16px; cursor:pointer; position:relative; border:1px solid transparent;
+  border-bottom:none; border-radius:3px 3px 0 0; transition:.1s;}
+.dg-tabs__tab:hover{color:var(--dg-parch);}
+.dg-tabs__tab--active{color:var(--dg-gold-lt); background:var(--dg-panel-bg); border-color:var(--dg-line);}
+.dg-tabs__tab--active::after{content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px; background:var(--dg-panel-bg,#1c1712);}
+
+/* ============================================================================
+   ============  EXPANSION PACK  ·  扩展组件 (13-27)  ============
+   ============================================================================ */
+
+/* ----- 13. 输入框 dg-input ----- */
+.dg-input{font-family:var(--dg-sans); font-weight:700; font-size:13px; color:var(--dg-parch);
+  background:#0a0604; border:1px solid var(--dg-line); border-radius:3px; padding:9px 12px; width:100%;
+  box-shadow:inset 0 0 10px rgba(0,0,0,.7); outline:none; transition:.12s;}
+.dg-input::placeholder{color:#6e5a38;}
+.dg-input:focus{border-color:var(--dg-gold-lt); box-shadow:inset 0 0 10px rgba(0,0,0,.7),0 0 8px rgba(201,150,47,.4);}
+.dg-field{position:relative;}
+.dg-field__ic{position:absolute; left:10px; top:50%; transform:translateY(-50%); font-size:14px; opacity:.7;}
+.dg-field .dg-input{padding-left:32px;}
+
+/* ----- 14. 下拉选择 dg-select ----- */
+.dg-select{position:relative; display:inline-block;}
+.dg-select select{appearance:none; -webkit-appearance:none; font-family:var(--dg-serif); font-weight:700;
+  font-size:13px; letter-spacing:.06em; color:var(--dg-parch); background:var(--dg-metal);
+  border:1px solid var(--dg-line); border-radius:3px; padding:9px 34px 9px 14px; cursor:pointer; outline:none;
+  box-shadow:inset 0 1px 0 rgba(255,220,150,.12);}
+.dg-select select:focus{border-color:var(--dg-gold-lt);}
+.dg-select::after{content:"▾"; position:absolute; right:12px; top:50%; transform:translateY(-50%);
+  color:var(--dg-gold); pointer-events:none; font-size:12px;}
+.dg-select option{background:#1c1712; color:var(--dg-parch);}
+
+/* ----- 15. 开关 dg-switch ----- */
+.dg-switch{position:relative; display:inline-flex; align-items:center; cursor:pointer; user-select:none;}
+.dg-switch input{position:absolute; opacity:0; pointer-events:none;}
+.dg-switch__track{width:48px; height:24px; border-radius:999px; background:#0a0604; border:1px solid var(--dg-line);
+  box-shadow:inset 0 0 8px #000; position:relative; transition:.15s;}
+.dg-switch__track::before{content:""; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%;
+  background:radial-gradient(circle at 40% 30%,#4a3a24,#1a120a); border:1px solid var(--dg-gold-dk); transition:.15s;}
+.dg-switch input:checked + .dg-switch__track{border-color:var(--dg-gold);
+  background:radial-gradient(circle at 70% 50%,#5a2a12,#2a1408);}
+.dg-switch input:checked + .dg-switch__track::before{left:26px;
+  background:radial-gradient(circle at 40% 30%,var(--dg-gold-lt),var(--dg-gold)); border-color:var(--dg-gold-lt);
+  box-shadow:0 0 8px rgba(232,200,119,.6);}
+
+/* ----- 16. 滑条 dg-slider ----- */
+.dg-slider{-webkit-appearance:none; appearance:none; width:100%; height:8px; border-radius:999px;
+  background:linear-gradient(90deg,var(--dg-blood-dk),#0a0604); border:1px solid var(--dg-line);
+  box-shadow:inset 0 0 6px #000; outline:none; cursor:pointer;}
+.dg-slider::-webkit-slider-thumb{-webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+  background:radial-gradient(circle at 40% 30%,var(--dg-gold-lt),var(--dg-gold) 60%,#7a5410);
+  border:1px solid var(--dg-ink); box-shadow:0 0 8px rgba(201,150,47,.6); cursor:pointer;}
+.dg-slider::-moz-range-thumb{width:20px; height:20px; border-radius:50%; border:1px solid var(--dg-ink);
+  background:radial-gradient(circle at 40% 30%,var(--dg-gold-lt),var(--dg-gold) 60%,#7a5410); cursor:pointer;}
+
+/* ----- 17. 徽章 dg-badge ----- */
+.dg-badge{display:inline-grid; place-items:center; min-width:18px; height:18px; padding:0 5px;
+  border-radius:999px; font-family:var(--dg-sans); font-weight:900; font-size:10px; color:#fff;
+  background:linear-gradient(180deg,#e0553c,var(--dg-blood-dk)); border:1px solid var(--dg-ink);
+  box-shadow:0 1px 3px rgba(0,0,0,.6);}
+.dg-badge--gold{background:linear-gradient(180deg,var(--dg-gold-lt),var(--dg-gold)); color:#2a1c08;}
+.dg-badge-wrap{position:relative; display:inline-flex;}
+.dg-badge-wrap > .dg-badge{position:absolute; top:-8px; right:-8px;}
+
+/* ----- 18. 角标 dg-ribbon ----- */
+.dg-ribbon{position:absolute; top:8px; left:-6px; font-family:var(--dg-serif); font-weight:700; font-size:10px;
+  letter-spacing:.08em; color:var(--dg-parch); padding:4px 10px 4px 8px;
+  background:linear-gradient(180deg,#8a2418,#4a0f08); border:1px solid var(--dg-gold);
+  box-shadow:0 2px 5px rgba(0,0,0,.5); text-shadow:0 1px 1px #000; z-index:3;}
+.dg-ribbon::after{content:""; position:absolute; left:0; bottom:-5px; border:2.5px solid transparent;
+  border-top-color:#2a0806; border-right-color:#2a0806;}
+.dg-ribbon--gold{background:linear-gradient(180deg,#e6bd54,#a97a1e); color:#2a1c08;}
+
+/* ----- 19. 标签 dg-tag ----- */
+.dg-tag{display:inline-flex; align-items:center; gap:5px; font-family:var(--dg-sans); font-weight:800;
+  font-size:11px; letter-spacing:.04em; color:var(--dg-parch-dim); background:rgba(58,42,22,.5);
+  border:1px solid var(--dg-gold-dk); border-radius:3px; padding:3px 9px;}
+.dg-tag--hp{color:#e88a7a; border-color:#6e2318;}
+.dg-tag--mp{color:#8ab0e6; border-color:#1a3a6a;}
+.dg-tag--gold{color:var(--dg-gold-lt); border-color:var(--dg-gold);}
+
+/* ----- 20. Tooltip dg-tooltip ----- */
+.dg-tooltip{position:relative; display:inline-flex; cursor:help; border-bottom:1px dotted var(--dg-gold-dk);}
+.dg-tooltip::after{content:attr(data-tip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
+  font-family:var(--dg-sans); font-weight:700; font-size:11px; color:var(--dg-parch); white-space:nowrap;
+  background:var(--dg-panel-bg); border:1px solid var(--dg-line); border-radius:3px; padding:6px 10px;
+  box-shadow:0 4px 10px rgba(0,0,0,.6); opacity:0; pointer-events:none; transition:.12s; z-index:20;}
+.dg-tooltip::before{content:""; position:absolute; bottom:calc(100% + 3px); left:50%; transform:translateX(-50%);
+  border:5px solid transparent; border-top-color:var(--dg-line); opacity:0; transition:.12s; z-index:20;}
+.dg-tooltip:hover::after,.dg-tooltip:hover::before{opacity:1;}
+
+/* ----- 21. Toast dg-toast ----- */
+.dg-toast{display:flex; align-items:center; gap:10px; font-family:var(--dg-sans); font-weight:700; font-size:13px;
+  color:var(--dg-parch); background:var(--dg-panel-bg); border:1px solid var(--dg-line); border-left:3px solid var(--dg-gold);
+  border-radius:4px; padding:11px 16px; box-shadow:0 6px 16px rgba(0,0,0,.6); max-width:340px;}
+.dg-toast__ic{font-size:18px; flex:none;}
+.dg-toast--danger{border-left-color:var(--dg-blood);}
+.dg-toast--success{border-left-color:#5a9a3a;}
+.dg-toast b{font-family:var(--dg-serif); color:var(--dg-gold-lt); display:block; font-size:12px; letter-spacing:.06em;}
+
+/* ----- 22. 对话气泡 dg-bubble ----- */
+.dg-bubble{position:relative; font-family:var(--dg-sans); font-weight:700; font-size:13px; color:var(--dg-parch);
+  background:var(--dg-panel-bg); border:1px solid var(--dg-line); border-radius:4px; padding:12px 16px; max-width:300px;
+  box-shadow:var(--dg-inset),0 4px 10px rgba(0,0,0,.5);}
+.dg-bubble__who{font-family:var(--dg-serif); font-weight:700; font-size:11px; letter-spacing:.1em;
+  color:var(--dg-gold-lt); margin-bottom:5px;}
+.dg-bubble::before{content:""; position:absolute; left:26px; bottom:-9px; border:8px solid transparent;
+  border-top-color:var(--dg-line);}
+.dg-bubble::after{content:""; position:absolute; left:27px; bottom:-7px; border:7px solid transparent;
+  border-top-color:#150f0a;}
+
+/* ----- 23. 加载旋转 dg-spinner ----- */
+.dg-spinner{width:38px; height:38px; border-radius:50%; border:3px solid rgba(110,79,33,.3);
+  border-top-color:var(--dg-gold-lt); animation:dg-spin .8s linear infinite;
+  box-shadow:0 0 10px rgba(201,150,47,.3);}
+@keyframes dg-spin{to{transform:rotate(360deg);}}
+.dg-spinner--rune{position:relative; border-top-color:var(--dg-blood);}
+
+/* ----- 24. 头像组 dg-avatars ----- */
+.dg-avatars{display:inline-flex;}
+.dg-avatars__a{width:36px; height:36px; border-radius:50%; display:grid; place-items:center; font-size:17px;
+  background:radial-gradient(circle at 40% 30%,#4a2a1a,#1a0e08); border:2px solid var(--dg-gold);
+  box-shadow:0 0 0 1px var(--dg-ink); margin-left:-10px;}
+.dg-avatars__a:first-child{margin-left:0;}
+.dg-avatars__more{width:36px; height:36px; border-radius:50%; display:grid; place-items:center; margin-left:-10px;
+  font-family:var(--dg-sans); font-weight:900; font-size:11px; color:var(--dg-gold-lt);
+  background:#1c1712; border:2px solid var(--dg-gold-dk); box-shadow:0 0 0 1px var(--dg-ink);}
+
+/* ----- 25. 星级评分 dg-stars ----- */
+.dg-stars{display:inline-flex; gap:2px; font-size:16px; color:#4a3a24;}
+.dg-stars .on{color:var(--dg-gold-lt); text-shadow:0 0 6px rgba(232,200,119,.5);}
+
+/* ----- 26. 分隔线 dg-divider ----- */
+.dg-divider{display:flex; align-items:center; gap:10px; color:var(--dg-gold); margin:6px 0;}
+.dg-divider::before,.dg-divider::after{content:""; height:1px; flex:1;
+  background:linear-gradient(90deg,transparent,var(--dg-line),transparent);}
+.dg-divider__mark{font-size:12px;}
+.dg-divider--label{font-family:var(--dg-serif); font-weight:700; font-size:11px; letter-spacing:.16em;
+  color:var(--dg-parch-dim);}
+
+/* ----- 27. 空状态 dg-empty ----- */
+.dg-empty{text-align:center; padding:28px 20px; color:var(--dg-parch-dim);}
+.dg-empty__ic{font-size:44px; opacity:.5; filter:grayscale(.4);}
+.dg-empty__tt{font-family:var(--dg-serif); font-weight:700; font-size:15px; color:var(--dg-parch); margin:10px 0 4px;}
+.dg-empty__ds{font-family:var(--dg-sans); font-weight:700; font-size:12px;}
+
+/* ============================================================================
+   ============  ADVANCED PACK  ·  进阶组件 (28-43)  ============
+   ============================================================================ */
+
+/* ----- 28. 步进器 dg-stepper ----- */
+.dg-stepper{display:inline-flex; align-items:stretch; border:1px solid var(--dg-line); border-radius:3px;
+  overflow:hidden; box-shadow:inset 0 0 8px rgba(0,0,0,.5);}
+.dg-stepper__btn{width:32px; font-family:var(--dg-serif); font-weight:700; font-size:16px; color:var(--dg-gold-lt);
+  background:var(--dg-metal); border:none; cursor:pointer; display:grid; place-items:center;}
+.dg-stepper__btn:hover{color:#fff; background:linear-gradient(180deg,#4a3418,#241608);}
+.dg-stepper__btn:active{transform:translateY(1px);}
+.dg-stepper__val{min-width:48px; display:grid; place-items:center; font-family:var(--dg-sans); font-weight:900;
+  font-size:14px; color:var(--dg-parch); background:#0a0604;}
+
+/* ----- 29. 面包屑 dg-breadcrumb ----- */
+.dg-breadcrumb{display:flex; align-items:center; gap:6px; font-family:var(--dg-serif); font-size:12px; flex-wrap:wrap;}
+.dg-breadcrumb a{color:var(--dg-parch-dim); text-decoration:none; cursor:pointer;}
+.dg-breadcrumb a:hover{color:var(--dg-gold-lt);}
+.dg-breadcrumb__sep{color:var(--dg-gold); font-size:10px;}
+.dg-breadcrumb__cur{color:var(--dg-gold-lt); font-weight:700;}
+
+/* ----- 30. 手风琴 dg-accordion ----- */
+.dg-accordion{border:1px solid var(--dg-gold-dk); border-radius:4px; overflow:hidden; background:rgba(10,6,4,.4);}
+.dg-accordion details{border-bottom:1px solid rgba(110,79,33,.3);}
+.dg-accordion details:last-child{border-bottom:none;}
+.dg-accordion summary{list-style:none; cursor:pointer; padding:11px 14px; font-family:var(--dg-serif);
+  font-weight:700; font-size:13px; color:var(--dg-parch); display:flex; align-items:center; gap:8px; transition:.1s;}
+.dg-accordion summary::-webkit-details-marker{display:none;}
+.dg-accordion summary::before{content:"▸"; color:var(--dg-gold); transition:.15s;}
+.dg-accordion details[open] summary::before{transform:rotate(90deg);}
+.dg-accordion summary:hover{background:rgba(58,42,22,.4);}
+.dg-accordion__bd{padding:2px 16px 14px 30px; font-family:var(--dg-sans); font-weight:700; font-size:12px;
+  color:var(--dg-parch-dim); line-height:1.6;}
+
+/* ----- 31. 侧边抽屉 dg-drawer ----- */
+.dg-drawer-mask{position:fixed; inset:0; background:rgba(4,2,0,.6); z-index:110; opacity:0; pointer-events:none; transition:.2s;}
+.dg-drawer-mask.open{opacity:1; pointer-events:auto;}
+.dg-drawer{position:fixed; top:0; right:0; bottom:0; width:min(300px,86vw); z-index:120;
+  background:var(--dg-panel-bg); border-left:1px solid var(--dg-gold); box-shadow:-8px 0 24px rgba(0,0,0,.6);
+  transform:translateX(100%); transition:.22s cubic-bezier(.3,.8,.3,1); display:flex; flex-direction:column;}
+.dg-drawer.open{transform:translateX(0);}
+.dg-drawer__hd{font-family:var(--dg-serif); font-weight:700; letter-spacing:.1em; font-size:15px; color:var(--dg-gold-lt);
+  padding:16px; border-bottom:1px solid var(--dg-line); display:flex; align-items:center; justify-content:space-between;}
+.dg-drawer__hd span{cursor:pointer; color:var(--dg-parch-dim);}
+.dg-drawer__bd{padding:12px; overflow-y:auto;}
+
+/* ----- 32. 数据表格 dg-table ----- */
+.dg-table{width:100%; border-collapse:collapse; font-family:var(--dg-sans); font-size:12px;
+  border:1px solid var(--dg-gold-dk); border-radius:4px; overflow:hidden;}
+.dg-table thead th{font-family:var(--dg-serif); font-weight:700; font-size:11px; letter-spacing:.08em;
+  color:var(--dg-gold-lt); text-align:left; padding:9px 12px; background:var(--dg-metal);
+  border-bottom:1px solid var(--dg-line);}
+.dg-table tbody td{padding:9px 12px; color:var(--dg-parch); border-bottom:1px solid rgba(110,79,33,.25); font-weight:700;}
+.dg-table tbody tr:last-child td{border-bottom:none;}
+.dg-table tbody tr:nth-child(even){background:rgba(58,42,22,.18);}
+.dg-table tbody tr:hover{background:rgba(58,42,22,.4);}
+.dg-table__rank{color:var(--dg-gold-lt); font-family:var(--dg-serif); font-weight:700;}
+
+/* ----- 33. 分页器 dg-pagination ----- */
+.dg-pagination{display:inline-flex; gap:4px;}
+.dg-pagination__pg{min-width:30px; height:30px; padding:0 6px; display:grid; place-items:center; cursor:pointer;
+  font-family:var(--dg-serif); font-weight:700; font-size:12px; color:var(--dg-parch-dim); background:var(--dg-metal);
+  border:1px solid var(--dg-line); border-radius:3px; transition:.1s;}
+.dg-pagination__pg:hover{color:var(--dg-parch); border-color:var(--dg-gold-lt);}
+.dg-pagination__pg--active{color:var(--dg-gold-lt); background:linear-gradient(180deg,#8a2418,#4a0f08); border-color:var(--dg-gold);}
+.dg-pagination__pg--dis{opacity:.4; cursor:not-allowed;}
+
+/* ----- 34. 时间轴 dg-timeline ----- */
+.dg-timeline{position:relative; padding-left:26px;}
+.dg-timeline::before{content:""; position:absolute; left:7px; top:6px; bottom:6px; width:2px;
+  background:linear-gradient(180deg,var(--dg-gold),var(--dg-gold-dk));}
+.dg-timeline__item{position:relative; padding-bottom:16px;}
+.dg-timeline__item:last-child{padding-bottom:0;}
+.dg-timeline__item::before{content:""; position:absolute; left:-23px; top:3px; width:12px; height:12px; border-radius:50%;
+  background:radial-gradient(circle at 40% 30%,var(--dg-gold-lt),var(--dg-gold)); border:2px solid var(--dg-ink);
+  box-shadow:0 0 8px rgba(201,150,47,.5);}
+.dg-timeline__item--done::before{background:radial-gradient(circle at 40% 30%,#7aa04a,#3a6a1a);}
+.dg-timeline__t{font-family:var(--dg-serif); font-weight:700; font-size:13px; color:var(--dg-parch);}
+.dg-timeline__d{font-family:var(--dg-sans); font-weight:700; font-size:11px; color:var(--dg-parch-dim); margin-top:2px;}
+
+/* ----- 35. 树形菜单 dg-tree ----- */
+.dg-tree{font-family:var(--dg-sans); font-weight:700; font-size:13px;}
+.dg-tree details{margin-left:4px;}
+.dg-tree summary{list-style:none; cursor:pointer; padding:5px 0; color:var(--dg-parch); display:flex; align-items:center; gap:6px;}
+.dg-tree summary::-webkit-details-marker{display:none;}
+.dg-tree summary::before{content:"▸"; color:var(--dg-gold); font-size:10px; transition:.15s;}
+.dg-tree details[open] > summary::before{transform:rotate(90deg);}
+.dg-tree summary:hover{color:var(--dg-gold-lt);}
+.dg-tree__leaf{padding:5px 0 5px 20px; color:var(--dg-parch-dim); cursor:pointer; display:flex; align-items:center; gap:6px;}
+.dg-tree__leaf:hover{color:var(--dg-parch);}
+.dg-tree details > *:not(summary){margin-left:16px; border-left:1px solid rgba(110,79,33,.3); padding-left:6px;}
+
+/* ----- 36. 能量条倒计时 dg-energy ----- */
+.dg-energy{display:flex; align-items:center; gap:10px;}
+.dg-energy__orb{width:28px; height:28px; border-radius:50%; display:grid; place-items:center; font-size:14px; flex:none;
+  background:radial-gradient(circle at 40% 30%,#8affd0,#2a9a6a 60%,#0a5a3a); border:2px solid var(--dg-gold);
+  box-shadow:0 0 10px rgba(90,220,150,.5);}
+.dg-energy__body{flex:1;}
+.dg-energy__top{display:flex; justify-content:space-between; font-family:var(--dg-sans); font-weight:800; font-size:11px;
+  color:var(--dg-parch-dim); margin-bottom:3px;}
+.dg-energy__timer{color:var(--dg-gold-lt); font-variant-numeric:tabular-nums;}
+.dg-energy .dg-bar__fill{background:linear-gradient(180deg,#8affd0,#1a8a5a);}
+
+/* ----- 37. 签到日历 dg-calendar ----- */
+.dg-calendar{display:grid; grid-template-columns:repeat(7,1fr); gap:6px;}
+.dg-calendar__day{aspect-ratio:1; border-radius:4px; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:2px; font-family:var(--dg-sans); font-weight:800; font-size:10px; color:var(--dg-parch-dim);
+  background:rgba(10,6,4,.5); border:1px solid var(--dg-gold-dk); position:relative;}
+.dg-calendar__day .r{font-size:15px;}
+.dg-calendar__day--done{color:var(--dg-parch); border-color:var(--dg-line);}
+.dg-calendar__day--done::after{content:"✓"; position:absolute; inset:0; display:grid; place-items:center;
+  background:rgba(10,6,4,.72); color:#7aca4a; font-size:18px; font-weight:900;}
+.dg-calendar__day--today{border-color:var(--dg-gold-lt); box-shadow:0 0 10px rgba(201,150,47,.4);
+  background:linear-gradient(180deg,#3a2a16,#1c130a);}
+
+/* ----- 38. 任务链 dg-questchain ----- */
+.dg-questchain{display:flex; align-items:center;}
+.dg-questchain__node{width:40px; height:40px; border-radius:50%; display:grid; place-items:center; font-size:18px; flex:none;
+  background:radial-gradient(circle at 50% 30%,#2a2018,#0e0a06); border:2px solid var(--dg-line); position:relative; z-index:2;}
+.dg-questchain__node--done{border-color:#7aca4a; background:radial-gradient(circle at 50% 30%,#2a3a1a,#0e1a06);}
+.dg-questchain__node--now{border-color:var(--dg-gold-lt); box-shadow:0 0 12px rgba(201,150,47,.6);
+  background:radial-gradient(circle at 50% 30%,#5a3a16,#2a1608);}
+.dg-questchain__link{height:3px; flex:1; min-width:16px; background:repeating-linear-gradient(90deg,var(--dg-gold-dk) 0 5px,transparent 5px 9px);}
+.dg-questchain__link--done{background:var(--dg-gold);}
+
+/* ----- 39. 成就解锁 dg-achievement ----- */
+.dg-achievement{display:flex; align-items:center; gap:14px; padding:12px 16px; background:var(--dg-panel-bg);
+  border:1px solid var(--dg-gold); border-radius:4px; box-shadow:0 0 16px rgba(201,150,47,.2),var(--dg-inset);}
+.dg-achievement__medal{width:52px; height:52px; border-radius:50%; display:grid; place-items:center; font-size:26px; flex:none;
+  background:radial-gradient(circle at 40% 30%,var(--dg-gold-lt),var(--dg-gold) 60%,#7a5410); border:2px solid var(--dg-gold-lt);
+  box-shadow:0 0 14px rgba(232,200,119,.6);}
+.dg-achievement__tx b{font-family:var(--dg-serif); font-weight:700; font-size:14px; color:var(--dg-gold-lt); display:block;}
+.dg-achievement__tx small{font-family:var(--dg-sans); font-weight:700; font-size:11px; color:var(--dg-parch-dim);}
+.dg-achievement--locked{border-color:var(--dg-gold-dk); box-shadow:var(--dg-inset); filter:grayscale(.7); opacity:.7;}
+.dg-achievement--locked .dg-achievement__medal{background:radial-gradient(circle at 40% 30%,#4a3a24,#1a120a); box-shadow:none;}
+
+/* ----- 40. 翻牌 dg-flipcard ----- */
+.dg-flipcard{width:120px; height:168px; perspective:800px; cursor:pointer;}
+.dg-flipcard__inner{position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .5s;}
+.dg-flipcard.flipped .dg-flipcard__inner{transform:rotateY(180deg);}
+.dg-flipcard__face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  border:1px solid var(--dg-line); border-radius:5px; display:grid; place-items:center; overflow:hidden;}
+.dg-flipcard__back{background:repeating-linear-gradient(45deg,#241a10 0 8px,#1c140a 8px 16px);
+  color:var(--dg-gold); font-size:34px; box-shadow:var(--dg-inset);}
+.dg-flipcard__front{transform:rotateY(180deg); background:radial-gradient(circle at 50% 30%,#3a2a1a,#100b06);
+  flex-direction:column; box-shadow:var(--dg-inset),0 0 14px rgba(201,150,47,.3); border-color:var(--dg-gold);}
+.dg-flipcard__front .em{font-size:46px;} .dg-flipcard__front .nm{font-family:var(--dg-serif); font-weight:700;
+  font-size:12px; color:var(--dg-gold-lt); margin-top:6px;}
+
+/* ----- 41. 开宝箱 dg-chest ----- */
+.dg-chest{width:120px; text-align:center; cursor:pointer; user-select:none;}
+.dg-chest__box{font-size:64px; transition:transform .2s; filter:drop-shadow(0 6px 8px rgba(0,0,0,.6));}
+.dg-chest:hover .dg-chest__box{transform:scale(1.05) rotate(-3deg);}
+.dg-chest.opened .dg-chest__box{animation:dg-chest-pop .5s ease;}
+@keyframes dg-chest-pop{0%{transform:scale(1)}40%{transform:scale(1.3) translateY(-8px)}100%{transform:scale(1)}}
+.dg-chest__glow{height:0; overflow:hidden; transition:.3s; opacity:0;}
+.dg-chest.opened .dg-chest__glow{height:auto; opacity:1; padding-top:6px;}
+.dg-chest__label{font-family:var(--dg-serif); font-weight:700; font-size:12px; color:var(--dg-gold-lt); margin-top:4px;}
+
+/* ----- 42. 拼图背包网格 dg-invgrid ----- */
+.dg-invgrid{display:grid; grid-template-columns:repeat(5,1fr); gap:5px; padding:8px; background:rgba(10,6,4,.55);
+  border:1px solid var(--dg-line); border-radius:4px; box-shadow:var(--dg-inset); width:max-content;}
+.dg-invgrid__cell{width:44px; height:44px; border-radius:3px; display:grid; place-items:center; font-size:22px; position:relative;
+  background:radial-gradient(circle at 50% 30%,#241a12,#0c0806); border:1px solid rgba(110,79,33,.5);}
+.dg-invgrid__cell:hover{border-color:var(--dg-gold-lt);}
+.dg-invgrid__cell--rare{border-color:#3a72d0; box-shadow:inset 0 0 8px rgba(58,114,208,.3);}
+.dg-invgrid__cell--legend{border-color:var(--dg-gold-lt); box-shadow:inset 0 0 8px rgba(232,200,119,.4);}
+.dg-invgrid__cell--empty{background:rgba(10,6,4,.4);}
+.dg-invgrid__qty{position:absolute; bottom:1px; right:3px; font-family:var(--dg-sans); font-weight:900; font-size:9px;
+  color:#fff; text-shadow:0 1px 2px #000;}
+
+/* ----- 43. 装备对比 dg-compare ----- */
+.dg-compare{display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center;
+  background:rgba(10,6,4,.4); border:1px solid var(--dg-gold-dk); border-radius:4px; padding:14px;}
+.dg-compare__side{text-align:center;}
+.dg-compare__side .dg-icon{margin:0 auto 8px;}
+.dg-compare__nm{font-family:var(--dg-serif); font-weight:700; font-size:12px; color:var(--dg-parch); margin-bottom:8px;}
+.dg-compare__stat{display:flex; justify-content:space-between; font-family:var(--dg-sans); font-weight:700; font-size:11px;
+  padding:3px 0; border-bottom:1px solid rgba(110,79,33,.2);}
+.dg-compare__stat span:first-child{color:var(--dg-parch-dim);}
+.dg-compare__up{color:#7aca4a;} .dg-compare__down{color:#e8664a;}
+.dg-compare__vs{font-family:var(--dg-serif); font-weight:900; font-size:16px; color:var(--dg-gold); text-align:center;}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important;}}
+</style>
+</head>
+<body>
+
+<div class="doc-head">
+  <span class="eb">DIABLO STYLE · COMPONENT KIT</span>
+  <h1>暗黑哥特 UI 组件库</h1>
+  <p>12 个可复用组件 · 全部 <code style="color:var(--dg-gold-lt)">dg-</code> 前缀 · 改主题只需调 :root 令牌</p>
+  <div class="tokens">
+    <span class="tok"><i style="background:#c9962f"></i>--dg-gold</span>
+    <span class="tok"><i style="background:#e8d3a0"></i>--dg-parch</span>
+    <span class="tok"><i style="background:#c0331f"></i>--dg-blood</span>
+    <span class="tok"><i style="background:#3a72d0"></i>--dg-mana</span>
+    <span class="tok"><i style="background:#120d09"></i>--dg-stone</span>
+  </div>
+</div>
+
+<div class="doc">
+
+  <!-- 1 BUTTONS -->
+  <div class="comp">
+    <div class="comp-title">按钮 · Button</div>
+    <div class="comp-desc">哥特金属质感,主/次/金/幽灵四种变体,支持 sm / lg / block / disabled。</div>
+    <div class="showcase">
+      <button class="dg-btn dg-btn--primary">进入地下城</button>
+      <button class="dg-btn">锻造装备</button>
+      <button class="dg-btn dg-btn--gold">购买</button>
+      <button class="dg-btn dg-btn--ghost">取消</button>
+      <button class="dg-btn dg-btn--sm">小按钮</button>
+      <button class="dg-btn" disabled>已锁定</button>
+    </div>
+    <div class="classline"><b>&lt;button</b> class="<b>dg-btn dg-btn--primary</b>"<b>&gt;</b>进入地下城<b>&lt;/button&gt;</b>　·　变体:<b>--primary / --gold / --ghost / --sm / --lg / --block</b></div>
+  </div>
+
+  <!-- 2 PANEL -->
+  <div class="comp">
+    <div class="comp-title">面板 · Panel</div>
+    <div class="comp-desc">羊皮纸内衬 + 金线分隔 + 可选四角 ✦ 装饰。用作对话、任务、装备栏容器。</div>
+    <div class="showcase">
+      <div class="dg-panel" style="width:300px">
+        <span class="dg-corner tl">✦</span><span class="dg-corner tr">✦</span>
+        <span class="dg-corner bl">✦</span><span class="dg-corner br">✦</span>
+        <div class="dg-panel__hd">赏金任务</div>
+        <div class="dg-panel__bd">
+          <p>清剿凯焰荒漠的堕落亡者,收集 5 枚灵魂碎片。奖励:2 件传奇装备。</p>
+          <div style="margin-top:12px; display:flex; gap:8px;">
+            <button class="dg-btn dg-btn--primary dg-btn--sm">接受</button>
+            <button class="dg-btn dg-btn--ghost dg-btn--sm">稍后</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-panel</b> &gt; <b>dg-panel__hd</b> + <b>dg-panel__bd</b>　·　四角装饰:<b>dg-corner tl/tr/bl/br</b></div>
+  </div>
+
+  <!-- 3 MODAL -->
+  <div class="comp">
+    <div class="comp-title">弹窗 · Modal</div>
+    <div class="comp-desc">遮罩 + 面板 + 血红关闭钮。点下方按钮预览真实弹出。</div>
+    <div class="showcase">
+      <button class="dg-btn dg-btn--primary" onclick="document.getElementById('demoModal').style.display='grid'">打开弹窗</button>
+    </div>
+    <div class="classline"><b>dg-modal-mask</b> &gt; <b>dg-modal</b> ( <b>dg-modal__close</b> + <b>dg-panel</b> )</div>
+  </div>
+
+  <!-- 4 BAR -->
+  <div class="comp">
+    <div class="comp-title">进度条 · Bar</div>
+    <div class="comp-desc">内嵌描边风,HP / MP / XP 三种填充,可加 label,--tall 变高。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch;">
+      <div class="dg-bar dg-bar--tall"><div class="dg-bar__fill dg-bar__fill--hp" style="width:72%"></div><div class="dg-bar__label">生命 720 / 1000</div></div>
+      <div class="dg-bar dg-bar--tall"><div class="dg-bar__fill dg-bar__fill--mp" style="width:48%"></div><div class="dg-bar__label">法力 240 / 500</div></div>
+      <div class="dg-bar"><div class="dg-bar__fill dg-bar__fill--xp" style="width:88%"></div><div class="dg-bar__label">经验 88%</div></div>
+    </div>
+    <div class="classline"><b>dg-bar</b> &gt; <b>dg-bar__fill dg-bar__fill--hp</b> (style="width:72%") + <b>dg-bar__label</b></div>
+  </div>
+
+  <!-- 5 CURRENCY -->
+  <div class="comp">
+    <div class="comp-title">货币条 · Currency</div>
+    <div class="comp-desc">金币 / 灵魂 / 血石三种钱币图标,内嵌金框。</div>
+    <div class="showcase">
+      <span class="dg-currency"><span class="dg-currency__coin dg-currency__coin--gold"></span>2.4M</span>
+      <span class="dg-currency"><span class="dg-currency__coin dg-currency__coin--soul"></span>860</span>
+      <span class="dg-currency"><span class="dg-currency__coin dg-currency__coin--blood"></span>37</span>
+    </div>
+    <div class="classline"><b>dg-currency</b> &gt; <b>dg-currency__coin dg-currency__coin--gold</b> + 数值文字</div>
+  </div>
+
+  <!-- 6 ORB -->
+  <div class="comp">
+    <div class="comp-title">状态球 · Orb</div>
+    <div class="comp-desc">招牌的液体感 HP/MP 球,液面高度由内联 height 控制。</div>
+    <div class="showcase">
+      <div class="dg-orb"><div class="dg-orb__liquid dg-orb__liquid--hp" style="height:78%"></div><div class="dg-orb__gloss"></div><div class="dg-orb__num">72%</div></div>
+      <div class="dg-orb"><div class="dg-orb__liquid dg-orb__liquid--mp" style="height:52%"></div><div class="dg-orb__gloss"></div><div class="dg-orb__num">48%</div></div>
+    </div>
+    <div class="classline"><b>dg-orb</b> &gt; <b>dg-orb__liquid --hp</b> (style="height:78%") + <b>dg-orb__gloss</b> + <b>dg-orb__num</b></div>
+  </div>
+
+  <!-- 7 ICON -->
+  <div class="comp">
+    <div class="comp-title">图标底座 · Icon Slot</div>
+    <div class="comp-desc">技能/物品格,普通/稀有/传说三档描边,支持冷却遮罩。</div>
+    <div class="showcase">
+      <div class="dg-icon">🗡️</div>
+      <div class="dg-icon dg-icon--rare">🔥</div>
+      <div class="dg-icon dg-icon--legend">👑</div>
+      <div class="dg-icon">❄️<div class="dg-icon__cd">3</div></div>
+    </div>
+    <div class="classline"><b>dg-icon</b> ( <b>--rare / --legend</b> )　·　冷却:内放 <b>dg-icon__cd</b></div>
+  </div>
+
+  <!-- 8 CARD -->
+  <div class="comp">
+    <div class="comp-title">卡片 · Card</div>
+    <div class="comp-desc">装备/角色卡,含稀有度角标、名称、底部插槽(可放进度条)。</div>
+    <div class="showcase">
+      <div class="dg-card">
+        <div class="dg-card__art"><span class="dg-card__rank">传奇</span>⚔️</div>
+        <div class="dg-card__name">灾祸之刃</div>
+        <div class="dg-card__foot"><div class="dg-bar"><div class="dg-bar__fill dg-bar__fill--xp" style="width:80%"></div><div class="dg-bar__label">+8 强化</div></div></div>
+      </div>
+      <div class="dg-card">
+        <div class="dg-card__art"><span class="dg-card__rank">稀有</span>🛡️</div>
+        <div class="dg-card__name">石卫者之盾</div>
+        <div class="dg-card__foot"><div class="dg-bar"><div class="dg-bar__fill dg-bar__fill--hp" style="width:55%"></div><div class="dg-bar__label">耐久 55%</div></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-card</b> &gt; <b>dg-card__art</b> ( <b>dg-card__rank</b> ) + <b>dg-card__name</b> + <b>dg-card__foot</b></div>
+  </div>
+
+  <!-- 9 LIST -->
+  <div class="comp">
+    <div class="comp-title">列表项 · List</div>
+    <div class="comp-desc">背包/邮件/排行榜通用行,左图标 + 主副标题 + 右侧数值。</div>
+    <div class="showcase" style="display:block;">
+      <div class="dg-list" style="max-width:420px;">
+        <div class="dg-list__item"><div class="dg-list__ic">🧪</div><div class="dg-list__tx"><b>治疗药水</b><small>恢复 40% 生命</small></div><span class="dg-list__val">×12</span></div>
+        <div class="dg-list__item"><div class="dg-list__ic">💎</div><div class="dg-list__tx"><b>灵魂宝石</b><small>可镶嵌于武器</small></div><span class="dg-list__val">×3</span></div>
+        <div class="dg-list__item"><div class="dg-list__ic">📜</div><div class="dg-list__tx"><b>传送卷轴</b><small>返回城镇</small></div><span class="dg-list__val">×99</span></div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-list</b> &gt; <b>dg-list__item</b> ( <b>dg-list__ic</b> + <b>dg-list__tx</b> (b+small) + <b>dg-list__val</b> )</div>
+  </div>
+
+  <!-- 10 HUD -->
+  <div class="comp">
+    <div class="comp-title">顶部 HUD · HUD Bar</div>
+    <div class="comp-desc">头像 + 名称/等级 + 右侧货币,主界面顶栏标配。</div>
+    <div class="showcase" style="display:block;">
+      <div class="dg-hud">
+        <div class="dg-hud__portrait">💀</div>
+        <div class="dg-hud__who"><b>Nephalem</b><small>巅峰等级 412</small></div>
+        <div class="dg-hud__spacer"></div>
+        <span class="dg-currency"><span class="dg-currency__coin dg-currency__coin--gold"></span>2.4M</span>
+      </div>
+    </div>
+    <div class="classline"><b>dg-hud</b> &gt; <b>dg-hud__portrait</b> + <b>dg-hud__who</b> (b+small) + <b>dg-hud__spacer</b> + 任意右侧组件</div>
+  </div>
+
+  <!-- 11 NAV -->
+  <div class="comp">
+    <div class="comp-title">导航栏 · Nav Bar</div>
+    <div class="comp-desc">底部主导航,图标+文字,--active 高亮当前。点击可切换。</div>
+    <div class="showcase" style="display:block;">
+      <div class="dg-nav" id="navDemo">
+        <div class="dg-nav__tab dg-nav__tab--active" data-nav><span class="i">⚔️</span>战斗</div>
+        <div class="dg-nav__tab" data-nav><span class="i">🎒</span>背包</div>
+        <div class="dg-nav__tab" data-nav><span class="i">🔨</span>锻造</div>
+        <div class="dg-nav__tab" data-nav><span class="i">🗺️</span>地图</div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-nav</b> &gt; <b>dg-nav__tab</b> ( <b>--active</b> ) &gt; <b>span.i</b> + 文字</div>
+  </div>
+
+  <!-- 12 TABS -->
+  <div class="comp">
+    <div class="comp-title">标签页 · Tabs</div>
+    <div class="comp-desc">面板内分页,与 dg-panel 拼接使用。点击切换。</div>
+    <div class="showcase" style="display:block;">
+      <div style="max-width:420px;">
+        <div class="dg-tabs" id="tabsDemo">
+          <div class="dg-tabs__tab dg-tabs__tab--active" data-tab>装备</div>
+          <div class="dg-tabs__tab" data-tab>技能</div>
+          <div class="dg-tabs__tab" data-tab>属性</div>
+        </div>
+        <div class="dg-panel" style="border-radius:0 0 4px 4px; border-top:none;">
+          <div class="dg-panel__bd"><p id="tabsBody">当前显示:装备面板内容。切换上方标签查看不同分页。</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-tabs</b> &gt; <b>dg-tabs__tab</b> ( <b>--active</b> )　·　常与 <b>dg-panel</b> 上下拼接</div>
+  </div>
+
+  <!-- ======================= EXPANSION PACK ======================= -->
+  <div class="comp" style="margin-top:56px;">
+    <div class="comp-title" style="font-size:24px;">✦ 扩展组件包 · Expansion Pack</div>
+    <div class="comp-desc">15 个补充组件,与上方共用同一套令牌与 <code style="color:var(--dg-gold-lt)">dg-</code> 前缀。</div>
+  </div>
+
+  <!-- 13 INPUT -->
+  <div class="comp">
+    <div class="comp-title">输入框 · Input</div>
+    <div class="comp-desc">内凹石槽风,聚焦时金光描边;可选前置图标 dg-field。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:360px;">
+      <input class="dg-input" placeholder="输入角色名…">
+      <div class="dg-field"><span class="dg-field__ic">🔍</span><input class="dg-input" placeholder="搜索物品…"></div>
+    </div>
+    <div class="classline"><b>&lt;input class="dg-input"&gt;</b>　·　带图标:<b>dg-field</b> &gt; <b>dg-field__ic</b> + <b>dg-input</b></div>
+  </div>
+
+  <!-- 14 SELECT -->
+  <div class="comp">
+    <div class="comp-title">下拉选择 · Select</div>
+    <div class="comp-desc">原生 select 定制外观 + 金色箭头,选项亦有暗色主题。</div>
+    <div class="showcase">
+      <div class="dg-select"><select><option>难度:地狱</option><option>难度:炼狱</option><option>难度:折磨 XVI</option></select></div>
+      <div class="dg-select"><select><option>职业:野蛮人</option><option>职业:法师</option><option>职业:死灵法师</option></select></div>
+    </div>
+    <div class="classline"><b>dg-select</b> &gt; <b>&lt;select&gt;</b> &gt; <b>&lt;option&gt;</b></div>
+  </div>
+
+  <!-- 15 SWITCH -->
+  <div class="comp">
+    <div class="comp-title">开关 · Switch</div>
+    <div class="comp-desc">纯 CSS :checked 切换,开启时金球发光。点击可切换。</div>
+    <div class="showcase" style="gap:26px;">
+      <label class="dg-switch"><input type="checkbox" checked><span class="dg-switch__track"></span><span style="margin-left:10px; font-weight:700; font-size:13px;">显示伤害数字</span></label>
+      <label class="dg-switch"><input type="checkbox"><span class="dg-switch__track"></span><span style="margin-left:10px; font-weight:700; font-size:13px;">PVP 模式</span></label>
+    </div>
+    <div class="classline"><b>&lt;label class="dg-switch"&gt;</b> &gt; <b>&lt;input type="checkbox"&gt;</b> + <b>span.dg-switch__track</b></div>
+  </div>
+
+  <!-- 16 SLIDER -->
+  <div class="comp">
+    <div class="comp-title">滑条 · Slider</div>
+    <div class="comp-desc">范围滑块,血红槽 + 金色滑钮(webkit / moz 双前缀已处理)。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:360px;">
+      <input type="range" class="dg-slider" min="0" max="100" value="65">
+      <input type="range" class="dg-slider" min="0" max="100" value="30">
+    </div>
+    <div class="classline"><b>&lt;input type="range" class="dg-slider"&gt;</b></div>
+  </div>
+
+  <!-- 17 BADGE -->
+  <div class="comp">
+    <div class="comp-title">徽章 · Badge</div>
+    <div class="comp-desc">数字提示徽章,可独立使用或用 dg-badge-wrap 贴在图标右上。</div>
+    <div class="showcase" style="gap:24px;">
+      <span class="dg-badge">3</span>
+      <span class="dg-badge dg-badge--gold">99+</span>
+      <span class="dg-badge-wrap"><div class="dg-icon">📨</div><span class="dg-badge">5</span></span>
+      <span class="dg-badge-wrap"><div class="dg-icon">🎁</div><span class="dg-badge dg-badge--gold">!</span></span>
+    </div>
+    <div class="classline"><b>dg-badge</b> ( <b>--gold</b> )　·　贴角:<b>dg-badge-wrap</b> &gt; 任意内容 + <b>dg-badge</b></div>
+  </div>
+
+  <!-- 18 RIBBON -->
+  <div class="comp">
+    <div class="comp-title">角标 · Ribbon</div>
+    <div class="comp-desc">卡片左上折角丝带,标注"限时/新品/传奇"。放在 position:relative 容器内。</div>
+    <div class="showcase">
+      <div class="dg-card" style="position:relative;">
+        <span class="dg-ribbon dg-ribbon--gold">限时</span>
+        <div class="dg-card__art">💰</div>
+        <div class="dg-card__name">财富宝箱</div>
+      </div>
+      <div class="dg-card" style="position:relative;">
+        <span class="dg-ribbon">新品</span>
+        <div class="dg-card__art">🔮</div>
+        <div class="dg-card__name">秘法宝珠</div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-ribbon</b> ( <b>--gold</b> )　·　置于 <b>position:relative</b> 的容器(如 dg-card)内</div>
+  </div>
+
+  <!-- 19 TAG -->
+  <div class="comp">
+    <div class="comp-title">标签 · Tag</div>
+    <div class="comp-desc">属性/词条小标签,HP/MP/金色变体。</div>
+    <div class="showcase">
+      <span class="dg-tag">近战</span>
+      <span class="dg-tag dg-tag--hp">🩸 +120 生命</span>
+      <span class="dg-tag dg-tag--mp">💧 +45 法力</span>
+      <span class="dg-tag dg-tag--gold">★ 传奇词条</span>
+    </div>
+    <div class="classline"><b>dg-tag</b> ( <b>--hp / --mp / --gold</b> )</div>
+  </div>
+
+  <!-- 20 TOOLTIP -->
+  <div class="comp">
+    <div class="comp-title">提示 · Tooltip</div>
+    <div class="comp-desc">悬停显示,内容取 data-tip 属性。悬停下方文字试试。</div>
+    <div class="showcase">
+      <span class="dg-tooltip" data-tip="暴击几率 +15%">暴击</span>
+      <span class="dg-tooltip" data-tip="每秒恢复 12 点生命">生命回复</span>
+      <span class="dg-tooltip" data-tip="免疫冰冻与减速效果">寒冰抗性</span>
+    </div>
+    <div class="classline"><b>&lt;span class="dg-tooltip" data-tip="提示内容"&gt;</b></div>
+  </div>
+
+  <!-- 21 TOAST -->
+  <div class="comp">
+    <div class="comp-title">通知 · Toast</div>
+    <div class="comp-desc">飘出式提示,普通/危险/成功三色左条。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch;">
+      <div class="dg-toast dg-toast--success"><span class="dg-toast__ic">⚔️</span><div><b>获得传奇装备</b>灾祸之刃已放入你的背包。</div></div>
+      <div class="dg-toast dg-toast--danger"><span class="dg-toast__ic">💀</span><div><b>你已阵亡</b>在坟场复活将损失 10% 经验。</div></div>
+      <div class="dg-toast"><span class="dg-toast__ic">📜</span><div><b>任务更新</b>新的赏金任务已在告示板刷新。</div></div>
+    </div>
+    <div class="classline"><b>dg-toast</b> ( <b>--danger / --success</b> ) &gt; <b>dg-toast__ic</b> + 内容(b 为标题)</div>
+  </div>
+
+  <!-- 22 BUBBLE -->
+  <div class="comp">
+    <div class="comp-title">对话气泡 · Bubble</div>
+    <div class="comp-desc">NPC 对话框,带说话人名与尖角。</div>
+    <div class="showcase">
+      <div class="dg-bubble">
+        <div class="dg-bubble__who">铁匠 · 哈拉甘</div>
+        把你的破碎符文带来,我能为你重铸一件配得上英雄的武器。
+      </div>
+    </div>
+    <div class="classline"><b>dg-bubble</b> &gt; <b>dg-bubble__who</b> + 对话文字</div>
+  </div>
+
+  <!-- 23 SPINNER -->
+  <div class="comp">
+    <div class="comp-title">加载 · Spinner</div>
+    <div class="comp-desc">旋转加载圈,金色/血红两种。</div>
+    <div class="showcase" style="gap:30px;">
+      <div class="dg-spinner"></div>
+      <div class="dg-spinner dg-spinner--rune"></div>
+      <span style="font-family:var(--dg-serif); color:var(--dg-parch-dim); font-size:13px;">正在进入地下城…</span>
+    </div>
+    <div class="classline"><b>dg-spinner</b> ( <b>--rune</b> )</div>
+  </div>
+
+  <!-- 24 AVATARS -->
+  <div class="comp">
+    <div class="comp-title">头像组 · Avatar Group</div>
+    <div class="comp-desc">叠放头像 + 溢出计数,用于队伍/公会。</div>
+    <div class="showcase">
+      <div class="dg-avatars">
+        <div class="dg-avatars__a">🛡️</div><div class="dg-avatars__a">🏹</div>
+        <div class="dg-avatars__a">🔥</div><div class="dg-avatars__a">💀</div>
+        <div class="dg-avatars__more">+12</div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-avatars</b> &gt; 多个 <b>dg-avatars__a</b> + 末尾 <b>dg-avatars__more</b></div>
+  </div>
+
+  <!-- 25 STARS -->
+  <div class="comp">
+    <div class="comp-title">星级评分 · Stars</div>
+    <div class="comp-desc">物品品质/难度评级,.on 为点亮。</div>
+    <div class="showcase" style="gap:26px;">
+      <span class="dg-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span>★</span><span>★</span></span>
+      <span class="dg-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></span>
+    </div>
+    <div class="classline"><b>dg-stars</b> &gt; 多个 <b>&lt;span&gt;★</b>,点亮加 <b>.on</b></div>
+  </div>
+
+  <!-- 26 DIVIDER -->
+  <div class="comp">
+    <div class="comp-title">分隔线 · Divider</div>
+    <div class="comp-desc">渐隐金线,可带中心符号或文字标签。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:420px;">
+      <div class="dg-divider"><span class="dg-divider__mark">✦</span></div>
+      <div class="dg-divider"><span class="dg-divider--label">战利品</span></div>
+    </div>
+    <div class="classline"><b>dg-divider</b> &gt; <b>dg-divider__mark</b> 或 <b>dg-divider--label</b></div>
+  </div>
+
+  <!-- 27 EMPTY -->
+  <div class="comp">
+    <div class="comp-title">空状态 · Empty</div>
+    <div class="comp-desc">列表/背包为空时的占位,图标+标题+说明。</div>
+    <div class="showcase" style="display:block;">
+      <div class="dg-panel" style="max-width:420px; margin:0 auto;">
+        <div class="dg-empty">
+          <div class="dg-empty__ic">🕸️</div>
+          <div class="dg-empty__tt">背包空空如也</div>
+          <div class="dg-empty__ds">击败怪物或开启宝箱来获取战利品。</div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-empty</b> &gt; <b>dg-empty__ic</b> + <b>dg-empty__tt</b> + <b>dg-empty__ds</b></div>
+  </div>
+
+  <!-- ======================= ADVANCED PACK ======================= -->
+  <div class="comp" style="margin-top:56px;">
+    <div class="comp-title" style="font-size:24px;">✦ 进阶组件包 · Advanced Pack</div>
+    <div class="comp-desc">16 个复杂交互组件,同样共用 dg- 令牌。表格、时间轴、翻牌、开宝箱等均可交互。</div>
+  </div>
+
+  <!-- 28 STEPPER -->
+  <div class="comp">
+    <div class="comp-title">步进器 · Stepper</div>
+    <div class="comp-desc">数量选择,− 值 + 三段,点击可增减。</div>
+    <div class="showcase">
+      <div class="dg-stepper" data-stepper>
+        <button class="dg-stepper__btn" data-dec>−</button>
+        <div class="dg-stepper__val" data-val>1</div>
+        <button class="dg-stepper__btn" data-inc>+</button>
+      </div>
+      <span style="font-family:var(--dg-sans); font-weight:700; font-size:13px; color:var(--dg-parch-dim);">购买治疗药水</span>
+    </div>
+    <div class="classline"><b>dg-stepper</b> &gt; <b>dg-stepper__btn</b>(−) + <b>dg-stepper__val</b> + <b>dg-stepper__btn</b>(+)</div>
+  </div>
+
+  <!-- 29 BREADCRUMB -->
+  <div class="comp">
+    <div class="comp-title">面包屑 · Breadcrumb</div>
+    <div class="comp-desc">层级导航路径,末项高亮为当前。</div>
+    <div class="showcase" style="display:block;">
+      <nav class="dg-breadcrumb">
+        <a>主城</a><span class="dg-breadcrumb__sep">✦</span>
+        <a>暗影荒野</a><span class="dg-breadcrumb__sep">✦</span>
+        <a>诅咒墓穴</a><span class="dg-breadcrumb__sep">✦</span>
+        <span class="dg-breadcrumb__cur">骨王殿</span>
+      </nav>
+    </div>
+    <div class="classline"><b>dg-breadcrumb</b> &gt; <b>a</b> + <b>dg-breadcrumb__sep</b> … + <b>dg-breadcrumb__cur</b></div>
+  </div>
+
+  <!-- 30 ACCORDION -->
+  <div class="comp">
+    <div class="comp-title">手风琴 · Accordion</div>
+    <div class="comp-desc">基于原生 &lt;details&gt;,无需 JS,点击展开/收起。</div>
+    <div class="showcase" style="display:block;">
+      <div class="dg-accordion" style="max-width:440px;">
+        <details open><summary>如何强化装备?</summary><div class="dg-accordion__bd">前往主城铁匠铺,消耗强化石与金币即可提升装备等级,失败有几率降级。</div></details>
+        <details><summary>符文该如何镶嵌?</summary><div class="dg-accordion__bd">拥有符文孔的装备可镶嵌符文,不同符文组合可触发套装效果。</div></details>
+        <details><summary>如何加入公会?</summary><div class="dg-accordion__bd">在社交界面搜索公会名称,或接受他人邀请。加入后可参与公会战。</div></details>
+      </div>
+    </div>
+    <div class="classline"><b>dg-accordion</b> &gt; <b>&lt;details&gt;</b> ( <b>&lt;summary&gt;</b> + <b>dg-accordion__bd</b> )</div>
+  </div>
+
+  <!-- 31 DRAWER -->
+  <div class="comp">
+    <div class="comp-title">侧边抽屉 · Drawer</div>
+    <div class="comp-desc">从右滑入的面板,常用于设置/背包。点击预览。</div>
+    <div class="showcase">
+      <button class="dg-btn dg-btn--primary" onclick="openDrawer()">打开抽屉</button>
+    </div>
+    <div class="classline"><b>dg-drawer-mask</b> + <b>dg-drawer</b> ( <b>dg-drawer__hd</b> + <b>dg-drawer__bd</b> )　·　加 <b>.open</b> 类展开</div>
+  </div>
+
+  <!-- 32 TABLE -->
+  <div class="comp">
+    <div class="comp-title">数据表格 · Table</div>
+    <div class="comp-desc">排行榜/属性表,斑马纹 + 悬停高亮。</div>
+    <div class="showcase" style="display:block;">
+      <table class="dg-table" style="max-width:480px;">
+        <thead><tr><th>排名</th><th>玩家</th><th>职业</th><th>战力</th></tr></thead>
+        <tbody>
+          <tr><td class="dg-table__rank">① </td><td>Nephalem</td><td>死灵法师</td><td>18,420</td></tr>
+          <tr><td class="dg-table__rank">② </td><td>Xul</td><td>野蛮人</td><td>17,905</td></tr>
+          <tr><td class="dg-table__rank">③ </td><td>Leah</td><td>法师</td><td>16,733</td></tr>
+          <tr><td>4</td><td>Tyrael</td><td>圣教军</td><td>15,210</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="classline"><b>table.dg-table</b> &gt; <b>thead th</b> + <b>tbody td</b>　·　名次:<b>dg-table__rank</b></div>
+  </div>
+
+  <!-- 33 PAGINATION -->
+  <div class="comp">
+    <div class="comp-title">分页器 · Pagination</div>
+    <div class="comp-desc">列表翻页,--active 当前页,--dis 禁用。点击可切换。</div>
+    <div class="showcase">
+      <div class="dg-pagination" id="pageDemo">
+        <div class="dg-pagination__pg dg-pagination__pg--dis">‹</div>
+        <div class="dg-pagination__pg dg-pagination__pg--active" data-pg>1</div>
+        <div class="dg-pagination__pg" data-pg>2</div>
+        <div class="dg-pagination__pg" data-pg>3</div>
+        <div class="dg-pagination__pg" data-pg>4</div>
+        <div class="dg-pagination__pg">›</div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-pagination</b> &gt; <b>dg-pagination__pg</b> ( <b>--active / --dis</b> )</div>
+  </div>
+
+  <!-- 34 TIMELINE -->
+  <div class="comp">
+    <div class="comp-title">时间轴 · Timeline</div>
+    <div class="comp-desc">竖向进度轴,--done 为已完成节点。</div>
+    <div class="showcase" style="display:block;">
+      <div class="dg-timeline" style="max-width:400px;">
+        <div class="dg-timeline__item dg-timeline__item--done"><div class="dg-timeline__t">抵达崔斯特姆</div><div class="dg-timeline__d">序章 · 已完成</div></div>
+        <div class="dg-timeline__item dg-timeline__item--done"><div class="dg-timeline__t">击败屠夫</div><div class="dg-timeline__d">第一章 · 已完成</div></div>
+        <div class="dg-timeline__item"><div class="dg-timeline__t">寻找堕落之星</div><div class="dg-timeline__d">第二章 · 进行中</div></div>
+        <div class="dg-timeline__item"><div class="dg-timeline__t">对峙大恶魔</div><div class="dg-timeline__d">终章 · 未解锁</div></div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-timeline</b> &gt; <b>dg-timeline__item</b> ( <b>--done</b> ) ( <b>__t</b> + <b>__d</b> )</div>
+  </div>
+
+  <!-- 35 TREE -->
+  <div class="comp">
+    <div class="comp-title">树形菜单 · Tree</div>
+    <div class="comp-desc">嵌套分类,基于 &lt;details&gt; 折叠。</div>
+    <div class="showcase" style="display:block;">
+      <div class="dg-tree" style="max-width:320px;">
+        <details open><summary>⚔️ 武器</summary>
+          <div class="dg-tree__leaf">🗡️ 单手剑 (24)</div>
+          <div class="dg-tree__leaf">🏹 弓 (11)</div>
+          <details><summary>🔨 双手武器</summary>
+            <div class="dg-tree__leaf">大剑 (7)</div>
+            <div class="dg-tree__leaf">战锤 (5)</div>
+          </details>
+        </details>
+        <details><summary>🛡️ 护甲</summary>
+          <div class="dg-tree__leaf">头盔 (9)</div>
+          <div class="dg-tree__leaf">胸甲 (14)</div>
+        </details>
+      </div>
+    </div>
+    <div class="classline"><b>dg-tree</b> &gt; 嵌套 <b>&lt;details&gt;</b>(&lt;summary&gt;) + <b>dg-tree__leaf</b></div>
+  </div>
+
+  <!-- 36 ENERGY -->
+  <div class="comp">
+    <div class="comp-title">能量条倒计时 · Energy</div>
+    <div class="comp-desc">体力/门票,含实时倒计时(演示每秒递减)。</div>
+    <div class="showcase" style="display:block;">
+      <div class="dg-energy" style="max-width:340px;">
+        <div class="dg-energy__orb">⚡</div>
+        <div class="dg-energy__body">
+          <div class="dg-energy__top"><span>体力 <b style="color:var(--dg-parch)">18 / 24</b></span><span class="dg-energy__timer" id="energyTimer">+1 · 04:59</span></div>
+          <div class="dg-bar"><div class="dg-bar__fill" style="width:75%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-energy</b> &gt; <b>dg-energy__orb</b> + <b>dg-energy__body</b> ( <b>__top</b>(含 <b>__timer</b>) + <b>dg-bar</b> )</div>
+  </div>
+
+  <!-- 37 CALENDAR -->
+  <div class="comp">
+    <div class="comp-title">签到日历 · Calendar</div>
+    <div class="comp-desc">7 日签到,--done 已领,--today 当天。</div>
+    <div class="showcase" style="display:block;">
+      <div class="dg-calendar" style="max-width:400px;">
+        <div class="dg-calendar__day dg-calendar__day--done"><span class="r">🪙</span>1</div>
+        <div class="dg-calendar__day dg-calendar__day--done"><span class="r">💧</span>2</div>
+        <div class="dg-calendar__day dg-calendar__day--done"><span class="r">📜</span>3</div>
+        <div class="dg-calendar__day dg-calendar__day--today"><span class="r">🎁</span>4</div>
+        <div class="dg-calendar__day"><span class="r">💎</span>5</div>
+        <div class="dg-calendar__day"><span class="r">🗝️</span>6</div>
+        <div class="dg-calendar__day"><span class="r">👑</span>7</div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-calendar</b> &gt; <b>dg-calendar__day</b> ( <b>--done / --today</b> )</div>
+  </div>
+
+  <!-- 38 QUESTCHAIN -->
+  <div class="comp">
+    <div class="comp-title">任务链 · Quest Chain</div>
+    <div class="comp-desc">连锁节点,--done 完成 / --now 当前 + 连接线。</div>
+    <div class="showcase" style="display:block;">
+      <div class="dg-questchain" style="max-width:400px;">
+        <div class="dg-questchain__node dg-questchain__node--done">✓</div>
+        <div class="dg-questchain__link dg-questchain__link--done"></div>
+        <div class="dg-questchain__node dg-questchain__node--done">✓</div>
+        <div class="dg-questchain__link dg-questchain__link--done"></div>
+        <div class="dg-questchain__node dg-questchain__node--now">⚔️</div>
+        <div class="dg-questchain__link"></div>
+        <div class="dg-questchain__node">🎁</div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-questchain</b> &gt; <b>__node</b>( <b>--done/--now</b> ) 与 <b>__link</b>( <b>--done</b> ) 交替</div>
+  </div>
+
+  <!-- 39 ACHIEVEMENT -->
+  <div class="comp">
+    <div class="comp-title">成就解锁 · Achievement</div>
+    <div class="comp-desc">奖章 + 标题 + 描述,--locked 为未解锁灰化。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:400px;">
+      <div class="dg-achievement"><div class="dg-achievement__medal">🏆</div><div class="dg-achievement__tx"><b>屠魔者</b><small>击败 1,000 只恶魔</small></div></div>
+      <div class="dg-achievement dg-achievement--locked"><div class="dg-achievement__medal">🔒</div><div class="dg-achievement__tx"><b>???</b><small>达成隐藏条件解锁</small></div></div>
+    </div>
+    <div class="classline"><b>dg-achievement</b> ( <b>--locked</b> ) &gt; <b>__medal</b> + <b>__tx</b>(b+small)</div>
+  </div>
+
+  <!-- 40 FLIPCARD -->
+  <div class="comp">
+    <div class="comp-title">翻牌 · Flip Card</div>
+    <div class="comp-desc">CSS 3D 翻转,点击卡片揭晓正面。</div>
+    <div class="showcase">
+      <div class="dg-flipcard" onclick="this.classList.toggle('flipped')">
+        <div class="dg-flipcard__inner">
+          <div class="dg-flipcard__face dg-flipcard__back">✦</div>
+          <div class="dg-flipcard__face dg-flipcard__front"><span class="em">🐉</span><span class="nm">暗影飞龙</span></div>
+        </div>
+      </div>
+      <div class="dg-flipcard" onclick="this.classList.toggle('flipped')">
+        <div class="dg-flipcard__inner">
+          <div class="dg-flipcard__face dg-flipcard__back">✦</div>
+          <div class="dg-flipcard__face dg-flipcard__front"><span class="em">👑</span><span class="nm">王之冠冕</span></div>
+        </div>
+      </div>
+      <span style="font-family:var(--dg-sans); font-weight:700; font-size:12px; color:var(--dg-parch-dim);">← 点击翻牌</span>
+    </div>
+    <div class="classline"><b>dg-flipcard</b> &gt; <b>__inner</b> &gt; <b>__face __back</b> + <b>__face __front</b>　·　加 <b>.flipped</b> 翻面</div>
+  </div>
+
+  <!-- 41 CHEST -->
+  <div class="comp">
+    <div class="comp-title">开宝箱 · Chest</div>
+    <div class="comp-desc">点击弹跳开启,揭示战利品。</div>
+    <div class="showcase">
+      <div class="dg-chest" onclick="openChest(this)">
+        <div class="dg-chest__box">🧰</div>
+        <div class="dg-chest__label">点击开启</div>
+        <div class="dg-chest__glow">
+          <div style="display:flex; gap:6px; justify-content:center;">
+            <div class="dg-icon dg-icon--legend">⚔️</div><div class="dg-icon">🪙</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-chest</b> &gt; <b>__box</b> + <b>__label</b> + <b>__glow</b>　·　加 <b>.opened</b> 触发</div>
+  </div>
+
+  <!-- 42 INVGRID -->
+  <div class="comp">
+    <div class="comp-title">背包网格 · Inventory Grid</div>
+    <div class="comp-desc">格子背包,支持稀有度描边、数量角标、空格。</div>
+    <div class="showcase" style="display:block;">
+      <div class="dg-invgrid">
+        <div class="dg-invgrid__cell dg-invgrid__cell--legend">⚔️</div>
+        <div class="dg-invgrid__cell dg-invgrid__cell--rare">🛡️</div>
+        <div class="dg-invgrid__cell">🧪<span class="dg-invgrid__qty">12</span></div>
+        <div class="dg-invgrid__cell">💎<span class="dg-invgrid__qty">3</span></div>
+        <div class="dg-invgrid__cell">📜<span class="dg-invgrid__qty">99</span></div>
+        <div class="dg-invgrid__cell">🗝️</div>
+        <div class="dg-invgrid__cell dg-invgrid__cell--rare">💍</div>
+        <div class="dg-invgrid__cell--empty dg-invgrid__cell"></div>
+        <div class="dg-invgrid__cell--empty dg-invgrid__cell"></div>
+        <div class="dg-invgrid__cell--empty dg-invgrid__cell"></div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-invgrid</b> &gt; <b>dg-invgrid__cell</b> ( <b>--rare/--legend/--empty</b> ) + <b>dg-invgrid__qty</b></div>
+  </div>
+
+  <!-- 43 COMPARE -->
+  <div class="comp">
+    <div class="comp-title">装备对比 · Compare</div>
+    <div class="comp-desc">已装备 vs 新装备,属性升降用绿/红标注。</div>
+    <div class="showcase" style="display:block;">
+      <div class="dg-compare" style="max-width:460px;">
+        <div class="dg-compare__side">
+          <div class="dg-icon">🗡️</div><div class="dg-compare__nm">旧:铁剑</div>
+          <div class="dg-compare__stat"><span>攻击</span><span>120</span></div>
+          <div class="dg-compare__stat"><span>暴击</span><span>5%</span></div>
+        </div>
+        <div class="dg-compare__vs">VS</div>
+        <div class="dg-compare__side">
+          <div class="dg-icon dg-icon--legend">⚔️</div><div class="dg-compare__nm" style="color:var(--dg-gold-lt)">新:灾祸之刃</div>
+          <div class="dg-compare__stat"><span>攻击</span><span class="dg-compare__up">185 ▲</span></div>
+          <div class="dg-compare__stat"><span>暴击</span><span class="dg-compare__up">18% ▲</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>dg-compare</b> &gt; <b>__side</b> + <b>__vs</b> + <b>__side</b>　·　升降:<b>dg-compare__up / __down</b></div>
+  </div>
+
+</div>
+
+<!-- demo modal -->
+<div class="dg-modal-mask" id="demoModal" style="display:none;">
+  <div class="dg-modal">
+    <div class="dg-modal__close" onclick="document.getElementById('demoModal').style.display='none'">✕</div>
+    <div class="dg-panel">
+      <span class="dg-corner tl">✦</span><span class="dg-corner tr">✦</span>
+      <span class="dg-corner bl">✦</span><span class="dg-corner br">✦</span>
+      <div class="dg-panel__hd">确认献祭</div>
+      <div class="dg-panel__bd">
+        <p style="text-align:center;">将这件传奇装备献祭给亡灵之神?此操作不可撤销。</p>
+        <div style="margin-top:16px; display:flex; gap:10px; justify-content:center;">
+          <button class="dg-btn dg-btn--primary" onclick="document.getElementById('demoModal').style.display='none'">献祭</button>
+          <button class="dg-btn dg-btn--ghost" onclick="document.getElementById('demoModal').style.display='none'">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- side drawer -->
+<div class="dg-drawer-mask" id="drawerMask" onclick="closeDrawer()"></div>
+<div class="dg-drawer" id="drawer">
+  <div class="dg-drawer__hd">背包 <span onclick="closeDrawer()">✕</span></div>
+  <div class="dg-drawer__bd">
+    <div class="dg-list">
+      <div class="dg-list__item"><div class="dg-list__ic">🧪</div><div class="dg-list__tx"><b>治疗药水</b><small>恢复 40% 生命</small></div><span class="dg-list__val">×12</span></div>
+      <div class="dg-list__item"><div class="dg-list__ic">💎</div><div class="dg-list__tx"><b>灵魂宝石</b><small>可镶嵌</small></div><span class="dg-list__val">×3</span></div>
+      <div class="dg-list__item"><div class="dg-list__ic">📜</div><div class="dg-list__tx"><b>传送卷轴</b><small>返回城镇</small></div><span class="dg-list__val">×99</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // drawer
+  function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('drawerMask').classList.add('open');}
+  function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('drawerMask').classList.remove('open');}
+  // stepper
+  document.querySelectorAll('[data-stepper]').forEach(s=>{
+    const v=s.querySelector('[data-val]'); let n=parseInt(v.textContent,10);
+    s.querySelector('[data-inc]').onclick=()=>{n=Math.min(99,n+1);v.textContent=n;};
+    s.querySelector('[data-dec]').onclick=()=>{n=Math.max(1,n-1);v.textContent=n;};
+  });
+  // pagination
+  document.querySelectorAll('#pageDemo [data-pg]').forEach(p=>p.addEventListener('click',()=>{
+    document.querySelectorAll('#pageDemo [data-pg]').forEach(x=>x.classList.remove('dg-pagination__pg--active'));
+    p.classList.add('dg-pagination__pg--active');
+  }));
+  // chest
+  function openChest(el){el.classList.add('opened');el.querySelector('.dg-chest__label').textContent='已开启!';}
+  // energy countdown demo
+  (function(){const t=document.getElementById('energyTimer');if(!t)return;let s=299;
+    setInterval(()=>{s=s<=0?299:s-1;const m=String(Math.floor(s/60)).padStart(2,'0'),ss=String(s%60).padStart(2,'0');
+      t.textContent='+1 · '+m+':'+ss;},1000);})();
+
+  document.querySelectorAll('#navDemo [data-nav]').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('#navDemo [data-nav]').forEach(x=>x.classList.remove('dg-nav__tab--active'));
+    t.classList.add('dg-nav__tab--active');
+  }));
+  // tabs switching
+  const tabBodies={0:'当前显示:装备面板内容。切换上方标签查看不同分页。',1:'当前显示:技能树。分配技能点以解锁强大的主动与被动能力。',2:'当前显示:角色属性。力量 428 · 敏捷 312 · 智力 190 · 体能 540。'};
+  document.querySelectorAll('#tabsDemo [data-tab]').forEach((t,i)=>t.addEventListener('click',()=>{
+    document.querySelectorAll('#tabsDemo [data-tab]').forEach(x=>x.classList.remove('dg-tabs__tab--active'));
+    t.classList.add('dg-tabs__tab--active');
+    document.getElementById('tabsBody').textContent=tabBodies[i];
+  }));
+  // close modal on mask click
+  document.getElementById('demoModal').addEventListener('click',e=>{if(e.target.id==='demoModal')e.target.style.display='none';});
+</script>
+</body>
+</html>

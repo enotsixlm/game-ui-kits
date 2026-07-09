@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>像素 8-bit UI 组件库 · Retro Pixel Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* ============================================================================
+   RETRO PIXEL / 8-BIT UI KIT — reusable component library
+   ----------------------------------------------------------------------------
+   全部 px- 前缀。改主题只改下面 :root 令牌即可。
+   招牌:无圆角 · 阶梯像素描边 · 有限色板 · 像素字体 · pixelated 渲染
+   ----------------------------------------------------------------------------
+   像素描边靠 box-shadow 堆叠实现:--px-b 是描边像素单位。
+   ============================================================================ */
+:root{
+  /* NES-ish 有限色板 */
+  --px-ink:#0f0f1b;      --px-ink2:#20203a;
+  --px-white:#f4f4fc;    --px-grey:#6a6a8a;   --px-grey-dk:#3a3a56;
+  --px-red:#e23c3c;      --px-red-dk:#8a1616;
+  --px-green:#4ad04a;    --px-green-dk:#1e7a1e;
+  --px-blue:#3ca0ff;     --px-blue-dk:#1858b8;
+  --px-yellow:#ffd23c;   --px-yellow-dk:#c89000;
+  --px-purple:#b84af0;   --px-purple-dk:#6a1e9a;
+  --px-cyan:#3ce8e8;      --px-bg:#181828;      --px-panel:#26264a;
+  --px-panel-2:#1e1e3a;
+
+  --px-b:3px;            /* 像素描边单位 */
+  --px-disp:'Press Start 2P',monospace;
+  --px-ui:'VT323','Press Start 2P',monospace;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:var(--px-ui); color:var(--px-white); line-height:1.4; font-size:19px;
+  background:var(--px-bg);
+  background-image:
+    linear-gradient(0deg, rgba(255,255,255,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+  background-size:16px 16px;
+  background-attachment:fixed; min-height:100vh; padding:0 0 90px; image-rendering:pixelated;
+}
+/* pixel border helper via box-shadow stepped outline (no border-radius anywhere) */
+.px-border{box-shadow:
+  0 calc(-1*var(--px-b)) 0 0 var(--px-ink), 0 var(--px-b) 0 0 var(--px-ink),
+  calc(-1*var(--px-b)) 0 0 0 var(--px-ink), var(--px-b) 0 0 0 var(--px-ink);}
+
+.doc{max-width:960px; margin:0 auto; padding:0 22px;}
+.doc-head{text-align:center; padding:52px 20px 26px;}
+.doc-head .eb{display:inline-block; margin-bottom:18px; font-family:var(--px-disp); font-size:10px; letter-spacing:.1em;
+  color:var(--px-yellow); background:var(--px-ink); padding:8px 14px;
+  box-shadow:0 -3px 0 0 var(--px-yellow-dk),0 3px 0 0 var(--px-yellow-dk),-3px 0 0 0 var(--px-yellow-dk),3px 0 0 0 var(--px-yellow-dk);}
+.doc-head h1{font-family:var(--px-disp); font-size:clamp(18px,4vw,30px); color:var(--px-white); line-height:1.5;
+  text-shadow:4px 4px 0 var(--px-red-dk), 8px 8px 0 rgba(0,0,0,.3);}
+.doc-head p{margin-top:22px; color:var(--px-cyan); font-size:20px;}
+
+.tokens{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:22px;}
+.tok{display:flex; align-items:center; gap:8px; font-family:var(--px-disp); font-size:9px; color:var(--px-white);
+  background:var(--px-panel); padding:7px 10px;
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink);}
+.tok i{width:14px;height:14px; box-shadow:0 0 0 2px var(--px-ink);}
+
+.comp{margin-top:40px;}
+.comp-title{font-family:var(--px-disp); font-size:14px; color:var(--px-yellow); display:flex; align-items:center; gap:12px;
+  margin-bottom:6px; text-shadow:2px 2px 0 var(--px-yellow-dk);}
+.comp-title::before{content:"►"; color:var(--px-red); font-size:12px;}
+.comp-desc{color:var(--px-cyan); font-size:19px; margin-bottom:16px;}
+.showcase{display:flex; flex-wrap:wrap; gap:18px; align-items:center; padding:26px; background:var(--px-panel-2);
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink),
+             6px 6px 0 0 rgba(0,0,0,.4);}
+.classline{margin-top:14px; font-family:var(--px-disp); font-size:9px; color:var(--px-green); background:var(--px-ink);
+  padding:12px 14px; overflow-x:auto; line-height:1.8;}
+.classline b{color:var(--px-yellow);}
+
+/* ============================================================================
+   ============  COMPONENTS  ============  无圆角,一律像素硬边
+   ============================================================================ */
+
+/* ----- 1. 按钮 px-btn ----- */
+.px-btn{font-family:var(--px-disp); font-size:11px; color:var(--px-white); cursor:pointer; user-select:none;
+  display:inline-flex; align-items:center; gap:8px; padding:12px 18px; border:none; text-align:center; line-height:1.4;
+  background:var(--b,var(--px-red)); position:relative; image-rendering:pixelated;
+  box-shadow:0 -4px 0 0 var(--px-ink),0 4px 0 0 var(--px-ink),-4px 0 0 0 var(--px-ink),4px 0 0 0 var(--px-ink),
+             0 8px 0 0 var(--bd,var(--px-red-dk)), 0 8px 0 4px var(--px-ink);
+  transition:none;}
+.px-btn:active{transform:translateY(6px);
+  box-shadow:0 -4px 0 0 var(--px-ink),0 4px 0 0 var(--px-ink),-4px 0 0 0 var(--px-ink),4px 0 0 0 var(--px-ink),
+             0 2px 0 0 var(--bd,var(--px-red-dk)), 0 2px 0 4px var(--px-ink);}
+.px-btn--red{--b:var(--px-red);--bd:var(--px-red-dk);}
+.px-btn--green{--b:var(--px-green);--bd:var(--px-green-dk);}
+.px-btn--blue{--b:var(--px-blue);--bd:var(--px-blue-dk);}
+.px-btn--yellow{--b:var(--px-yellow);--bd:var(--px-yellow-dk); color:var(--px-ink);}
+.px-btn--purple{--b:var(--px-purple);--bd:var(--px-purple-dk);}
+.px-btn--sm{font-size:9px; padding:9px 12px;}
+.px-btn--lg{font-size:14px; padding:16px 26px;}
+.px-btn--block{width:100%; justify-content:center;}
+.px-btn[disabled],.px-btn--disabled{--b:var(--px-grey);--bd:var(--px-grey-dk); cursor:not-allowed; color:#c0c0d0;}
+.px-btn[disabled]:active,.px-btn--disabled:active{transform:none;
+  box-shadow:0 -4px 0 0 var(--px-ink),0 4px 0 0 var(--px-ink),-4px 0 0 0 var(--px-ink),4px 0 0 0 var(--px-ink),
+             0 8px 0 0 var(--bd), 0 8px 0 4px var(--px-ink);}
+
+/* ----- 2. 面板 px-panel ----- */
+.px-panel{position:relative; background:var(--px-panel); padding:4px;
+  box-shadow:0 -4px 0 0 var(--px-ink),0 4px 0 0 var(--px-ink),-4px 0 0 0 var(--px-ink),4px 0 0 0 var(--px-ink),
+             8px 8px 0 0 rgba(0,0,0,.4);}
+.px-panel__hd{font-family:var(--px-disp); font-size:12px; color:var(--px-white); text-align:center; padding:12px 14px;
+  background:var(--px-blue); text-shadow:2px 2px 0 var(--px-blue-dk);
+  box-shadow:inset 0 -4px 0 0 var(--px-blue-dk);}
+.px-panel__bd{padding:14px; font-size:19px; color:var(--px-white);}
+.px-panel__bd p{line-height:1.5;}
+/* corner blocks(可选) */
+.px-corner{position:absolute; width:8px; height:8px; background:var(--px-yellow); box-shadow:0 0 0 2px var(--px-ink); z-index:2;}
+.px-corner.tl{top:0;left:0;} .px-corner.tr{top:0;right:0;} .px-corner.bl{bottom:0;left:0;} .px-corner.br{bottom:0;right:0;}
+
+/* ----- 3. 弹窗 px-modal ----- */
+.px-modal-mask{position:fixed; inset:0; background:rgba(15,15,27,.8); display:grid; place-items:center; z-index:100; padding:20px;}
+.px-modal{width:min(360px,92vw); position:relative;}
+.px-modal__close{position:absolute; top:-4px; right:-4px; width:32px; height:32px; z-index:5; cursor:pointer;
+  font-family:var(--px-disp); font-size:12px; color:var(--px-white); background:var(--px-red); display:grid; place-items:center;
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink);}
+
+/* ----- 4. 进度条 px-bar ----- */
+.px-bar{position:relative; height:18px; background:var(--px-ink); padding:3px;
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink);}
+.px-bar__fill{height:100%; image-rendering:pixelated;}
+.px-bar__fill--hp{background:var(--px-red);} .px-bar__fill--mp{background:var(--px-blue);}
+.px-bar__fill--xp{background:var(--px-yellow);} .px-bar__fill--sta{background:var(--px-green);}
+.px-bar__label{position:absolute; inset:0; display:grid; place-items:center; font-family:var(--px-disp); font-size:8px;
+  color:var(--px-white); text-shadow:1px 1px 0 var(--px-ink); z-index:2;}
+.px-bar--tall{height:24px;}
+
+/* ----- 5. 货币条 px-currency ----- */
+.px-currency{display:inline-flex; align-items:center; gap:8px; font-family:var(--px-disp); font-size:12px; color:var(--px-yellow);
+  background:var(--px-ink); padding:8px 14px 8px 8px;
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink);}
+.px-currency__ic{width:22px; height:22px; display:grid; place-items:center; font-size:12px; box-shadow:0 0 0 2px var(--px-ink);}
+.px-currency__ic--gold{background:var(--px-yellow);} .px-currency__ic--gem{background:var(--px-cyan);} .px-currency__ic--heart{background:var(--px-red);}
+
+/* ----- 6. 状态计量表 px-hearts(生命格) ----- */
+.px-hearts{display:inline-flex; align-items:center; gap:6px;}
+.px-hearts__row{display:flex; gap:3px;}
+.px-hearts .h{font-size:20px; image-rendering:pixelated; filter:contrast(1.2);}
+.px-hearts .empty{opacity:.28;}
+.px-hearts__lbl{font-family:var(--px-disp); font-size:9px; color:var(--px-red);}
+
+/* ----- 7. 图标底座 px-icon ----- */
+.px-icon{width:50px; height:50px; display:grid; place-items:center; font-size:24px; position:relative; background:var(--px-ink2);
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink);}
+.px-icon--rare{background:var(--px-blue-dk);} .px-icon--legend{background:var(--px-yellow-dk);}
+.px-icon__cd{position:absolute; inset:0; background:rgba(15,15,27,.72); display:grid; place-items:center;
+  font-family:var(--px-disp); font-size:14px; color:var(--px-white);}
+
+/* ----- 8. 卡片 px-card ----- */
+.px-card{width:150px; background:var(--px-panel); cursor:pointer; position:relative;
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink),
+             6px 6px 0 0 rgba(0,0,0,.4);}
+.px-card:active{transform:translate(3px,3px); box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink);}
+.px-card__art{height:92px; display:grid; place-items:center; font-size:44px; position:relative; background:var(--c,var(--px-blue-dk));
+  box-shadow:inset 0 -3px 0 0 rgba(0,0,0,.35);}
+.px-card--red{--c:var(--px-red-dk);} .px-card--green{--c:var(--px-green-dk);} .px-card--purple{--c:var(--px-purple-dk);}
+.px-card__tag{position:absolute; top:5px; left:5px; font-family:var(--px-disp); font-size:7px; color:var(--px-ink);
+  background:var(--px-yellow); padding:2px 5px;}
+.px-card__name{font-family:var(--px-disp); font-size:9px; color:var(--px-white); text-align:center; padding:9px 4px 5px; line-height:1.5;}
+.px-card__foot{padding:0 8px 10px;}
+
+/* ----- 9. 列表项 px-list ----- */
+.px-list{background:var(--px-panel);
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink);}
+.px-list__item{display:flex; align-items:center; gap:12px; padding:10px 12px; cursor:pointer;
+  border-bottom:3px solid var(--px-ink2);}
+.px-list__item:last-child{border-bottom:none;}
+.px-list__item:hover{background:var(--px-ink2);}
+.px-list__ic{width:32px; height:32px; flex:none; display:grid; place-items:center; font-size:16px; background:var(--px-ink);
+  box-shadow:0 0 0 2px var(--px-ink);}
+.px-list__tx{flex:1;}
+.px-list__tx b{font-family:var(--px-disp); font-size:9px; color:var(--px-white); display:block; line-height:1.6;}
+.px-list__tx small{font-size:17px; color:var(--px-cyan);}
+.px-list__val{font-family:var(--px-disp); font-size:10px; color:var(--px-yellow);}
+
+/* ----- 10. 顶部 HUD px-hud ----- */
+.px-hud{display:flex; align-items:center; gap:12px; padding:10px 12px; background:var(--px-panel);
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink);}
+.px-hud__ava{width:42px; height:42px; flex:none; display:grid; place-items:center; font-size:22px; background:var(--px-red-dk);
+  box-shadow:0 0 0 3px var(--px-ink);}
+.px-hud__who b{font-family:var(--px-disp); font-size:10px; color:var(--px-white); display:block; line-height:1.6;}
+.px-hud__who small{font-size:16px; color:var(--px-green);}
+.px-hud__spacer{flex:1;}
+
+/* ----- 11. 导航栏 px-nav ----- */
+.px-nav{display:flex; gap:6px; padding:6px; background:var(--px-panel);
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink);}
+.px-nav__tab{flex:1; text-align:center; font-family:var(--px-disp); font-size:8px; color:var(--px-grey); padding:9px 4px; cursor:pointer;
+  line-height:1.6; background:var(--px-ink2);}
+.px-nav__tab .i{display:block; font-size:18px; margin-bottom:4px; font-family:var(--px-ui);}
+.px-nav__tab--active{color:var(--px-ink); background:var(--px-yellow);}
+
+/* ----- 12. 标签页 px-tabs ----- */
+.px-tabs{display:flex; gap:4px;}
+.px-tabs__tab{font-family:var(--px-disp); font-size:9px; color:var(--px-grey); padding:10px 14px; cursor:pointer; background:var(--px-ink2);
+  box-shadow:inset 0 -3px 0 0 var(--px-ink);}
+.px-tabs__tab--active{color:var(--px-ink); background:var(--px-green); box-shadow:inset 0 -3px 0 0 var(--px-green-dk);}
+
+/* ----- 13. 输入框 px-input ----- */
+.px-input{font-family:var(--px-ui); font-size:19px; color:var(--px-white); background:var(--px-ink); border:none; padding:10px 12px;
+  width:100%; outline:none;
+  box-shadow:0 -3px 0 0 var(--px-grey-dk),0 3px 0 0 var(--px-grey-dk),-3px 0 0 0 var(--px-grey-dk),3px 0 0 0 var(--px-grey-dk);}
+.px-input::placeholder{color:var(--px-grey);}
+.px-input:focus{box-shadow:0 -3px 0 0 var(--px-cyan),0 3px 0 0 var(--px-cyan),-3px 0 0 0 var(--px-cyan),3px 0 0 0 var(--px-cyan);}
+.px-field{position:relative;}
+.px-field__ic{position:absolute; left:10px; top:50%; transform:translateY(-50%); font-size:16px; z-index:2;}
+.px-field .px-input{padding-left:34px;}
+
+/* ----- 14. 下拉选择 px-select ----- */
+.px-select{position:relative; display:inline-block;}
+.px-select select{appearance:none; -webkit-appearance:none; font-family:var(--px-disp); font-size:9px; color:var(--px-white);
+  background:var(--px-ink2); border:none; padding:12px 34px 12px 12px; cursor:pointer; outline:none; line-height:1.6;
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink);}
+.px-select::after{content:"▼"; position:absolute; right:12px; top:50%; transform:translateY(-50%); color:var(--px-yellow);
+  pointer-events:none; font-size:9px;}
+.px-select option{background:var(--px-ink2); color:var(--px-white); font-family:var(--px-ui); font-size:16px;}
+
+/* ----- 15. 开关 px-switch ----- */
+.px-switch{position:relative; display:inline-flex; align-items:center; cursor:pointer; user-select:none;}
+.px-switch input{position:absolute; opacity:0; pointer-events:none;}
+.px-switch__track{width:52px; height:26px; background:var(--px-ink); position:relative; padding:3px;
+  box-shadow:0 0 0 3px var(--px-grey-dk);}
+.px-switch__track::before{content:""; position:absolute; top:3px; left:3px; width:20px; height:20px; background:var(--px-grey); transition:none;}
+.px-switch input:checked + .px-switch__track{box-shadow:0 0 0 3px var(--px-green-dk);}
+.px-switch input:checked + .px-switch__track::before{left:29px; background:var(--px-green);}
+
+/* ----- 16. 滑条 px-slider ----- */
+.px-slider{-webkit-appearance:none; appearance:none; width:100%; height:10px; background:var(--px-ink);
+  box-shadow:0 0 0 3px var(--px-grey-dk); outline:none; cursor:pointer;}
+.px-slider::-webkit-slider-thumb{-webkit-appearance:none; width:18px; height:18px; background:var(--px-yellow);
+  box-shadow:0 0 0 3px var(--px-ink); cursor:pointer;}
+.px-slider::-moz-range-thumb{width:18px; height:18px; background:var(--px-yellow); box-shadow:0 0 0 3px var(--px-ink); border:none; cursor:pointer;}
+
+/* ----- 17. 徽章 px-badge ----- */
+.px-badge{display:inline-grid; place-items:center; min-width:20px; height:20px; padding:0 5px; font-family:var(--px-disp); font-size:8px;
+  color:var(--px-white); background:var(--px-red); box-shadow:0 0 0 2px var(--px-ink);}
+.px-badge--yellow{background:var(--px-yellow); color:var(--px-ink);}
+.px-badge-wrap{position:relative; display:inline-flex;}
+.px-badge-wrap > .px-badge{position:absolute; top:-8px; right:-8px;}
+
+/* ----- 18. 角标 px-ribbon ----- */
+.px-ribbon{position:absolute; top:8px; left:0; font-family:var(--px-disp); font-size:8px; color:var(--px-white); background:var(--px-red);
+  padding:4px 8px; z-index:3; box-shadow:0 0 0 2px var(--px-ink), 3px 3px 0 0 rgba(0,0,0,.4);}
+.px-ribbon--yellow{background:var(--px-yellow); color:var(--px-ink);}
+
+/* ----- 19. 标签 px-tag ----- */
+.px-tag{display:inline-flex; align-items:center; gap:5px; font-family:var(--px-disp); font-size:8px; color:var(--px-white);
+  background:var(--px-ink2); padding:5px 9px; box-shadow:0 0 0 2px var(--px-ink); line-height:1.6;}
+.px-tag--red{color:var(--px-red);} .px-tag--green{color:var(--px-green);} .px-tag--blue{color:var(--px-blue);}
+
+/* ----- 20. Tooltip px-tooltip ----- */
+.px-tooltip{position:relative; display:inline-flex; cursor:help; color:var(--px-yellow);}
+.px-tooltip::after{content:attr(data-tip); position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%);
+  font-family:var(--px-ui); font-size:16px; color:var(--px-white); white-space:nowrap; background:var(--px-ink); padding:8px 10px;
+  opacity:0; pointer-events:none; z-index:20; box-shadow:0 0 0 3px var(--px-yellow-dk);}
+.px-tooltip:hover::after{opacity:1;}
+
+/* ----- 21. Toast px-toast ----- */
+.px-toast{display:flex; align-items:center; gap:12px; font-size:18px; color:var(--px-white); background:var(--px-panel);
+  padding:12px 14px; max-width:360px;
+  box-shadow:0 -3px 0 0 var(--px-green),0 3px 0 0 var(--px-green),-3px 0 0 0 var(--px-green),3px 0 0 0 var(--px-green),
+             0 0 0 6px var(--px-ink);}
+.px-toast__ic{font-size:20px; flex:none;}
+.px-toast--danger{box-shadow:0 -3px 0 0 var(--px-red),0 3px 0 0 var(--px-red),-3px 0 0 0 var(--px-red),3px 0 0 0 var(--px-red),0 0 0 6px var(--px-ink);}
+.px-toast--coin{box-shadow:0 -3px 0 0 var(--px-yellow),0 3px 0 0 var(--px-yellow),-3px 0 0 0 var(--px-yellow),3px 0 0 0 var(--px-yellow),0 0 0 6px var(--px-ink);}
+.px-toast b{font-family:var(--px-disp); font-size:9px; color:var(--px-yellow); display:block; line-height:1.8;}
+
+/* ----- 22. 对话气泡 px-bubble ----- */
+.px-bubble{position:relative; font-size:19px; color:var(--px-white); max-width:320px; background:var(--px-panel); padding:14px 16px;
+  box-shadow:0 -3px 0 0 var(--px-white),0 3px 0 0 var(--px-white),-3px 0 0 0 var(--px-white),3px 0 0 0 var(--px-white),0 0 0 6px var(--px-ink);}
+.px-bubble__who{font-family:var(--px-disp); font-size:9px; color:var(--px-yellow); margin-bottom:8px;}
+.px-bubble__blink{font-family:var(--px-disp); font-size:8px; color:var(--px-cyan); animation:px-blink 1s steps(1) infinite;}
+@keyframes px-blink{50%{opacity:0;}}
+
+/* ----- 23. 加载 px-spinner(方块环) ----- */
+.px-spinner{width:32px; height:32px; position:relative; image-rendering:pixelated;}
+.px-spinner::before{content:""; position:absolute; width:10px; height:10px; background:var(--px-cyan);
+  animation:px-orbit 1s steps(8) infinite; top:0; left:11px;}
+@keyframes px-orbit{
+  0%{top:0;left:11px} 12.5%{top:6px;left:20px} 25%{top:11px;left:22px} 37.5%{top:20px;left:20px}
+  50%{top:22px;left:11px} 62.5%{top:20px;left:2px} 75%{top:11px;left:0} 87.5%{top:6px;left:2px} 100%{top:0;left:11px}}
+
+/* ----- 24. 头像组 px-avatars ----- */
+.px-avatars{display:inline-flex;}
+.px-avatars__a{width:38px; height:38px; display:grid; place-items:center; font-size:18px; margin-left:-6px; background:var(--px-ink2);
+  box-shadow:0 0 0 3px var(--px-ink);}
+.px-avatars__a:first-child{margin-left:0;}
+.px-avatars__more{width:38px; height:38px; display:grid; place-items:center; margin-left:-6px; font-family:var(--px-disp); font-size:8px;
+  color:var(--px-yellow); background:var(--px-ink); box-shadow:0 0 0 3px var(--px-ink);}
+
+/* ----- 25. 星级评分 px-stars ----- */
+.px-stars{display:inline-flex; gap:4px; font-size:20px; color:var(--px-grey-dk);}
+.px-stars .on{color:var(--px-yellow);}
+
+/* ----- 26. 分隔线 px-divider ----- */
+.px-divider{display:flex; align-items:center; gap:12px; margin:8px 0; color:var(--px-yellow);}
+.px-divider::before,.px-divider::after{content:""; height:3px; flex:1;
+  background:repeating-linear-gradient(90deg,var(--px-grey-dk) 0 6px,transparent 6px 12px);}
+.px-divider__mark{font-family:var(--px-disp); font-size:9px; color:var(--px-white);}
+
+/* ----- 27. 空状态 px-empty ----- */
+.px-empty{text-align:center; padding:30px 20px; color:var(--px-grey);}
+.px-empty__ic{font-size:44px; image-rendering:pixelated;}
+.px-empty__tt{font-family:var(--px-disp); font-size:11px; color:var(--px-white); margin:16px 0 8px; line-height:1.6;}
+.px-empty__ds{font-size:18px;}
+
+/* ----- 28. 步进器 px-stepper ----- */
+.px-stepper{display:inline-flex; align-items:stretch;
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink);}
+.px-stepper__btn{width:36px; font-family:var(--px-disp); font-size:14px; color:var(--px-white); background:var(--px-blue); border:none;
+  cursor:pointer; display:grid; place-items:center;}
+.px-stepper__btn:active{background:var(--px-blue-dk);}
+.px-stepper__val{min-width:50px; display:grid; place-items:center; font-family:var(--px-disp); font-size:11px; color:var(--px-white);
+  background:var(--px-ink);}
+
+/* ----- 29. 面包屑 px-breadcrumb ----- */
+.px-breadcrumb{display:flex; align-items:center; gap:8px; font-family:var(--px-disp); font-size:9px; flex-wrap:wrap; line-height:1.8;}
+.px-breadcrumb a{color:var(--px-cyan); text-decoration:none; cursor:pointer;}
+.px-breadcrumb a:hover{color:var(--px-yellow);}
+.px-breadcrumb__sep{color:var(--px-grey);}
+.px-breadcrumb__cur{color:var(--px-yellow);}
+
+/* ----- 30. 手风琴 px-accordion ----- */
+.px-accordion{background:var(--px-panel);
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink);}
+.px-accordion details{border-bottom:3px solid var(--px-ink2);}
+.px-accordion details:last-child{border-bottom:none;}
+.px-accordion summary{list-style:none; cursor:pointer; padding:12px 14px; font-family:var(--px-disp); font-size:9px; color:var(--px-white);
+  display:flex; align-items:center; gap:10px; line-height:1.6;}
+.px-accordion summary::-webkit-details-marker{display:none;}
+.px-accordion summary::before{content:"+"; color:var(--px-yellow);}
+.px-accordion details[open] summary::before{content:"-";}
+.px-accordion summary:hover{background:var(--px-ink2);}
+.px-accordion__bd{padding:2px 14px 14px 30px; font-size:18px; color:var(--px-cyan); line-height:1.5;}
+
+/* ----- 31. 侧边抽屉 px-drawer ----- */
+.px-drawer-mask{position:fixed; inset:0; background:rgba(15,15,27,.75); z-index:110; opacity:0; pointer-events:none; transition:opacity .1s;}
+.px-drawer-mask.open{opacity:1; pointer-events:auto;}
+.px-drawer{position:fixed; top:0; right:0; bottom:0; width:min(300px,86vw); z-index:120; background:var(--px-panel);
+  box-shadow:-6px 0 0 0 var(--px-ink), -6px 0 0 6px var(--px-cyan); transform:translateX(110%); transition:transform .12s steps(4);
+  display:flex; flex-direction:column;}
+.px-drawer.open{transform:translateX(0);}
+.px-drawer__hd{font-family:var(--px-disp); font-size:11px; color:var(--px-white); padding:16px; background:var(--px-blue);
+  display:flex; align-items:center; justify-content:space-between; text-shadow:2px 2px 0 var(--px-blue-dk);}
+.px-drawer__hd span{cursor:pointer;}
+.px-drawer__bd{padding:12px; overflow-y:auto;}
+
+/* ----- 32. 数据表格 px-table ----- */
+.px-table{width:100%; border-collapse:separate; border-spacing:0; font-size:17px; background:var(--px-panel);
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink);}
+.px-table thead th{font-family:var(--px-disp); font-size:8px; color:var(--px-ink); text-align:left; padding:10px 12px; background:var(--px-yellow); line-height:1.6;}
+.px-table tbody td{padding:9px 12px; color:var(--px-white); border-bottom:3px solid var(--px-ink2);}
+.px-table tbody tr:last-child td{border-bottom:none;}
+.px-table tbody tr:nth-child(even){background:var(--px-ink2);}
+.px-table tbody tr:hover{background:var(--px-blue-dk);}
+.px-table__rank{font-family:var(--px-disp); font-size:9px; color:var(--px-yellow);}
+
+/* ----- 33. 分页器 px-pagination ----- */
+.px-pagination{display:inline-flex; gap:5px;}
+.px-pagination__pg{min-width:34px; height:34px; padding:0 6px; display:grid; place-items:center; cursor:pointer; font-family:var(--px-disp);
+  font-size:9px; color:var(--px-white); background:var(--px-ink2); box-shadow:0 0 0 3px var(--px-ink);}
+.px-pagination__pg:hover{background:var(--px-blue-dk);}
+.px-pagination__pg--active{color:var(--px-ink); background:var(--px-yellow);}
+.px-pagination__pg--dis{opacity:.4; cursor:not-allowed;}
+
+/* ----- 34. 时间轴 px-timeline ----- */
+.px-timeline{position:relative; padding-left:28px;}
+.px-timeline::before{content:""; position:absolute; left:8px; top:6px; bottom:6px; width:4px;
+  background:repeating-linear-gradient(180deg,var(--px-grey-dk) 0 6px,transparent 6px 12px);}
+.px-timeline__item{position:relative; padding-bottom:16px;}
+.px-timeline__item:last-child{padding-bottom:0;}
+.px-timeline__item::before{content:""; position:absolute; left:-24px; top:2px; width:14px; height:14px; background:var(--px-grey);
+  box-shadow:0 0 0 3px var(--px-ink);}
+.px-timeline__item--done::before{background:var(--px-green);}
+.px-timeline__item--now::before{background:var(--px-red);}
+.px-timeline__t{font-family:var(--px-disp); font-size:9px; color:var(--px-white); line-height:1.6;}
+.px-timeline__d{font-size:16px; color:var(--px-cyan); margin-top:4px;}
+
+/* ----- 35. 树形菜单 px-tree ----- */
+.px-tree{font-size:18px;}
+.px-tree details{margin-left:4px;}
+.px-tree summary{list-style:none; cursor:pointer; padding:5px 0; color:var(--px-white); display:flex; align-items:center; gap:8px;}
+.px-tree summary::-webkit-details-marker{display:none;}
+.px-tree summary::before{content:"▶"; color:var(--px-yellow); font-size:9px;}
+.px-tree details[open] > summary::before{content:"▼";}
+.px-tree summary:hover{color:var(--px-yellow);}
+.px-tree__leaf{padding:5px 0 5px 22px; color:var(--px-cyan); cursor:pointer;}
+.px-tree__leaf:hover{color:var(--px-white);}
+.px-tree details > *:not(summary){margin-left:12px; border-left:3px solid var(--px-ink2); padding-left:8px;}
+
+/* ----- 36. 能量条倒计时 px-energy ----- */
+.px-energy{display:flex; align-items:center; gap:12px;}
+.px-energy__orb{width:30px; height:30px; display:grid; place-items:center; font-size:16px; flex:none; background:var(--px-green-dk);
+  box-shadow:0 0 0 3px var(--px-ink);}
+.px-energy__body{flex:1;}
+.px-energy__top{display:flex; justify-content:space-between; font-family:var(--px-disp); font-size:8px; color:var(--px-grey); margin-bottom:5px; line-height:1.6;}
+.px-energy__timer{color:var(--px-green);}
+.px-energy .px-bar__fill{background:var(--px-green);}
+
+/* ----- 37. 签到日历 px-calendar ----- */
+.px-calendar{display:grid; grid-template-columns:repeat(7,1fr); gap:6px;}
+.px-calendar__day{aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+  font-family:var(--px-disp); font-size:8px; color:var(--px-grey); background:var(--px-ink2); box-shadow:0 0 0 3px var(--px-ink); position:relative;}
+.px-calendar__day .r{font-size:16px;}
+.px-calendar__day--done{color:var(--px-white);}
+.px-calendar__day--done::after{content:"✓"; position:absolute; inset:0; display:grid; place-items:center; background:rgba(74,208,74,.82);
+  color:var(--px-ink); font-size:20px; font-weight:900;}
+.px-calendar__day--today{box-shadow:0 0 0 3px var(--px-yellow); background:var(--px-yellow-dk); color:var(--px-white);}
+
+/* ----- 38. 任务链 px-questchain ----- */
+.px-questchain{display:flex; align-items:center;}
+.px-questchain__node{width:40px; height:40px; display:grid; place-items:center; font-size:17px; flex:none; z-index:2; background:var(--px-ink2);
+  box-shadow:0 0 0 3px var(--px-ink);}
+.px-questchain__node--done{background:var(--px-green-dk);}
+.px-questchain__node--now{background:var(--px-red-dk); box-shadow:0 0 0 3px var(--px-yellow);}
+.px-questchain__link{height:4px; flex:1; min-width:16px; background:repeating-linear-gradient(90deg,var(--px-grey-dk) 0 5px,transparent 5px 10px);}
+.px-questchain__link--done{background:var(--px-green);}
+
+/* ----- 39. 成就解锁 px-achievement ----- */
+.px-achievement{display:flex; align-items:center; gap:14px; padding:12px 14px; background:var(--px-panel);
+  box-shadow:0 -3px 0 0 var(--px-yellow),0 3px 0 0 var(--px-yellow),-3px 0 0 0 var(--px-yellow),3px 0 0 0 var(--px-yellow),0 0 0 6px var(--px-ink);}
+.px-achievement__medal{width:50px; height:50px; display:grid; place-items:center; font-size:24px; flex:none; background:var(--px-yellow-dk);
+  box-shadow:0 0 0 3px var(--px-ink);}
+.px-achievement__tx b{font-family:var(--px-disp); font-size:9px; color:var(--px-yellow); display:block; line-height:1.7;}
+.px-achievement__tx small{font-size:17px; color:var(--px-cyan);}
+.px-achievement--locked{box-shadow:0 -3px 0 0 var(--px-grey-dk),0 3px 0 0 var(--px-grey-dk),-3px 0 0 0 var(--px-grey-dk),3px 0 0 0 var(--px-grey-dk),0 0 0 6px var(--px-ink); opacity:.7;}
+.px-achievement--locked .px-achievement__medal{background:var(--px-grey-dk);}
+
+/* ----- 40. 翻牌 px-flipcard ----- */
+.px-flipcard{width:118px; height:164px; perspective:600px; cursor:pointer; image-rendering:pixelated;}
+.px-flipcard__inner{position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .3s steps(4);}
+.px-flipcard.flipped .px-flipcard__inner{transform:rotateY(180deg);}
+.px-flipcard__face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  display:grid; place-items:center; overflow:hidden; box-shadow:0 0 0 4px var(--px-ink);}
+.px-flipcard__back{background:var(--px-purple-dk); color:var(--px-yellow); font-family:var(--px-disp); font-size:28px;}
+.px-flipcard__front{transform:rotateY(180deg); flex-direction:column; background:var(--px-blue-dk);}
+.px-flipcard__front .em{font-size:44px;} .px-flipcard__front .nm{font-family:var(--px-disp); font-size:8px; color:var(--px-white); margin-top:8px; line-height:1.5;}
+
+/* ----- 41. 开宝箱 px-chest ----- */
+.px-chest{width:120px; text-align:center; cursor:pointer; user-select:none;}
+.px-chest__box{font-size:56px; image-rendering:pixelated;}
+.px-chest.opened .px-chest__box{animation:px-shake .4s steps(2) 2;}
+@keyframes px-shake{0%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}100%{transform:translateX(0)}}
+.px-chest__glow{height:0; overflow:hidden; opacity:0;}
+.px-chest.opened .px-chest__glow{height:auto; opacity:1; padding-top:10px;}
+.px-chest__label{font-family:var(--px-disp); font-size:9px; color:var(--px-yellow); margin-top:8px; line-height:1.6;}
+
+/* ----- 42. 背包网格 px-invgrid ----- */
+.px-invgrid{display:grid; grid-template-columns:repeat(5,1fr); gap:6px; padding:8px; background:var(--px-ink);
+  box-shadow:0 0 0 3px var(--px-grey-dk); width:max-content;}
+.px-invgrid__cell{width:44px; height:44px; display:grid; place-items:center; font-size:22px; position:relative; background:var(--px-ink2);
+  box-shadow:inset 0 0 0 2px var(--px-ink);}
+.px-invgrid__cell:hover{background:var(--px-blue-dk);}
+.px-invgrid__cell--rare{box-shadow:inset 0 0 0 3px var(--px-blue);}
+.px-invgrid__cell--legend{box-shadow:inset 0 0 0 3px var(--px-yellow);}
+.px-invgrid__cell--empty{background:var(--px-ink);}
+.px-invgrid__qty{position:absolute; bottom:0; right:2px; font-family:var(--px-disp); font-size:7px; color:var(--px-white);}
+
+/* ----- 43. 装备对比 px-compare ----- */
+.px-compare{display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center; background:var(--px-panel); padding:14px;
+  box-shadow:0 -3px 0 0 var(--px-ink),0 3px 0 0 var(--px-ink),-3px 0 0 0 var(--px-ink),3px 0 0 0 var(--px-ink);}
+.px-compare__side{text-align:center;}
+.px-compare__side .px-icon{margin:0 auto 10px;}
+.px-compare__nm{font-family:var(--px-disp); font-size:8px; color:var(--px-white); margin-bottom:10px; line-height:1.6;}
+.px-compare__stat{display:flex; justify-content:space-between; font-size:17px; padding:4px 0; border-bottom:3px solid var(--px-ink2);}
+.px-compare__stat span:first-child{color:var(--px-grey);}
+.px-compare__up{color:var(--px-green);} .px-compare__down{color:var(--px-red);}
+.px-compare__vs{font-family:var(--px-disp); font-size:11px; color:var(--px-red);}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important;}}
+</style>
+</head>
+<body>
+
+<div class="doc-head">
+  <span class="eb">RETRO PIXEL · 8-BIT KIT</span>
+  <h1>像素 UI 组件库</h1>
+  <p>43 个组件 · px- 前缀 · 硬边像素描边 + 有限色板 + 像素字体</p>
+  <div class="tokens">
+    <span class="tok"><i style="background:#e23c3c"></i>--px-red</span>
+    <span class="tok"><i style="background:#4ad04a"></i>--px-green</span>
+    <span class="tok"><i style="background:#3ca0ff"></i>--px-blue</span>
+    <span class="tok"><i style="background:#ffd23c"></i>--px-yellow</span>
+    <span class="tok"><i style="background:#26264a"></i>--px-panel</span>
+  </div>
+</div>
+
+<div class="doc">
+
+  <!-- 1 -->
+  <div class="comp"><div class="comp-title">按钮 · Button</div><div class="comp-desc">硬边像素钮,红/绿/蓝/黄/紫,底部厚墩,按下整块下沉。</div>
+    <div class="showcase">
+      <button class="px-btn px-btn--red px-btn--lg">START</button>
+      <button class="px-btn px-btn--green">OK</button>
+      <button class="px-btn px-btn--blue">MENU</button>
+      <button class="px-btn px-btn--yellow">SHOP</button>
+      <button class="px-btn px-btn--purple px-btn--sm">SAVE</button>
+      <button class="px-btn" disabled>LOCK</button>
+    </div>
+    <div class="classline"><b>px-btn</b> ( <b>--red/--green/--blue/--yellow/--purple · --sm/--lg/--block</b> )</div>
+  </div>
+
+  <!-- 2 -->
+  <div class="comp"><div class="comp-title">面板 · Panel</div><div class="comp-desc">像素窗口,彩色标题条 + 可选四角方块。</div>
+    <div class="showcase">
+      <div class="px-panel" style="width:300px">
+        <span class="px-corner tl"></span><span class="px-corner tr"></span><span class="px-corner bl"></span><span class="px-corner br"></span>
+        <div class="px-panel__hd">QUEST</div>
+        <div class="px-panel__bd"><p>击败 5 只史莱姆,把它们的黏液带回村庄。奖励:100 金币。</p>
+          <div style="margin-top:14px; display:flex; gap:10px;">
+            <button class="px-btn px-btn--green px-btn--sm">YES</button>
+            <button class="px-btn px-btn--red px-btn--sm">NO</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>px-panel</b> &gt; <b>px-panel__hd</b> + <b>px-panel__bd</b>　·　四角:<b>px-corner tl/tr/bl/br</b></div>
+  </div>
+
+  <!-- 3 -->
+  <div class="comp"><div class="comp-title">弹窗 · Modal</div><div class="comp-desc">遮罩 + 面板 + 像素关闭钮。点击预览。</div>
+    <div class="showcase"><button class="px-btn px-btn--red" onclick="document.getElementById('pxModal').style.display='grid'">OPEN</button></div>
+    <div class="classline"><b>px-modal-mask</b> &gt; <b>px-modal</b> ( <b>px-modal__close</b> + <b>px-panel</b> )</div>
+  </div>
+
+  <!-- 4 -->
+  <div class="comp"><div class="comp-title">进度条 · Bar</div><div class="comp-desc">像素填充条,HP/MP/XP/STA 四色,可加 label。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch;">
+      <div class="px-bar px-bar--tall"><div class="px-bar__fill px-bar__fill--hp" style="width:72%"></div><div class="px-bar__label">HP 72/100</div></div>
+      <div class="px-bar px-bar--tall"><div class="px-bar__fill px-bar__fill--mp" style="width:48%"></div><div class="px-bar__label">MP 48/100</div></div>
+      <div class="px-bar px-bar--tall"><div class="px-bar__fill px-bar__fill--xp" style="width:88%"></div><div class="px-bar__label">XP 88%</div></div>
+    </div>
+    <div class="classline"><b>px-bar</b> &gt; <b>px-bar__fill --hp/--mp/--xp/--sta</b> + <b>px-bar__label</b></div>
+  </div>
+
+  <!-- 5 -->
+  <div class="comp"><div class="comp-title">货币条 · Currency</div><div class="comp-desc">金币/宝石/爱心,像素方块图标。</div>
+    <div class="showcase">
+      <span class="px-currency"><span class="px-currency__ic px-currency__ic--gold">$</span>999</span>
+      <span class="px-currency"><span class="px-currency__ic px-currency__ic--gem">◆</span>42</span>
+      <span class="px-currency"><span class="px-currency__ic px-currency__ic--heart">♥</span>3</span>
+    </div>
+    <div class="classline"><b>px-currency</b> &gt; <b>px-currency__ic --gold/--gem/--heart</b> + 数值</div>
+  </div>
+
+  <!-- 6 -->
+  <div class="comp"><div class="comp-title">生命格 · Hearts</div><div class="comp-desc">像素爱心生命(替代液体球),满心/空心。</div>
+    <div class="showcase" style="gap:26px;">
+      <div class="px-hearts"><span class="px-hearts__lbl">LIFE</span><div class="px-hearts__row"><span class="h">❤️</span><span class="h">❤️</span><span class="h">❤️</span><span class="h empty">🤍</span><span class="h empty">🤍</span></div></div>
+      <div class="px-hearts"><div class="px-hearts__row"><span class="h">❤️</span><span class="h">❤️</span><span class="h">❤️</span><span class="h">❤️</span><span class="h">❤️</span></div></div>
+    </div>
+    <div class="classline"><b>px-hearts</b> &gt; <b>px-hearts__row</b> &gt; <b>span.h</b>(空心加 <b>.empty</b>)</div>
+  </div>
+
+  <!-- 7 -->
+  <div class="comp"><div class="comp-title">图标底座 · Icon Slot</div><div class="comp-desc">道具槽,普通/稀有/传说底色 + 冷却遮罩。</div>
+    <div class="showcase">
+      <div class="px-icon">⚔️</div>
+      <div class="px-icon px-icon--rare">🛡️</div>
+      <div class="px-icon px-icon--legend">👑</div>
+      <div class="px-icon">🧪<div class="px-icon__cd">3</div></div>
+    </div>
+    <div class="classline"><b>px-icon</b> ( <b>--rare / --legend</b> )　·　冷却:<b>px-icon__cd</b></div>
+  </div>
+
+  <!-- 8 -->
+  <div class="comp"><div class="comp-title">卡片 · Card</div><div class="comp-desc">像素卡,含标签、名称、底部插槽,按下位移。</div>
+    <div class="showcase">
+      <div class="px-card px-card--red"><div class="px-card__art"><span class="px-card__tag">怪物</span>👾</div><div class="px-card__name">史莱姆王</div><div class="px-card__foot"><div class="px-bar"><div class="px-bar__fill px-bar__fill--hp" style="width:80%"></div></div></div></div>
+      <div class="px-card px-card--green"><div class="px-card__art"><span class="px-card__tag">道具</span>🗡️</div><div class="px-card__name">勇者之剑</div><div class="px-card__foot"><div class="px-bar"><div class="px-bar__fill px-bar__fill--xp" style="width:55%"></div></div></div></div>
+    </div>
+    <div class="classline"><b>px-card</b> ( <b>--red/--green/--purple</b> ) &gt; <b>__art</b>(含 <b>__tag</b>) + <b>__name</b> + <b>__foot</b></div>
+  </div>
+
+  <!-- 9 -->
+  <div class="comp"><div class="comp-title">列表项 · List</div><div class="comp-desc">物品/日志通用行,左图标 + 主副标题 + 右值。</div>
+    <div class="showcase" style="display:block;">
+      <div class="px-list" style="max-width:420px;">
+        <div class="px-list__item"><div class="px-list__ic">🧪</div><div class="px-list__tx"><b>HP 药水</b><small>恢复 50 生命</small></div><span class="px-list__val">x12</span></div>
+        <div class="px-list__item"><div class="px-list__ic">💎</div><div class="px-list__tx"><b>魔法水晶</b><small>可合成装备</small></div><span class="px-list__val">x3</span></div>
+        <div class="px-list__item"><div class="px-list__ic">📜</div><div class="px-list__tx"><b>回城卷轴</b><small>传送回村庄</small></div><span class="px-list__val">x9</span></div>
+      </div>
+    </div>
+    <div class="classline"><b>px-list</b> &gt; <b>px-list__item</b> ( <b>__ic</b> + <b>__tx</b>(b+small) + <b>__val</b> )</div>
+  </div>
+
+  <!-- 10 -->
+  <div class="comp"><div class="comp-title">顶部 HUD · HUD Bar</div><div class="comp-desc">头像 + 名称/等级 + 右侧货币。</div>
+    <div class="showcase" style="display:block;">
+      <div class="px-hud"><div class="px-hud__ava">🧙</div><div class="px-hud__who"><b>HERO</b><small>LV 12</small></div><div class="px-hud__spacer"></div><span class="px-currency"><span class="px-currency__ic px-currency__ic--gold">$</span>999</span></div>
+    </div>
+    <div class="classline"><b>px-hud</b> &gt; <b>px-hud__ava</b> + <b>px-hud__who</b>(b+small) + <b>px-hud__spacer</b> + 右侧组件</div>
+  </div>
+
+  <!-- 11 -->
+  <div class="comp"><div class="comp-title">导航栏 · Nav Bar</div><div class="comp-desc">底部主导航,--active 高亮。点击切换。</div>
+    <div class="showcase" style="display:block;">
+      <div class="px-nav" id="pxNav">
+        <div class="px-nav__tab px-nav__tab--active" data-nav><span class="i">⚔️</span>战斗</div>
+        <div class="px-nav__tab" data-nav><span class="i">🎒</span>道具</div>
+        <div class="px-nav__tab" data-nav><span class="i">🗺️</span>地图</div>
+        <div class="px-nav__tab" data-nav><span class="i">💾</span>存档</div>
+      </div>
+    </div>
+    <div class="classline"><b>px-nav</b> &gt; <b>px-nav__tab</b> ( <b>--active</b> ) &gt; <b>span.i</b> + 文字</div>
+  </div>
+
+  <!-- 12 -->
+  <div class="comp"><div class="comp-title">标签页 · Tabs</div><div class="comp-desc">面板分页,点击切换。</div>
+    <div class="showcase" style="display:block;">
+      <div style="max-width:420px;">
+        <div class="px-tabs" id="pxTabs">
+          <div class="px-tabs__tab px-tabs__tab--active" data-tab>装备</div>
+          <div class="px-tabs__tab" data-tab>技能</div>
+          <div class="px-tabs__tab" data-tab>状态</div>
+        </div>
+        <div class="px-panel"><div class="px-panel__bd"><p id="pxTabsBody">装备:勇者之剑 · 铁盾 · 皮甲</p></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>px-tabs</b> &gt; <b>px-tabs__tab</b> ( <b>--active</b> )</div>
+  </div>
+
+  <!-- 13 -->
+  <div class="comp"><div class="comp-title">输入框 · Input</div><div class="comp-desc">像素边框,聚焦青色描边;可选前置图标。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:360px;">
+      <input class="px-input" placeholder="输入英雄名…">
+      <div class="px-field"><span class="px-field__ic">🔍</span><input class="px-input" placeholder="搜索道具…"></div>
+    </div>
+    <div class="classline"><b>&lt;input class="px-input"&gt;</b>　·　带图标:<b>px-field</b> &gt; <b>px-field__ic</b> + <b>px-input</b></div>
+  </div>
+
+  <!-- 14 -->
+  <div class="comp"><div class="comp-title">下拉选择 · Select</div><div class="comp-desc">像素定制 + 三角箭头。</div>
+    <div class="showcase">
+      <div class="px-select"><select><option>难度:简单</option><option>难度:普通</option><option>难度:地狱</option></select></div>
+      <div class="px-select"><select><option>职业:战士</option><option>职业:法师</option><option>职业:盗贼</option></select></div>
+    </div>
+    <div class="classline"><b>px-select</b> &gt; <b>&lt;select&gt;</b> &gt; <b>&lt;option&gt;</b></div>
+  </div>
+
+  <!-- 15 -->
+  <div class="comp"><div class="comp-title">开关 · Switch</div><div class="comp-desc">方块滑块,开启变绿。点击切换。</div>
+    <div class="showcase" style="gap:26px;">
+      <label class="px-switch"><input type="checkbox" checked><span class="px-switch__track"></span><span style="margin-left:12px; font-size:18px;">音乐</span></label>
+      <label class="px-switch"><input type="checkbox"><span class="px-switch__track"></span><span style="margin-left:12px; font-size:18px;">震动</span></label>
+    </div>
+    <div class="classline"><b>&lt;label class="px-switch"&gt;</b> &gt; <b>input[checkbox]</b> + <b>span.px-switch__track</b></div>
+  </div>
+
+  <!-- 16 -->
+  <div class="comp"><div class="comp-title">滑条 · Slider</div><div class="comp-desc">方块滑钮 + 像素轨。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:360px;">
+      <input type="range" class="px-slider" min="0" max="100" value="65">
+      <input type="range" class="px-slider" min="0" max="100" value="30">
+    </div>
+    <div class="classline"><b>&lt;input type="range" class="px-slider"&gt;</b></div>
+  </div>
+
+  <!-- 17 -->
+  <div class="comp"><div class="comp-title">徽章 · Badge</div><div class="comp-desc">红/黄像素徽章,可贴图标右上。</div>
+    <div class="showcase" style="gap:24px;">
+      <span class="px-badge">3</span>
+      <span class="px-badge px-badge--yellow">99</span>
+      <span class="px-badge-wrap"><div class="px-icon">✉️</div><span class="px-badge">5</span></span>
+      <span class="px-badge-wrap"><div class="px-icon">🎁</div><span class="px-badge px-badge--yellow">!</span></span>
+    </div>
+    <div class="classline"><b>px-badge</b> ( <b>--yellow</b> )　·　贴角:<b>px-badge-wrap</b> &gt; 内容 + <b>px-badge</b></div>
+  </div>
+
+  <!-- 18 -->
+  <div class="comp"><div class="comp-title">角标 · Ribbon</div><div class="comp-desc">卡片左上像素角标。放 relative 容器内。</div>
+    <div class="showcase">
+      <div class="px-card px-card--purple" style="position:relative;"><span class="px-ribbon">NEW</span><div class="px-card__art">💰</div><div class="px-card__name">宝箱</div></div>
+      <div class="px-card px-card--green" style="position:relative;"><span class="px-ribbon px-ribbon--yellow">RARE</span><div class="px-card__art">💎</div><div class="px-card__name">宝石</div></div>
+    </div>
+    <div class="classline"><b>px-ribbon</b> ( <b>--yellow</b> )　·　置于 relative 容器内</div>
+  </div>
+
+  <!-- 19 -->
+  <div class="comp"><div class="comp-title">标签 · Tag</div><div class="comp-desc">属性小标签,红/绿/蓝文字。</div>
+    <div class="showcase">
+      <span class="px-tag">近战</span>
+      <span class="px-tag px-tag--red">火 +10</span>
+      <span class="px-tag px-tag--green">毒</span>
+      <span class="px-tag px-tag--blue">冰</span>
+    </div>
+    <div class="classline"><b>px-tag</b> ( <b>--red / --green / --blue</b> )</div>
+  </div>
+
+  <!-- 20 -->
+  <div class="comp"><div class="comp-title">提示 · Tooltip</div><div class="comp-desc">悬停显示,内容取 data-tip。悬停试试。</div>
+    <div class="showcase">
+      <span class="px-tooltip" data-tip="暴击 +15%">CRIT</span>
+      <span class="px-tooltip" data-tip="每回合回 5 HP">REGEN</span>
+      <span class="px-tooltip" data-tip="免疫冰冻">FIRE</span>
+    </div>
+    <div class="classline"><b>&lt;span class="px-tooltip" data-tip="内容"&gt;</b></div>
+  </div>
+
+  <!-- 21 -->
+  <div class="comp"><div class="comp-title">通知 · Toast</div><div class="comp-desc">像素提示,普通/危险/金币三色边框。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch;">
+      <div class="px-toast px-toast--coin"><span class="px-toast__ic">💰</span><div><b>+100 GOLD</b>你捡到了一袋金币!</div></div>
+      <div class="px-toast px-toast--danger"><span class="px-toast__ic">💀</span><div><b>GAME OVER</b>你被史莱姆王打败了。</div></div>
+      <div class="px-toast"><span class="px-toast__ic">⭐</span><div><b>LEVEL UP</b>你升到了 13 级!</div></div>
+    </div>
+    <div class="classline"><b>px-toast</b> ( <b>--danger / --coin</b> ) &gt; <b>px-toast__ic</b> + 内容(b 标题)</div>
+  </div>
+
+  <!-- 22 -->
+  <div class="comp"><div class="comp-title">对话气泡 · Bubble</div><div class="comp-desc">NPC 对话框,含说话人名 + 闪烁"按 A 继续"。</div>
+    <div class="showcase"><div class="px-bubble"><div class="px-bubble__who">村长</div>勇者啊!魔王就在北方的城堡里,带上这把剑去打倒他吧!<br><br><span class="px-bubble__blink">▼ 按 A 继续</span></div></div>
+    <div class="classline"><b>px-bubble</b> &gt; <b>px-bubble__who</b> + 文字 + <b>px-bubble__blink</b></div>
+  </div>
+
+  <!-- 23 -->
+  <div class="comp"><div class="comp-title">加载 · Spinner</div><div class="comp-desc">方块绕圈(steps 逐帧,非平滑)。</div>
+    <div class="showcase" style="gap:26px;"><div class="px-spinner"></div><span style="font-size:18px; color:var(--px-cyan);">LOADING...</span></div>
+    <div class="classline"><b>px-spinner</b></div>
+  </div>
+
+  <!-- 24 -->
+  <div class="comp"><div class="comp-title">头像组 · Avatar Group</div><div class="comp-desc">方框叠放 + 溢出计数。</div>
+    <div class="showcase"><div class="px-avatars"><div class="px-avatars__a">🧙</div><div class="px-avatars__a">⚔️</div><div class="px-avatars__a">🏹</div><div class="px-avatars__a">🛡️</div><div class="px-avatars__more">+9</div></div></div>
+    <div class="classline"><b>px-avatars</b> &gt; 多个 <b>px-avatars__a</b> + <b>px-avatars__more</b></div>
+  </div>
+
+  <!-- 25 -->
+  <div class="comp"><div class="comp-title">星级评分 · Stars</div><div class="comp-desc">物品品质,.on 点亮黄星。</div>
+    <div class="showcase" style="gap:26px;">
+      <span class="px-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span>★</span><span>★</span></span>
+      <span class="px-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></span>
+    </div>
+    <div class="classline"><b>px-stars</b> &gt; 多个 <b>&lt;span&gt;★</b>,点亮加 <b>.on</b></div>
+  </div>
+
+  <!-- 26 -->
+  <div class="comp"><div class="comp-title">分隔线 · Divider</div><div class="comp-desc">虚点线,可带中心标签。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:420px;">
+      <div class="px-divider"><span class="px-divider__mark">★</span></div>
+      <div class="px-divider"><span class="px-divider__mark">ITEMS</span></div>
+    </div>
+    <div class="classline"><b>px-divider</b> &gt; <b>px-divider__mark</b></div>
+  </div>
+
+  <!-- 27 -->
+  <div class="comp"><div class="comp-title">空状态 · Empty</div><div class="comp-desc">列表为空占位,图标+标题+说明。</div>
+    <div class="showcase" style="display:block;">
+      <div class="px-panel" style="max-width:420px; margin:0 auto;"><div class="px-empty"><div class="px-empty__ic">📦</div><div class="px-empty__tt">EMPTY</div><div class="px-empty__ds">击败怪物来获取战利品吧!</div></div></div>
+    </div>
+    <div class="classline"><b>px-empty</b> &gt; <b>px-empty__ic</b> + <b>px-empty__tt</b> + <b>px-empty__ds</b></div>
+  </div>
+
+  <!-- ADVANCED -->
+  <div class="comp" style="margin-top:52px;"><div class="comp-title" style="font-size:18px;">进阶组件 · ADVANCED</div><div class="comp-desc">复杂交互组件,均可操作。</div></div>
+
+  <!-- 28 -->
+  <div class="comp"><div class="comp-title">步进器 · Stepper</div><div class="comp-desc">数量选择,可点增减。</div>
+    <div class="showcase">
+      <div class="px-stepper" data-stepper><button class="px-stepper__btn" data-dec>-</button><div class="px-stepper__val" data-val>1</div><button class="px-stepper__btn" data-inc>+</button></div>
+      <span style="font-size:18px; color:var(--px-cyan);">购买 HP 药水</span>
+    </div>
+    <div class="classline"><b>px-stepper</b> &gt; <b>px-stepper__btn</b>(-) + <b>px-stepper__val</b> + <b>px-stepper__btn</b>(+)</div>
+  </div>
+
+  <!-- 29 -->
+  <div class="comp"><div class="comp-title">面包屑 · Breadcrumb</div><div class="comp-desc">层级路径,末项高亮。</div>
+    <div class="showcase" style="display:block;">
+      <nav class="px-breadcrumb"><a>村庄</a><span class="px-breadcrumb__sep">&gt;</span><a>森林</a><span class="px-breadcrumb__sep">&gt;</span><a>洞窟</a><span class="px-breadcrumb__sep">&gt;</span><span class="px-breadcrumb__cur">魔王城</span></nav>
+    </div>
+    <div class="classline"><b>px-breadcrumb</b> &gt; <b>a</b> + <b>__sep</b> … + <b>__cur</b></div>
+  </div>
+
+  <!-- 30 -->
+  <div class="comp"><div class="comp-title">手风琴 · Accordion</div><div class="comp-desc">原生 details,+/- 切换。</div>
+    <div class="showcase" style="display:block;">
+      <div class="px-accordion" style="max-width:440px;">
+        <details open><summary>怎么存档?</summary><div class="px-accordion__bd">在村庄的记录点或使用存档水晶即可保存进度。</div></details>
+        <details><summary>怎么合成装备?</summary><div class="px-accordion__bd">收集材料后前往铁匠铺,消耗金币和材料合成更强的装备。</div></details>
+        <details><summary>怎么复活?</summary><div class="px-accordion__bd">阵亡后会回到最近的存档点,损失一半金币但保留经验。</div></details>
+      </div>
+    </div>
+    <div class="classline"><b>px-accordion</b> &gt; <b>&lt;details&gt;</b> ( <b>&lt;summary&gt;</b> + <b>px-accordion__bd</b> )</div>
+  </div>
+
+  <!-- 31 -->
+  <div class="comp"><div class="comp-title">侧边抽屉 · Drawer</div><div class="comp-desc">右滑面板(steps 逐帧滑入)。点击预览。</div>
+    <div class="showcase"><button class="px-btn px-btn--blue" onclick="pxOpenDrawer()">背包</button></div>
+    <div class="classline"><b>px-drawer-mask</b> + <b>px-drawer</b> ( <b>__hd</b> + <b>__bd</b> )　·　加 <b>.open</b> 展开</div>
+  </div>
+
+  <!-- 32 -->
+  <div class="comp"><div class="comp-title">数据表格 · Table</div><div class="comp-desc">排行榜,斑马纹 + 悬停高亮。</div>
+    <div class="showcase" style="display:block;">
+      <table class="px-table" style="max-width:480px;">
+        <thead><tr><th>#</th><th>NAME</th><th>LV</th><th>SCORE</th></tr></thead>
+        <tbody>
+          <tr><td class="px-table__rank">1</td><td>HERO</td><td>12</td><td>128400</td></tr>
+          <tr><td class="px-table__rank">2</td><td>MAGE</td><td>11</td><td>117900</td></tr>
+          <tr><td class="px-table__rank">3</td><td>ROGUE</td><td>10</td><td>106700</td></tr>
+          <tr><td>4</td><td>KNIGHT</td><td>9</td><td>95210</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="classline"><b>table.px-table</b> &gt; <b>thead th</b> + <b>tbody td</b>　·　名次:<b>px-table__rank</b></div>
+  </div>
+
+  <!-- 33 -->
+  <div class="comp"><div class="comp-title">分页器 · Pagination</div><div class="comp-desc">翻页,--active 当前 / --dis 禁用。点击切换。</div>
+    <div class="showcase">
+      <div class="px-pagination" id="pxPage">
+        <div class="px-pagination__pg px-pagination__pg--dis">&lt;</div>
+        <div class="px-pagination__pg px-pagination__pg--active" data-pg>1</div>
+        <div class="px-pagination__pg" data-pg>2</div>
+        <div class="px-pagination__pg" data-pg>3</div>
+        <div class="px-pagination__pg" data-pg>4</div>
+        <div class="px-pagination__pg">&gt;</div>
+      </div>
+    </div>
+    <div class="classline"><b>px-pagination</b> &gt; <b>px-pagination__pg</b> ( <b>--active / --dis</b> )</div>
+  </div>
+
+  <!-- 34 -->
+  <div class="comp"><div class="comp-title">时间轴 · Timeline</div><div class="comp-desc">竖向进度,--done 完成 / --now 当前。</div>
+    <div class="showcase" style="display:block;">
+      <div class="px-timeline" style="max-width:400px;">
+        <div class="px-timeline__item px-timeline__item--done"><div class="px-timeline__t">离开村庄</div><div class="px-timeline__d">已完成</div></div>
+        <div class="px-timeline__item px-timeline__item--done"><div class="px-timeline__t">穿越森林</div><div class="px-timeline__d">已完成</div></div>
+        <div class="px-timeline__item px-timeline__item--now"><div class="px-timeline__t">探索洞窟</div><div class="px-timeline__d">进行中</div></div>
+        <div class="px-timeline__item"><div class="px-timeline__t">攻打魔王城</div><div class="px-timeline__d">未解锁</div></div>
+      </div>
+    </div>
+    <div class="classline"><b>px-timeline</b> &gt; <b>px-timeline__item</b> ( <b>--done/--now</b> ) ( <b>__t</b> + <b>__d</b> )</div>
+  </div>
+
+  <!-- 35 -->
+  <div class="comp"><div class="comp-title">树形菜单 · Tree</div><div class="comp-desc">嵌套分类,details 折叠。</div>
+    <div class="showcase" style="display:block;">
+      <div class="px-tree" style="max-width:320px;">
+        <details open><summary>⚔️ 武器</summary>
+          <div class="px-tree__leaf">剑 (8)</div>
+          <div class="px-tree__leaf">弓 (4)</div>
+          <details><summary>魔法武器</summary><div class="px-tree__leaf">法杖 (3)</div><div class="px-tree__leaf">魔典 (2)</div></details>
+        </details>
+        <details><summary>🛡️ 防具</summary><div class="px-tree__leaf">头盔 (5)</div><div class="px-tree__leaf">铠甲 (7)</div></details>
+      </div>
+    </div>
+    <div class="classline"><b>px-tree</b> &gt; 嵌套 <b>&lt;details&gt;</b> + <b>px-tree__leaf</b></div>
+  </div>
+
+  <!-- 36 -->
+  <div class="comp"><div class="comp-title">能量条倒计时 · Energy</div><div class="comp-desc">体力,含实时倒计时。</div>
+    <div class="showcase" style="display:block;">
+      <div class="px-energy" style="max-width:340px;">
+        <div class="px-energy__orb">⚡</div>
+        <div class="px-energy__body">
+          <div class="px-energy__top"><span>STA 18/24</span><span class="px-energy__timer" id="pxEnergyTimer">+1 04:59</span></div>
+          <div class="px-bar"><div class="px-bar__fill" style="width:75%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="classline"><b>px-energy</b> &gt; <b>__orb</b> + <b>__body</b> ( <b>__top</b>(含 <b>__timer</b>) + <b>px-bar</b> )</div>
+  </div>
+
+  <!-- 37 -->
+  <div class="comp"><div class="comp-title">签到日历 · Calendar</div><div class="comp-desc">7 日签到,--done 已领 / --today 当天。</div>
+    <div class="showcase" style="display:block;">
+      <div class="px-calendar" style="max-width:400px;">
+        <div class="px-calendar__day px-calendar__day--done"><span class="r">$</span>1</div>
+        <div class="px-calendar__day px-calendar__day--done"><span class="r">🧪</span>2</div>
+        <div class="px-calendar__day px-calendar__day--done"><span class="r">📜</span>3</div>
+        <div class="px-calendar__day px-calendar__day--today"><span class="r">🎁</span>4</div>
+        <div class="px-calendar__day"><span class="r">◆</span>5</div>
+        <div class="px-calendar__day"><span class="r">⚔️</span>6</div>
+        <div class="px-calendar__day"><span class="r">👑</span>7</div>
+      </div>
+    </div>
+    <div class="classline"><b>px-calendar</b> &gt; <b>px-calendar__day</b> ( <b>--done / --today</b> )</div>
+  </div>
+
+  <!-- 38 -->
+  <div class="comp"><div class="comp-title">任务链 · Quest Chain</div><div class="comp-desc">连锁节点,--done/--now + 连接线。</div>
+    <div class="showcase" style="display:block;">
+      <div class="px-questchain" style="max-width:400px;">
+        <div class="px-questchain__node px-questchain__node--done">✓</div>
+        <div class="px-questchain__link px-questchain__link--done"></div>
+        <div class="px-questchain__node px-questchain__node--done">✓</div>
+        <div class="px-questchain__link px-questchain__link--done"></div>
+        <div class="px-questchain__node px-questchain__node--now">⚔️</div>
+        <div class="px-questchain__link"></div>
+        <div class="px-questchain__node">👑</div>
+      </div>
+    </div>
+    <div class="classline"><b>px-questchain</b> &gt; <b>__node</b>( <b>--done/--now</b> ) 与 <b>__link</b>( <b>--done</b> ) 交替</div>
+  </div>
+
+  <!-- 39 -->
+  <div class="comp"><div class="comp-title">成就解锁 · Achievement</div><div class="comp-desc">奖章+标题+描述,--locked 灰化。</div>
+    <div class="showcase" style="flex-direction:column; align-items:stretch; max-width:400px;">
+      <div class="px-achievement"><div class="px-achievement__medal">🏆</div><div class="px-achievement__tx"><b>屠龙者</b><small>击败最终 BOSS</small></div></div>
+      <div class="px-achievement px-achievement--locked"><div class="px-achievement__medal">🔒</div><div class="px-achievement__tx"><b>???</b><small>达成隐藏条件解锁</small></div></div>
+    </div>
+    <div class="classline"><b>px-achievement</b> ( <b>--locked</b> ) &gt; <b>__medal</b> + <b>__tx</b>(b+small)</div>
+  </div>
+
+  <!-- 40 -->
+  <div class="comp"><div class="comp-title">翻牌 · Flip Card</div><div class="comp-desc">CSS 3D 翻转(steps 逐帧),点击揭晓。</div>
+    <div class="showcase">
+      <div class="px-flipcard" onclick="this.classList.toggle('flipped')"><div class="px-flipcard__inner"><div class="px-flipcard__face px-flipcard__back">?</div><div class="px-flipcard__face px-flipcard__front"><span class="em">🗡️</span><span class="nm">勇者之剑</span></div></div></div>
+      <div class="px-flipcard" onclick="this.classList.toggle('flipped')"><div class="px-flipcard__inner"><div class="px-flipcard__face px-flipcard__back">?</div><div class="px-flipcard__face px-flipcard__front"><span class="em">👑</span><span class="nm">王冠</span></div></div></div>
+      <span style="font-size:18px; color:var(--px-cyan);">← 点击翻牌</span>
+    </div>
+    <div class="classline"><b>px-flipcard</b> &gt; <b>__inner</b> &gt; <b>__face __back</b> + <b>__face __front</b>　·　加 <b>.flipped</b></div>
+  </div>
+
+  <!-- 41 -->
+  <div class="comp"><div class="comp-title">开宝箱 · Chest</div><div class="comp-desc">点击抖动开启,揭示战利品。</div>
+    <div class="showcase">
+      <div class="px-chest" onclick="pxOpenChest(this)">
+        <div class="px-chest__box">🧰</div>
+        <div class="px-chest__label">OPEN</div>
+        <div class="px-chest__glow"><div style="display:flex; gap:6px; justify-content:center;"><div class="px-icon px-icon--legend">⚔️</div><div class="px-icon">$</div></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>px-chest</b> &gt; <b>__box</b> + <b>__label</b> + <b>__glow</b>　·　加 <b>.opened</b></div>
+  </div>
+
+  <!-- 42 -->
+  <div class="comp"><div class="comp-title">背包网格 · Inventory Grid</div><div class="comp-desc">格子背包,稀有度描边、数量角标、空格。</div>
+    <div class="showcase" style="display:block;">
+      <div class="px-invgrid">
+        <div class="px-invgrid__cell px-invgrid__cell--legend">⚔️</div>
+        <div class="px-invgrid__cell px-invgrid__cell--rare">🛡️</div>
+        <div class="px-invgrid__cell">🧪<span class="px-invgrid__qty">12</span></div>
+        <div class="px-invgrid__cell">💎<span class="px-invgrid__qty">3</span></div>
+        <div class="px-invgrid__cell">📜<span class="px-invgrid__qty">99</span></div>
+        <div class="px-invgrid__cell">🔑</div>
+        <div class="px-invgrid__cell px-invgrid__cell--rare">💍</div>
+        <div class="px-invgrid__cell px-invgrid__cell--empty"></div>
+        <div class="px-invgrid__cell px-invgrid__cell--empty"></div>
+        <div class="px-invgrid__cell px-invgrid__cell--empty"></div>
+      </div>
+    </div>
+    <div class="classline"><b>px-invgrid</b> &gt; <b>px-invgrid__cell</b> ( <b>--rare/--legend/--empty</b> ) + <b>px-invgrid__qty</b></div>
+  </div>
+
+  <!-- 43 -->
+  <div class="comp"><div class="comp-title">装备对比 · Compare</div><div class="comp-desc">当前 vs 新装,属性升降绿/红标注。</div>
+    <div class="showcase" style="display:block;">
+      <div class="px-compare" style="max-width:460px;">
+        <div class="px-compare__side"><div class="px-icon">🗡️</div><div class="px-compare__nm">旧: 铁剑</div>
+          <div class="px-compare__stat"><span>ATK</span><span>120</span></div><div class="px-compare__stat"><span>CRIT</span><span>5%</span></div></div>
+        <div class="px-compare__vs">VS</div>
+        <div class="px-compare__side"><div class="px-icon px-icon--legend">⚔️</div><div class="px-compare__nm" style="color:var(--px-yellow)">新: 圣剑</div>
+          <div class="px-compare__stat"><span>ATK</span><span class="px-compare__up">185 ▲</span></div><div class="px-compare__stat"><span>CRIT</span><span class="px-compare__up">18% ▲</span></div></div>
+      </div>
+    </div>
+    <div class="classline"><b>px-compare</b> &gt; <b>__side</b> + <b>__vs</b> + <b>__side</b>　·　升降:<b>px-compare__up / __down</b></div>
+  </div>
+
+</div>
+
+<!-- modal -->
+<div class="px-modal-mask" id="pxModal" style="display:none;">
+  <div class="px-modal">
+    <div class="px-modal__close" onclick="document.getElementById('pxModal').style.display='none'">X</div>
+    <div class="px-panel">
+      <span class="px-corner tl"></span><span class="px-corner tr"></span><span class="px-corner bl"></span><span class="px-corner br"></span>
+      <div class="px-panel__hd">CONFIRM</div>
+      <div class="px-panel__bd"><p style="text-align:center;">花费 100 金币购买 HP 药水吗?</p>
+        <div style="margin-top:16px; display:flex; gap:10px; justify-content:center;">
+          <button class="px-btn px-btn--green px-btn--sm" onclick="document.getElementById('pxModal').style.display='none'">YES</button>
+          <button class="px-btn px-btn--red px-btn--sm" onclick="document.getElementById('pxModal').style.display='none'">NO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- drawer -->
+<div class="px-drawer-mask" id="pxDrawerMask" onclick="pxCloseDrawer()"></div>
+<div class="px-drawer" id="pxDrawer">
+  <div class="px-drawer__hd">BAG <span onclick="pxCloseDrawer()">X</span></div>
+  <div class="px-drawer__bd">
+    <div class="px-list">
+      <div class="px-list__item"><div class="px-list__ic">🧪</div><div class="px-list__tx"><b>HP 药水</b><small>恢复 50</small></div><span class="px-list__val">x12</span></div>
+      <div class="px-list__item"><div class="px-list__ic">💎</div><div class="px-list__tx"><b>水晶</b><small>合成材料</small></div><span class="px-list__val">x3</span></div>
+      <div class="px-list__item"><div class="px-list__ic">📜</div><div class="px-list__tx"><b>卷轴</b><small>回城</small></div><span class="px-list__val">x9</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function pxOpenDrawer(){document.getElementById('pxDrawer').classList.add('open');document.getElementById('pxDrawerMask').classList.add('open');}
+  function pxCloseDrawer(){document.getElementById('pxDrawer').classList.remove('open');document.getElementById('pxDrawerMask').classList.remove('open');}
+  function pxOpenChest(el){el.classList.add('opened');el.querySelector('.px-chest__label').textContent='GET!';el.querySelector('.px-chest__box').textContent='📭';}
+  document.querySelectorAll('[data-stepper]').forEach(s=>{const v=s.querySelector('[data-val]');let n=parseInt(v.textContent,10);
+    s.querySelector('[data-inc]').onclick=()=>{n=Math.min(99,n+1);v.textContent=n;};
+    s.querySelector('[data-dec]').onclick=()=>{n=Math.max(1,n-1);v.textContent=n;};});
+  document.querySelectorAll('#pxNav [data-nav]').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('#pxNav [data-nav]').forEach(x=>x.classList.remove('px-nav__tab--active'));t.classList.add('px-nav__tab--active');}));
+  const pxTB={0:'装备:勇者之剑 · 铁盾 · 皮甲',1:'技能:火球术 · 治疗 · 二段斩',2:'状态:力量 42 · 敏捷 31 · 智力 19'};
+  document.querySelectorAll('#pxTabs [data-tab]').forEach((t,i)=>t.addEventListener('click',()=>{
+    document.querySelectorAll('#pxTabs [data-tab]').forEach(x=>x.classList.remove('px-tabs__tab--active'));t.classList.add('px-tabs__tab--active');
+    document.getElementById('pxTabsBody').textContent=pxTB[i];}));
+  document.querySelectorAll('#pxPage [data-pg]').forEach(p=>p.addEventListener('click',()=>{
+    document.querySelectorAll('#pxPage [data-pg]').forEach(x=>x.classList.remove('px-pagination__pg--active'));p.classList.add('px-pagination__pg--active');}));
+  document.getElementById('pxModal').addEventListener('click',e=>{if(e.target.id==='pxModal')e.target.style.display='none';});
+  (function(){const t=document.getElementById('pxEnergyTimer');if(!t)return;let s=299;
+    setInterval(()=>{s=s<=0?299:s-1;const m=String(Math.floor(s/60)).padStart(2,'0'),ss=String(s%60).padStart(2,'0');t.textContent='+1 '+m+':'+ss;},1000);})();
+</script>
+</body>
+</html>
