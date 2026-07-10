@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>游戏 UI 组件库 · 六风格合集</title>
+<title>游戏 UI 组件库 · 七风格合集</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
@@ -55,7 +55,7 @@ body{font-family:'Nunito',system-ui,sans-serif; background:#05060c; color:var(--
 <div class="topbar">
   <div class="brand">
     <span class="logo">🎮</span>
-    <div><b>GAME UI KIT</b> &nbsp;<small>六风格 × 43 组件</small></div>
+    <div><b>GAME UI KIT</b> &nbsp;<small>七风格 × 43 组件</small></div>
   </div>
   <div class="tabs" id="tabs">
       <button class="tab active" data-i="0" style="--accent:#c8a04a"><span class="dot"></span><span class="nm">暗黑哥特</span><span class="pre">dg-</span></button>
@@ -64,6 +64,7 @@ body{font-family:'Nunito',system-ui,sans-serif; background:#05060c; color:var(--
       <button class="tab" data-i="3" style="--accent:#8a7cff"><span class="dot"></span><span class="nm">iOS 休闲</span><span class="pre">ios-</span></button>
       <button class="tab" data-i="4" style="--accent:#ffd23c"><span class="dot"></span><span class="nm">像素 8-bit</span><span class="pre">px-</span></button>
       <button class="tab" data-i="5" style="--accent:#78d838"><span class="dot"></span><span class="nm">Supercell</span><span class="pre">sc-</span></button>
+      <button class="tab" data-i="6" style="--accent:#f2909e"><span class="dot"></span><span class="nm">动物森林</span><span class="pre">ac-</span></button>
   </div>
 </div>
 
@@ -6605,6 +6606,1074 @@ body::after{content:&quot;&quot;; position:fixed; left:50%; top:-160px; width:90
   document.getElementById('scModal').addEventListener('click',e=>{if(e.target.id==='scModal')e.target.style.display='none';});
   (function(){const t=document.getElementById('scEnergyTimer');if(!t)return;let s=299;
     setInterval(()=>{s=s<=0?299:s-1;const m=String(Math.floor(s/60)).padStart(2,'0'),ss=String(s%60).padStart(2,'0');t.textContent='+500 · '+m+':'+ss;},1000);})();
+</script>
+</body>
+</html>
+"></iframe>
+    <iframe class="frame" data-i="6" title="动物森林" data-src="<!DOCTYPE html>
+<html lang=&quot;zh&quot;>
+<head>
+<meta charset=&quot;UTF-8&quot;>
+<meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;>
+<title>动物森林风 UI 组件库 · Animal Crossing Style Kit</title>
+<link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;>
+<link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin>
+<link href=&quot;https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&amp;family=Nunito:wght@700;800;900&amp;display=swap&quot; rel=&quot;stylesheet&quot;>
+<style>
+/* ============================================================================
+   ANIMAL CROSSING UI KIT — reusable component library
+   ----------------------------------------------------------------------------
+   全部 ac- 前缀。改主题只改下面 :root 令牌即可。
+   招牌:奶油圆角卡片 · 草地波点底 · 无硬描边软投影 · 铃钱/里程/大头菜 · 树叶点缀
+   ============================================================================ */
+:root{
+  --ac-green:#6fbf5a;  --ac-green-lt:#9ad985; --ac-green-dk:#4f9440;
+  --ac-blue:#5fc4e0;   --ac-blue-lt:#95dcef;  --ac-blue-dk:#3a97b5;
+  --ac-orange:#f5a742; --ac-orange-lt:#ffc97e;--ac-orange-dk:#d1802a;
+  --ac-pink:#f2909e;   --ac-pink-lt:#ffbcc6;  --ac-pink-dk:#d16878;
+  --ac-bell:#ffd45e;   --ac-bell-dk:#e0a51f;
+  --ac-cream:#fffbef;  --ac-cream2:#fbf2d7;   --ac-line:#e8d9b0;
+  --ac-brown:#7a6547;  --ac-text:#6b5940;     --ac-dim:#b0a184;
+
+  --ac-disp:'M PLUS Rounded 1c',system-ui,sans-serif;
+  --ac-ui:'M PLUS Rounded 1c',system-ui,sans-serif;
+  --ac-num:'Nunito',sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:var(--ac-ui); font-weight:700; color:var(--ac-text); line-height:1.5;
+  background:linear-gradient(180deg,#a9d97c 0%,#8fcb68 46%,#7bbd58 100%);
+  background-attachment:fixed; min-height:100vh; padding:0 0 90px; position:relative; overflow-x:hidden;
+}
+/* grass polka dots */
+body::before{content:&quot;&quot;; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.5;
+  background:
+    radial-gradient(circle 26px at 12% 18%,rgba(255,255,255,.14) 0 26px,transparent 27px),
+    radial-gradient(circle 20px at 78% 9%,rgba(255,255,255,.12) 0 20px,transparent 21px),
+    radial-gradient(circle 30px at 90% 62%,rgba(255,255,255,.1) 0 30px,transparent 31px),
+    radial-gradient(circle 22px at 6% 76%,rgba(255,255,255,.12) 0 22px,transparent 23px),
+    radial-gradient(circle 18px at 46% 40%,rgba(255,255,255,.09) 0 18px,transparent 19px),
+    radial-gradient(circle 24px at 62% 88%,rgba(255,255,255,.11) 0 24px,transparent 25px);}
+
+.doc{max-width:980px; margin:0 auto; padding:0 20px; position:relative; z-index:1;}
+.doc-head{text-align:center; padding:48px 20px 26px; position:relative; z-index:1;}
+.doc-head .eb{display:inline-block; margin-bottom:14px; font-family:var(--ac-disp); font-weight:800; font-size:12px;
+  letter-spacing:.14em; color:#fff; background:var(--ac-orange); padding:7px 18px; border-radius:999px;
+  box-shadow:0 4px 0 var(--ac-orange-dk), 0 8px 14px rgba(90,70,30,.25);}
+.doc-head h1{font-family:var(--ac-disp); font-weight:800; font-size:clamp(28px,5vw,46px); color:#fffdf2;
+  text-shadow:0 3px 0 rgba(90,120,50,.55), 0 8px 18px rgba(60,90,30,.35); letter-spacing:.02em;}
+.doc-head p{margin-top:12px; color:#3f6e2c; font-weight:800; text-shadow:0 1px 0 rgba(255,255,255,.35);}
+
+.tokens{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:22px;}
+.tok{display:flex; align-items:center; gap:7px; font-family:var(--ac-num); font-weight:800; font-size:11px; color:var(--ac-text);
+  background:var(--ac-cream); padding:5px 12px; border-radius:999px; box-shadow:0 3px 0 rgba(122,101,71,.25);}
+.tok i{width:14px;height:14px; border-radius:50%;}
+
+.comp{margin-top:38px; position:relative; z-index:1;}
+.comp-title{font-family:var(--ac-disp); font-weight:800; font-size:20px; color:#fffdf2; display:flex; align-items:center; gap:10px;
+  margin-bottom:4px; text-shadow:0 2px 0 rgba(90,120,50,.5);}
+.comp-title::before{content:&quot;🍃&quot;; font-size:16px; text-shadow:none;}
+.comp-desc{color:#41702e; font-weight:800; font-size:13px; margin-bottom:16px; text-shadow:0 1px 0 rgba(255,255,255,.3);}
+.showcase{display:flex; flex-wrap:wrap; gap:16px; align-items:center; padding:24px;
+  background:rgba(255,251,239,.72); border:3px dashed rgba(122,101,71,.35); border-radius:24px;
+  box-shadow:0 6px 16px rgba(70,100,40,.18);}
+.classline{margin-top:10px; font-family:ui-monospace,monospace; font-size:12px; color:#f5ecd4;
+  background:#5d4c36; border-radius:12px; padding:8px 12px; overflow-x:auto; font-weight:600;}
+.classline b{color:var(--ac-bell);}
+
+/* ============================================================================
+   ============  COMPONENTS  ============
+   ============================================================================ */
+
+/* ----- 1. 按钮 ac-btn ----- */
+.ac-btn{font-family:var(--ac-disp); font-weight:800; font-size:15px; color:#fff; cursor:pointer; user-select:none;
+  display:inline-flex; align-items:center; gap:8px; padding:12px 26px 13px; border:none;
+  border-radius:999px; text-align:center; transition:.09s;
+  background:var(--b); box-shadow:0 4px 0 var(--b-dk), 0 8px 12px rgba(90,70,30,.2), inset 0 2px 0 rgba(255,255,255,.35);
+  --b:var(--ac-green); --b-dk:var(--ac-green-dk);}
+.ac-btn:active{transform:translateY(4px); box-shadow:0 0 0 var(--b-dk), inset 0 2px 0 rgba(255,255,255,.3);}
+.ac-btn--green{--b:var(--ac-green);--b-dk:var(--ac-green-dk);}
+.ac-btn--blue{--b:var(--ac-blue);--b-dk:var(--ac-blue-dk);}
+.ac-btn--orange{--b:var(--ac-orange);--b-dk:var(--ac-orange-dk);}
+.ac-btn--cream{--b:var(--ac-cream);--b-dk:#d9c9a3; color:var(--ac-brown);}
+.ac-btn--sm{font-size:13px; padding:9px 18px 10px;}
+.ac-btn--lg{font-size:18px; padding:15px 36px 17px;}
+.ac-btn--block{width:100%; justify-content:center;}
+.ac-btn--round{width:54px; height:54px; padding:0; font-size:24px; justify-content:center;}
+.ac-btn[disabled],.ac-btn--disabled{cursor:not-allowed; filter:grayscale(.55) brightness(.97); opacity:.75;}
+.ac-btn[disabled]:active,.ac-btn--disabled:active{transform:none;
+  box-shadow:0 4px 0 var(--b-dk), inset 0 2px 0 rgba(255,255,255,.35);}
+
+/* ----- 2. 面板 ac-panel ----- */
+.ac-panel{position:relative; background:var(--ac-cream); border-radius:22px;
+  box-shadow:0 8px 0 rgba(122,101,71,.22), 0 14px 24px rgba(70,100,40,.2);}
+.ac-panel__hd{font-family:var(--ac-disp); font-weight:800; font-size:16px; color:#fff; text-align:center; padding:12px 16px;
+  background:var(--ac-green); border-radius:22px 22px 0 0; text-shadow:0 1px 0 rgba(0,60,0,.2); letter-spacing:.05em;}
+.ac-panel__bd{padding:16px 18px 18px;}
+.ac-panel__bd p{font-weight:700; font-size:13px; color:var(--ac-text); line-height:1.7;}
+/* corner leaves (可选) */
+.ac-leaf{position:absolute; width:14px; height:14px; border-radius:50% 4px 50% 50%;
+  background:linear-gradient(135deg,var(--ac-green-lt),var(--ac-green)); box-shadow:0 1px 2px rgba(0,60,0,.2);}
+.ac-leaf.tl{top:9px;left:10px; transform:rotate(-45deg);} .ac-leaf.tr{top:9px;right:10px; transform:rotate(45deg);}
+.ac-leaf.bl{bottom:9px;left:10px; transform:rotate(-135deg);} .ac-leaf.br{bottom:9px;right:10px; transform:rotate(135deg);}
+
+/* ----- 3. 弹窗 ac-modal ----- */
+.ac-modal-mask{position:fixed; inset:0; background:rgba(70,90,40,.45); backdrop-filter:blur(3px);
+  display:grid; place-items:center; z-index:100; padding:20px;}
+.ac-modal{width:min(380px,92vw); position:relative;}
+.ac-modal__close{position:absolute; top:-12px; right:-12px; width:40px; height:40px; z-index:5;
+  --b:var(--ac-pink);--b-dk:var(--ac-pink-dk);}
+
+/* ----- 4. 进度条 ac-bar ----- */
+.ac-bar{position:relative; height:18px; background:var(--ac-cream2); border-radius:999px; overflow:hidden;
+  box-shadow:inset 0 2px 4px rgba(122,101,71,.28);}
+.ac-bar__fill{height:100%; border-radius:999px; box-shadow:inset 0 3px 0 rgba(255,255,255,.45);}
+.ac-bar__fill--bell{background:linear-gradient(180deg,#ffe28e,var(--ac-bell));}
+.ac-bar__fill--friend{background:linear-gradient(180deg,var(--ac-pink-lt),var(--ac-pink));}
+.ac-bar__fill--mile{background:linear-gradient(180deg,var(--ac-blue-lt),var(--ac-blue));}
+.ac-bar__label{position:absolute; inset:0; display:grid; place-items:center; font-family:var(--ac-disp); font-weight:800;
+  font-size:11px; color:#8a6d3a; text-shadow:0 1px 0 rgba(255,255,255,.5);}
+.ac-bar--tall{height:24px;}
+
+/* ----- 5. 货币条 ac-currency ----- */
+.ac-currency{display:inline-flex; align-items:center; gap:7px; font-family:var(--ac-num); font-weight:900; font-size:15px;
+  color:var(--ac-brown); background:var(--ac-cream); border-radius:999px; padding:4px 15px 4px 5px;
+  box-shadow:0 4px 0 rgba(122,101,71,.22), inset 0 1px 0 #fff;}
+.ac-currency__coin{width:26px; height:26px; border-radius:50%; flex:none;
+  display:grid; place-items:center; font-size:13px; box-shadow:inset 0 2px 0 rgba(255,255,255,.55), 0 1px 2px rgba(90,70,30,.25);}
+.ac-currency__coin--bell{background:radial-gradient(circle at 40% 30%,#ffe9a8,var(--ac-bell) 60%,var(--ac-bell-dk)); color:#8a6200;}
+.ac-currency__coin--mile{background:radial-gradient(circle at 40% 30%,var(--ac-blue-lt),var(--ac-blue) 60%,var(--ac-blue-dk)); color:#fff;}
+.ac-currency__coin--turnip{background:radial-gradient(circle at 40% 30%,#fff,#f3ead8 60%,#d9c9a3); color:#8a7a4a;}
+
+/* ----- 6. 水果能量计 ac-meter ----- */
+.ac-meter{display:inline-flex; align-items:center; gap:5px; background:var(--ac-cream);
+  border-radius:999px; padding:7px 12px; box-shadow:0 4px 0 rgba(122,101,71,.22);}
+.ac-meter__seg{width:16px; height:16px; border-radius:50%; background:var(--ac-cream2);
+  box-shadow:inset 0 1px 3px rgba(122,101,71,.3);}
+.ac-meter__seg.on{background:radial-gradient(circle at 38% 30%,#ffb3a0,#f2694e 65%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5), 0 1px 3px rgba(200,60,30,.35);}
+.ac-meter__num{font-family:var(--ac-disp); font-weight:800; font-size:13px; color:var(--ac-brown); margin-left:5px;}
+.ac-meter__num.max{color:#e05a3c; animation:ac-pulse .8s ease-in-out infinite;}
+@keyframes ac-pulse{50%{opacity:.5;}}
+
+/* ----- 7. 图标底座 ac-icon ----- */
+.ac-icon{width:52px; height:52px; border-radius:16px; display:grid; place-items:center; font-size:26px; position:relative;
+  background:var(--ac-cream); box-shadow:0 4px 0 rgba(122,101,71,.22), inset 0 2px 0 #fff;}
+.ac-icon:hover{transform:translateY(-2px);}
+.ac-icon--diy{background:linear-gradient(180deg,#fff3d6,#ffdf9e);}
+.ac-icon--rare{background:linear-gradient(180deg,#d9f2ff,#a8ddf2);}
+.ac-icon__cd{position:absolute; inset:0; background:rgba(107,89,64,.55); border-radius:16px; display:grid; place-items:center;
+  font-family:var(--ac-disp); font-weight:800; font-size:16px; color:#fff;}
+
+/* ----- 8. 卡片 ac-card ----- */
+.ac-card{width:150px; background:var(--ac-cream); border-radius:20px; overflow:hidden; cursor:pointer;
+  box-shadow:0 7px 0 rgba(122,101,71,.22), 0 12px 18px rgba(70,100,40,.18); transition:.12s; position:relative;}
+.ac-card:hover{transform:translateY(-4px) rotate(-1deg);}
+.ac-card__art{height:96px; display:grid; place-items:center; font-size:48px; position:relative;
+  background:linear-gradient(180deg,var(--c1,#c8ecb2),var(--c2,#93d178));}
+.ac-card--peppy{--c1:#ffd9de;--c2:#f7a8b4;} .ac-card--lazy{--c1:#ffe9b8;--c2:#f5c96e;}
+.ac-card--smug{--c1:#d9e4ff;--c2:#a3b8f0;}
+.ac-card__tag{position:absolute; top:6px; left:6px; font-family:var(--ac-num); font-weight:900; font-size:9px; color:#fff;
+  background:rgba(107,89,64,.75); padding:2px 9px; border-radius:999px; letter-spacing:.05em;}
+.ac-card__name{font-family:var(--ac-disp); font-weight:800; font-size:14px; color:var(--ac-text); text-align:center; padding:8px 6px 4px;}
+.ac-card__foot{padding:0 10px 10px;}
+
+/* ----- 9. 列表项 ac-list ----- */
+.ac-list{border-radius:18px; overflow:hidden; background:var(--ac-cream); box-shadow:0 5px 0 rgba(122,101,71,.22);}
+.ac-list__item{display:flex; align-items:center; gap:10px; padding:9px 12px; cursor:pointer;
+  border-bottom:2px dashed var(--ac-line); transition:.1s;}
+.ac-list__item:last-child{border-bottom:none;}
+.ac-list__item:hover{background:#fdf3d3;}
+.ac-list__ic{width:34px; height:34px; flex:none; display:grid; place-items:center; font-size:18px;
+  background:var(--ac-cream2); border-radius:11px;}
+.ac-list__tx{flex:1;}
+.ac-list__tx b{font-family:var(--ac-disp); font-weight:800; font-size:14px; color:var(--ac-text); display:block;}
+.ac-list__tx small{font-family:var(--ac-num); font-weight:700; font-size:11px; color:var(--ac-dim);}
+.ac-list__val{font-family:var(--ac-num); font-weight:900; font-size:14px; color:var(--ac-orange-dk);}
+
+/* ----- 10. 顶部 HUD ac-hud ----- */
+.ac-hud{display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--ac-cream);
+  border-radius:20px; box-shadow:0 5px 0 rgba(122,101,71,.22);}
+.ac-hud__ava{width:44px; height:44px; border-radius:50%; flex:none; display:grid; place-items:center; font-size:22px;
+  background:linear-gradient(180deg,var(--ac-green-lt),var(--ac-green)); box-shadow:inset 0 2px 0 rgba(255,255,255,.4);}
+.ac-hud__who b{font-family:var(--ac-disp); font-weight:800; font-size:15px; color:var(--ac-text); display:block;}
+.ac-hud__who small{font-family:var(--ac-num); font-weight:800; font-size:10px; color:var(--ac-green-dk); letter-spacing:.04em;}
+.ac-hud__spacer{flex:1;}
+
+/* ----- 11. 导航栏 ac-nav ----- */
+.ac-nav{display:flex; gap:6px; padding:8px; background:var(--ac-cream); border-radius:22px;
+  box-shadow:0 5px 0 rgba(122,101,71,.22);}
+.ac-nav__tab{flex:1; text-align:center; font-family:var(--ac-disp); font-weight:800; font-size:11px; color:var(--ac-dim);
+  padding:8px 4px; cursor:pointer; border-radius:15px; transition:.12s;}
+.ac-nav__tab .i{display:block; font-size:20px; margin-bottom:2px; filter:grayscale(.5) opacity(.75);}
+.ac-nav__tab--active{color:#fff; background:var(--ac-green); box-shadow:0 3px 0 var(--ac-green-dk);}
+.ac-nav__tab--active .i{filter:none;}
+
+/* ----- 12. 标签页 ac-tabs ----- */
+.ac-tabs{display:flex; gap:6px;}
+.ac-tabs__tab{font-family:var(--ac-disp); font-weight:800; font-size:12px; color:var(--ac-dim); padding:9px 18px; cursor:pointer;
+  background:var(--ac-cream2); border-radius:14px 14px 0 0; transition:.12s;}
+.ac-tabs__tab--active{color:#fff; background:var(--ac-orange);}
+
+/* ----- 13. 输入框 ac-input ----- */
+.ac-input{font-family:var(--ac-ui); font-weight:700; font-size:14px; color:var(--ac-text); background:var(--ac-cream);
+  border:3px solid var(--ac-line); border-radius:16px; padding:10px 14px; width:100%; outline:none; transition:.12s;
+  box-shadow:inset 0 2px 3px rgba(122,101,71,.12);}
+.ac-input::placeholder{color:var(--ac-dim);}
+.ac-input:focus{border-color:var(--ac-green); box-shadow:0 0 0 4px rgba(111,191,90,.25);}
+.ac-field{position:relative;}
+.ac-field__ic{position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:15px;}
+.ac-field .ac-input{padding-left:36px;}
+
+/* ----- 14. 下拉选择 ac-select ----- */
+.ac-select{position:relative; display:inline-block;}
+.ac-select select{appearance:none; -webkit-appearance:none; font-family:var(--ac-disp); font-weight:800; font-size:13px;
+  color:var(--ac-text); background:var(--ac-cream); border:none; border-radius:999px; padding:11px 38px 11px 16px;
+  cursor:pointer; outline:none; box-shadow:0 4px 0 rgba(122,101,71,.22);}
+.ac-select::after{content:&quot;▾&quot;; position:absolute; right:15px; top:50%; transform:translateY(-50%); color:var(--ac-orange-dk);
+  pointer-events:none; font-weight:800;}
+
+/* ----- 15. 开关 ac-switch ----- */
+.ac-switch{position:relative; display:inline-flex; align-items:center; cursor:pointer; user-select:none;}
+.ac-switch input{position:absolute; opacity:0; pointer-events:none;}
+.ac-switch__track{width:52px; height:28px; border-radius:999px; background:var(--ac-cream2);
+  position:relative; transition:.15s; box-shadow:inset 0 2px 4px rgba(122,101,71,.25);}
+.ac-switch__track::before{content:&quot;&quot;; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%;
+  background:#fff; box-shadow:0 2px 3px rgba(90,70,30,.3); transition:.15s;}
+.ac-switch input:checked + .ac-switch__track{background:var(--ac-green);}
+.ac-switch input:checked + .ac-switch__track::before{left:27px;}
+
+/* ----- 16. 滑条 ac-slider ----- */
+.ac-slider{-webkit-appearance:none; appearance:none; width:100%; height:12px; border-radius:999px;
+  background:linear-gradient(90deg,var(--ac-green),var(--ac-cream2)); outline:none; cursor:pointer;
+  box-shadow:inset 0 2px 3px rgba(122,101,71,.2);}
+.ac-slider::-webkit-slider-thumb{-webkit-appearance:none; width:24px; height:24px; border-radius:50%;
+  background:radial-gradient(circle at 40% 30%,#fff,#f3ead8); cursor:pointer; box-shadow:0 3px 5px rgba(90,70,30,.35);}
+.ac-slider::-moz-range-thumb{width:24px; height:24px; border-radius:50%; background:#fff; border:none; cursor:pointer;
+  box-shadow:0 3px 5px rgba(90,70,30,.35);}
+
+/* ----- 17. 徽章 ac-badge ----- */
+.ac-badge{display:inline-grid; place-items:center; min-width:20px; height:20px; padding:0 6px; border-radius:999px;
+  font-family:var(--ac-num); font-weight:900; font-size:11px; color:#fff; background:var(--ac-pink);
+  box-shadow:0 2px 0 var(--ac-pink-dk);}
+.ac-badge--bell{background:var(--ac-bell); color:#8a6200; box-shadow:0 2px 0 var(--ac-bell-dk);}
+.ac-badge-wrap{position:relative; display:inline-flex;}
+.ac-badge-wrap > .ac-badge{position:absolute; top:-7px; right:-7px;}
+
+/* ----- 18. 角标 ac-ribbon ----- */
+.ac-ribbon{position:absolute; top:10px; left:-4px; font-family:var(--ac-disp); font-weight:800; font-size:11px; color:#fff;
+  background:var(--ac-pink); padding:3px 13px; border-radius:4px 999px 999px 4px; z-index:3;
+  box-shadow:0 2px 0 var(--ac-pink-dk);}
+.ac-ribbon--bell{background:var(--ac-bell); color:#8a6200; box-shadow:0 2px 0 var(--ac-bell-dk);}
+
+/* ----- 19. 标签 ac-tag ----- */
+.ac-tag{display:inline-flex; align-items:center; gap:5px; font-family:var(--ac-num); font-weight:800; font-size:11px;
+  color:var(--ac-brown); background:var(--ac-cream2); border-radius:999px; padding:4px 11px;
+  box-shadow:inset 0 0 0 2px rgba(122,101,71,.12);}
+.ac-tag--green{background:#e2f5d5; color:#41702e;}
+.ac-tag--blue{background:#dcf2fa; color:#2a7a99;}
+.ac-tag--pink{background:#fde4e8; color:#b25260;}
+
+/* ----- 20. Tooltip ac-tooltip ----- */
+.ac-tooltip{position:relative; display:inline-flex; cursor:help; color:#3f6e2c; font-weight:800;
+  border-bottom:2px dotted rgba(63,110,44,.5);}
+.ac-tooltip::after{content:attr(data-tip); position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%);
+  font-family:var(--ac-ui); font-weight:700; font-size:12px; color:#fff; white-space:nowrap; background:#6b5940;
+  border-radius:12px; padding:7px 13px; opacity:0; pointer-events:none; transition:.12s; z-index:20;
+  box-shadow:0 4px 10px rgba(60,45,25,.3);}
+.ac-tooltip::before{content:&quot;&quot;; position:absolute; bottom:calc(100% + 3px); left:50%; transform:translateX(-50%);
+  border:6px solid transparent; border-top-color:#6b5940; opacity:0; transition:.12s; z-index:20;}
+.ac-tooltip:hover::after,.ac-tooltip:hover::before{opacity:1;}
+
+/* ----- 21. Toast ac-toast ----- */
+.ac-toast{display:flex; align-items:center; gap:10px; font-family:var(--ac-ui); font-weight:700; font-size:13px;
+  color:var(--ac-text); background:var(--ac-cream); border-radius:18px; padding:11px 16px; max-width:340px;
+  box-shadow:0 5px 0 rgba(122,101,71,.22), 0 10px 16px rgba(70,100,40,.16);}
+.ac-toast__ic{width:34px; height:34px; border-radius:12px; flex:none; display:grid; place-items:center; font-size:18px;
+  background:var(--ac-green-lt);}
+.ac-toast--danger .ac-toast__ic{background:var(--ac-pink-lt);}
+.ac-toast--bell .ac-toast__ic{background:#ffe9a8;}
+.ac-toast b{font-family:var(--ac-disp); font-weight:800; font-size:13px; color:var(--ac-text); display:block;}
+
+/* ----- 22. 对话气泡 ac-bubble(动森招牌名牌对话框) ----- */
+.ac-bubble{position:relative; font-family:var(--ac-ui); font-weight:700; font-size:13px; color:var(--ac-text); max-width:320px;
+  background:var(--ac-cream); border-radius:22px; padding:22px 18px 14px; margin-top:14px;
+  box-shadow:0 6px 0 rgba(122,101,71,.22), 0 12px 18px rgba(70,100,40,.18);}
+.ac-bubble__who{position:absolute; top:-13px; left:16px; font-family:var(--ac-disp); font-weight:800; font-size:12px;
+  color:#fff; background:var(--ac-orange); padding:4px 15px; border-radius:999px 999px 999px 6px;
+  box-shadow:0 3px 0 var(--ac-orange-dk); transform:rotate(-2deg);}
+.ac-bubble::before{content:&quot;&quot;; position:absolute; left:30px; bottom:-13px; border:8px solid transparent;
+  border-top-color:var(--ac-cream);}
+
+/* ----- 23. 加载 ac-spinner(旋转树叶) ----- */
+.ac-spinner{width:38px; height:38px; border-radius:50% 8px 50% 50%;
+  background:linear-gradient(135deg,var(--ac-green-lt),var(--ac-green) 70%);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.4), 0 3px 6px rgba(60,90,30,.3);
+  animation:ac-leafspin 1.4s ease-in-out infinite;}
+@keyframes ac-leafspin{0%{transform:rotate(-45deg)}50%{transform:rotate(135deg) scale(.88)}100%{transform:rotate(315deg)}}
+
+/* ----- 24. 头像组 ac-avatars ----- */
+.ac-avatars{display:inline-flex;}
+.ac-avatars__a{width:38px; height:38px; border-radius:50%; display:grid; place-items:center; font-size:18px; margin-left:-10px;
+  background:var(--ac-cream); box-shadow:0 0 0 3px #fff, 0 2px 4px rgba(90,70,30,.25);}
+.ac-avatars__a:first-child{margin-left:0;}
+.ac-avatars__more{width:38px; height:38px; border-radius:50%; display:grid; place-items:center; margin-left:-10px;
+  font-family:var(--ac-num); font-weight:900; font-size:11px; color:#fff; background:var(--ac-blue);
+  box-shadow:0 0 0 3px #fff, 0 2px 4px rgba(90,70,30,.25);}
+
+/* ----- 25. 星级评分 ac-stars ----- */
+.ac-stars{display:inline-flex; gap:3px; font-size:20px; color:#d9cdae;}
+.ac-stars .on{color:var(--ac-bell); filter:drop-shadow(0 2px 0 rgba(200,150,20,.45));}
+
+/* ----- 26. 分隔线 ac-divider ----- */
+.ac-divider{display:flex; align-items:center; gap:10px; margin:6px 0;}
+.ac-divider::before,.ac-divider::after{content:&quot;&quot;; height:3px; flex:1; border-radius:999px;
+  background:repeating-linear-gradient(90deg,rgba(255,253,242,.75) 0 8px,transparent 8px 16px);}
+.ac-divider__mark{font-family:var(--ac-disp); font-weight:800; font-size:13px; color:#fffdf2; text-shadow:0 1px 0 rgba(90,120,50,.4);}
+
+/* ----- 27. 空状态 ac-empty ----- */
+.ac-empty{text-align:center; padding:28px 20px; color:var(--ac-dim);}
+.ac-empty__ic{font-size:48px;}
+.ac-empty__tt{font-family:var(--ac-disp); font-weight:800; font-size:16px; color:var(--ac-text); margin:8px 0 4px;}
+.ac-empty__ds{font-family:var(--ac-num); font-weight:700; font-size:12px;}
+
+/* ----- 28. 步进器 ac-stepper ----- */
+.ac-stepper{display:inline-flex; align-items:center; gap:8px;}
+.ac-stepper__btn{width:36px; height:36px; border-radius:50%; font-family:var(--ac-disp); font-weight:800; font-size:20px; color:#fff;
+  cursor:pointer; border:none; display:grid; place-items:center; line-height:0; padding-bottom:2px;
+  background:var(--ac-orange); box-shadow:0 3px 0 var(--ac-orange-dk); transition:.09s;}
+.ac-stepper__btn:active{transform:translateY(3px); box-shadow:0 0 0 var(--ac-orange-dk);}
+.ac-stepper__val{min-width:46px; text-align:center; font-family:var(--ac-num); font-weight:900; font-size:18px; color:var(--ac-text);
+  background:var(--ac-cream); border-radius:12px; padding:6px 0; box-shadow:inset 0 2px 3px rgba(122,101,71,.18);}
+
+/* ----- 29. 面包屑 ac-breadcrumb ----- */
+.ac-breadcrumb{display:flex; align-items:center; gap:6px; font-family:var(--ac-ui); font-weight:800; font-size:13px; flex-wrap:wrap;}
+.ac-breadcrumb a{color:#2a7a45; text-decoration:none; cursor:pointer;}
+.ac-breadcrumb a:hover{color:var(--ac-orange-dk);}
+.ac-breadcrumb__sep{color:rgba(255,253,242,.7); font-weight:800;}
+.ac-breadcrumb__cur{color:#fffdf2; font-weight:800; text-shadow:0 1px 0 rgba(90,120,50,.4);}
+
+/* ----- 30. 手风琴 ac-accordion ----- */
+.ac-accordion{border-radius:18px; overflow:hidden; background:var(--ac-cream); box-shadow:0 5px 0 rgba(122,101,71,.22);}
+.ac-accordion details{border-bottom:2px dashed var(--ac-line);}
+.ac-accordion details:last-child{border-bottom:none;}
+.ac-accordion summary{list-style:none; cursor:pointer; padding:12px 14px; font-family:var(--ac-disp); font-weight:800; font-size:13px;
+  color:var(--ac-text); display:flex; align-items:center; gap:8px;}
+.ac-accordion summary::-webkit-details-marker{display:none;}
+.ac-accordion summary::before{content:&quot;🍂&quot;; font-size:12px; transition:.15s;}
+.ac-accordion details[open] summary::before{content:&quot;🍃&quot;;}
+.ac-accordion summary:hover{background:#fdf3d3;}
+.ac-accordion__bd{padding:2px 16px 14px 36px; font-family:var(--ac-ui); font-weight:700; font-size:12px; color:#9a8866; line-height:1.7;}
+
+/* ----- 31. 侧边抽屉 ac-drawer ----- */
+.ac-drawer-mask{position:fixed; inset:0; background:rgba(70,90,40,.42); z-index:110; opacity:0; pointer-events:none; transition:.2s;}
+.ac-drawer-mask.open{opacity:1; pointer-events:auto;}
+.ac-drawer{position:fixed; top:0; right:0; bottom:0; width:min(300px,86vw); z-index:120; background:var(--ac-cream);
+  box-shadow:-10px 0 26px rgba(60,45,25,.3); transform:translateX(100%);
+  transition:.22s cubic-bezier(.3,.8,.3,1); display:flex; flex-direction:column; border-radius:24px 0 0 24px;}
+.ac-drawer.open{transform:translateX(0);}
+.ac-drawer__hd{font-family:var(--ac-disp); font-weight:800; font-size:16px; color:#fff; padding:16px;
+  background:var(--ac-green); border-radius:24px 0 0 0;
+  display:flex; align-items:center; justify-content:space-between; text-shadow:0 1px 0 rgba(0,60,0,.2);}
+.ac-drawer__hd span{cursor:pointer;}
+.ac-drawer__bd{padding:12px; overflow-y:auto;}
+
+/* ----- 32. 数据表格 ac-table ----- */
+.ac-table{width:100%; border-collapse:collapse; font-family:var(--ac-num); font-weight:700; font-size:12px;
+  border-radius:16px; overflow:hidden; background:var(--ac-cream); box-shadow:0 5px 0 rgba(122,101,71,.22);}
+.ac-table thead th{font-family:var(--ac-disp); font-weight:800; font-size:11px; color:#fff; text-align:left; padding:9px 12px;
+  background:var(--ac-green); letter-spacing:.05em;}
+.ac-table tbody td{padding:9px 12px; color:var(--ac-text); border-bottom:2px dashed var(--ac-line);}
+.ac-table tbody tr:last-child td{border-bottom:none;}
+.ac-table tbody tr:nth-child(even){background:#fdf7e3;}
+.ac-table tbody tr:hover{background:#fdf3d3;}
+.ac-table__rank{color:var(--ac-orange-dk); font-family:var(--ac-disp); font-weight:800;}
+
+/* ----- 33. 分页器 ac-pagination ----- */
+.ac-pagination{display:inline-flex; gap:6px;}
+.ac-pagination__pg{min-width:34px; height:34px; padding:0 6px; display:grid; place-items:center; cursor:pointer;
+  font-family:var(--ac-disp); font-weight:800; font-size:13px; color:var(--ac-brown); background:var(--ac-cream);
+  border-radius:50%; box-shadow:0 3px 0 rgba(122,101,71,.22); transition:.09s;}
+.ac-pagination__pg:active{transform:translateY(3px); box-shadow:0 0 0 rgba(122,101,71,.22);}
+.ac-pagination__pg--active{color:#fff; background:var(--ac-green); box-shadow:0 3px 0 var(--ac-green-dk);}
+.ac-pagination__pg--dis{opacity:.45; cursor:not-allowed;}
+
+/* ----- 34. 时间轴 ac-timeline ----- */
+.ac-timeline{position:relative; padding-left:28px;}
+.ac-timeline::before{content:&quot;&quot;; position:absolute; left:9px; top:8px; bottom:8px; width:4px; border-radius:999px;
+  background:repeating-linear-gradient(180deg,rgba(255,253,242,.8) 0 6px,transparent 6px 12px);}
+.ac-timeline__item{position:relative; padding-bottom:16px;}
+.ac-timeline__item:last-child{padding-bottom:0;}
+.ac-timeline__item::before{content:&quot;&quot;; position:absolute; left:-24px; top:2px; width:16px; height:16px; border-radius:50%;
+  background:var(--ac-cream); box-shadow:0 2px 3px rgba(90,70,30,.3);}
+.ac-timeline__item--done::before{background:radial-gradient(circle at 40% 30%,var(--ac-green-lt),var(--ac-green));}
+.ac-timeline__item--now::before{background:radial-gradient(circle at 40% 30%,#ffe28e,var(--ac-bell));
+  box-shadow:0 0 10px rgba(255,212,94,.85);}
+.ac-timeline__t{font-family:var(--ac-disp); font-weight:800; font-size:13px; color:#fffdf2; text-shadow:0 1px 0 rgba(90,120,50,.4);}
+.ac-timeline__d{font-family:var(--ac-num); font-weight:700; font-size:11px; color:#e8f5d5; margin-top:2px; text-shadow:0 1px 0 rgba(90,120,50,.3);}
+
+/* ----- 35. 树形菜单 ac-tree ----- */
+.ac-tree{font-family:var(--ac-ui); font-weight:800; font-size:13px;}
+.ac-tree details{margin-left:4px;}
+.ac-tree summary{list-style:none; cursor:pointer; padding:5px 0; color:#fffdf2; display:flex; align-items:center; gap:6px;
+  text-shadow:0 1px 0 rgba(90,120,50,.4);}
+.ac-tree summary::-webkit-details-marker{display:none;}
+.ac-tree summary::before{content:&quot;▶&quot;; color:var(--ac-bell); font-size:9px; transition:.15s;}
+.ac-tree details[open] > summary::before{transform:rotate(90deg);}
+.ac-tree summary:hover{color:var(--ac-bell);}
+.ac-tree__leaf{padding:5px 0 5px 20px; color:#e2f0cd; cursor:pointer; text-shadow:0 1px 0 rgba(90,120,50,.3);}
+.ac-tree__leaf:hover{color:#fffdf2;}
+.ac-tree details > *:not(summary){margin-left:14px; border-left:3px solid rgba(255,253,242,.35); padding-left:6px;}
+
+/* ----- 36. 能量条倒计时 ac-energy ----- */
+.ac-energy{display:flex; align-items:center; gap:10px;}
+.ac-energy__orb{width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font-size:15px; flex:none;
+  background:radial-gradient(circle at 40% 30%,#ffb3a0,#f2694e 65%); box-shadow:inset 0 2px 0 rgba(255,255,255,.4);}
+.ac-energy__body{flex:1;}
+.ac-energy__top{display:flex; justify-content:space-between; font-family:var(--ac-num); font-weight:800; font-size:11px;
+  color:#e8f5d5; margin-bottom:3px; text-shadow:0 1px 0 rgba(90,120,50,.3);}
+.ac-energy__timer{color:#fff3c2; font-variant-numeric:tabular-nums;}
+
+/* ----- 37. 签到日历 ac-calendar ----- */
+.ac-calendar{display:grid; grid-template-columns:repeat(7,1fr); gap:6px;}
+.ac-calendar__day{aspect-ratio:1; border-radius:14px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; font-family:var(--ac-num); font-weight:800; font-size:10px; color:var(--ac-dim); background:var(--ac-cream);
+  box-shadow:0 3px 0 rgba(122,101,71,.18); position:relative;}
+.ac-calendar__day .r{font-size:16px;}
+.ac-calendar__day--done{filter:saturate(.65);}
+.ac-calendar__day--done::after{content:&quot;✓&quot;; position:absolute; inset:0; display:grid; place-items:center; border-radius:14px;
+  background:rgba(111,191,90,.8); color:#fff; font-size:20px; font-weight:900;}
+.ac-calendar__day--today{box-shadow:0 0 0 3px var(--ac-orange), 0 3px 0 rgba(122,101,71,.18); background:#fff3d6;}
+
+/* ----- 38. 里程任务链 ac-questchain ----- */
+.ac-questchain{display:flex; align-items:center;}
+.ac-questchain__node{width:42px; height:42px; border-radius:50%; display:grid; place-items:center; font-size:18px; flex:none; z-index:2;
+  background:var(--ac-cream); box-shadow:0 3px 0 rgba(122,101,71,.22);}
+.ac-questchain__node--done{background:radial-gradient(circle at 40% 30%,var(--ac-green-lt),var(--ac-green));}
+.ac-questchain__node--now{background:radial-gradient(circle at 40% 30%,#ffe28e,var(--ac-bell)); transform:scale(1.1);
+  box-shadow:0 3px 0 rgba(122,101,71,.22), 0 0 14px rgba(255,212,94,.8);}
+.ac-questchain__link{height:4px; flex:1; min-width:16px; border-radius:999px;
+  background:repeating-linear-gradient(90deg,rgba(255,253,242,.8) 0 5px,transparent 5px 10px);}
+.ac-questchain__link--done{background:var(--ac-green-lt);}
+
+/* ----- 39. 成就解锁 ac-achievement ----- */
+.ac-achievement{display:flex; align-items:center; gap:14px; padding:12px 16px; background:var(--ac-cream);
+  border-radius:18px; box-shadow:0 5px 0 rgba(122,101,71,.22);}
+.ac-achievement__medal{width:52px; height:52px; border-radius:50%; display:grid; place-items:center; font-size:26px; flex:none;
+  background:radial-gradient(circle at 40% 30%,#ffe9a8,var(--ac-bell) 60%,var(--ac-bell-dk));
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.5);}
+.ac-achievement__tx b{font-family:var(--ac-disp); font-weight:800; font-size:14px; color:var(--ac-text); display:block;}
+.ac-achievement__tx small{font-family:var(--ac-num); font-weight:700; font-size:11px; color:var(--ac-dim);}
+.ac-achievement--locked{filter:grayscale(.7); opacity:.72;}
+.ac-achievement--locked .ac-achievement__medal{background:#cfc4a8;}
+
+/* ----- 40. 翻牌 ac-flipcard(化石鉴定) ----- */
+.ac-flipcard{width:120px; height:168px; perspective:800px; cursor:pointer;}
+.ac-flipcard__inner{position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .5s;}
+.ac-flipcard.flipped .ac-flipcard__inner{transform:rotateY(180deg);}
+.ac-flipcard__face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  border-radius:18px; display:grid; place-items:center; overflow:hidden;
+  box-shadow:0 6px 0 rgba(122,101,71,.22), 0 10px 16px rgba(70,100,40,.18);}
+.ac-flipcard__back{background:
+  radial-gradient(circle at 50% 40%,rgba(255,255,255,.25),transparent 55%),
+  linear-gradient(180deg,#b09368,#8a6f4a); color:#fff8e8; font-size:40px; font-family:var(--ac-disp); font-weight:800;}
+.ac-flipcard__front{transform:rotateY(180deg); flex-direction:column; background:linear-gradient(180deg,#fff3d6,#ffdf9e);}
+.ac-flipcard__front .em{font-size:46px;}
+.ac-flipcard__front .nm{font-family:var(--ac-disp); font-weight:800; font-size:13px; color:#8a6d3a; margin-top:6px;}
+
+/* ----- 41. 拆礼物 ac-chest ----- */
+.ac-chest{width:120px; text-align:center; cursor:pointer; user-select:none;}
+.ac-chest__box{width:72px; height:66px; margin:0 auto; border-radius:14px; display:grid; place-items:center;
+  font-size:32px; position:relative; background:linear-gradient(180deg,var(--ac-pink-lt),var(--ac-pink));
+  box-shadow:0 5px 0 var(--ac-pink-dk), inset 0 3px 0 rgba(255,255,255,.4); transition:.15s;}
+.ac-chest__box::before{content:&quot;&quot;; position:absolute; left:50%; top:0; bottom:0; width:12px; transform:translateX(-50%);
+  background:rgba(255,255,255,.55);}
+.ac-chest__box::after{content:&quot;&quot;; position:absolute; left:0; right:0; top:42%; height:12px;
+  background:rgba(255,255,255,.55);}
+.ac-chest:hover .ac-chest__box{transform:translateY(-4px) rotate(2deg);}
+.ac-chest.opened .ac-chest__box{animation:ac-pop .5s ease;}
+@keyframes ac-pop{0%{transform:scale(1)}40%{transform:scale(1.15) rotate(-4deg)}70%{transform:scale(.94)}100%{transform:scale(1)}}
+.ac-chest__glow{height:0; overflow:hidden; opacity:0; transition:.3s;}
+.ac-chest.opened .ac-chest__glow{height:auto; opacity:1; padding-top:8px;}
+.ac-chest__label{font-family:var(--ac-disp); font-weight:800; font-size:12px; color:#fffdf2; margin-top:6px;
+  text-shadow:0 1px 0 rgba(90,120,50,.4);}
+
+/* ----- 42. 背包网格 ac-invgrid ----- */
+.ac-invgrid{display:grid; grid-template-columns:repeat(5,1fr); gap:6px; padding:10px; background:var(--ac-cream);
+  border-radius:16px; width:max-content; box-shadow:0 5px 0 rgba(122,101,71,.22);}
+.ac-invgrid__cell{width:46px; height:46px; border-radius:12px; display:grid; place-items:center; font-size:22px; position:relative;
+  background:var(--ac-cream2);}
+.ac-invgrid__cell:hover{background:#fdeec2;}
+.ac-invgrid__cell--diy{background:linear-gradient(180deg,#fff3d6,#ffdf9e);}
+.ac-invgrid__cell--rare{background:linear-gradient(180deg,#d9f2ff,#a8ddf2);}
+.ac-invgrid__cell--empty{background:rgba(122,101,71,.08); box-shadow:inset 0 0 0 2px rgba(122,101,71,.12);}
+.ac-invgrid__qty{position:absolute; bottom:1px; right:4px; font-family:var(--ac-num); font-weight:900; font-size:10px; color:var(--ac-brown);}
+
+/* ----- 43. 装备对比 ac-compare ----- */
+.ac-compare{display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center; background:var(--ac-cream);
+  border-radius:18px; padding:14px; box-shadow:0 5px 0 rgba(122,101,71,.22);}
+.ac-compare__side{text-align:center;}
+.ac-compare__side .ac-icon{margin:0 auto 8px;}
+.ac-compare__nm{font-family:var(--ac-disp); font-weight:800; font-size:12px; color:var(--ac-text); margin-bottom:8px;}
+.ac-compare__stat{display:flex; justify-content:space-between; font-family:var(--ac-num); font-weight:700; font-size:11px;
+  padding:3px 0; border-bottom:2px dashed var(--ac-line);}
+.ac-compare__stat span:first-child{color:var(--ac-dim);}
+.ac-compare__up{color:#3f8a2c;} .ac-compare__down{color:var(--ac-pink-dk);}
+.ac-compare__vs{font-family:var(--ac-disp); font-weight:800; font-size:16px; color:var(--ac-orange-dk);}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important;}}
+</style>
+</head>
+<body>
+
+<div class=&quot;doc-head&quot;>
+  <span class=&quot;eb&quot;>ANIMAL CROSSING · ISLAND STYLE KIT</span>
+  <h1>动物森林风 UI 组件库</h1>
+  <p>43 个组件 · ac- 前缀 · 奶油圆角卡片 + 草地波点 + 软投影无描边</p>
+  <div class=&quot;tokens&quot;>
+    <span class=&quot;tok&quot;><i style=&quot;background:#6fbf5a&quot;></i>--ac-green</span>
+    <span class=&quot;tok&quot;><i style=&quot;background:#f5a742&quot;></i>--ac-orange</span>
+    <span class=&quot;tok&quot;><i style=&quot;background:#ffd45e&quot;></i>--ac-bell</span>
+    <span class=&quot;tok&quot;><i style=&quot;background:#5fc4e0&quot;></i>--ac-blue</span>
+    <span class=&quot;tok&quot;><i style=&quot;background:#fffbef; box-shadow:inset 0 0 0 2px #e8d9b0;&quot;></i>--ac-cream</span>
+  </div>
+</div>
+
+<div class=&quot;doc&quot;>
+
+  <!-- 1 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>按钮 · Button</div><div class=&quot;comp-desc&quot;>软萌胶囊钮,绿/蓝/橙/奶油四色,无描边软投影,按下下沉。</div>
+    <div class=&quot;showcase&quot;>
+      <button class=&quot;ac-btn ac-btn--green ac-btn--lg&quot;>出发!</button>
+      <button class=&quot;ac-btn ac-btn--blue&quot;>图鉴</button>
+      <button class=&quot;ac-btn ac-btn--orange&quot;>商店</button>
+      <button class=&quot;ac-btn ac-btn--cream&quot;>稍后再说</button>
+      <button class=&quot;ac-btn ac-btn--green ac-btn--round&quot;>🍃</button>
+      <button class=&quot;ac-btn ac-btn--blue ac-btn--sm&quot;>小按钮</button>
+      <button class=&quot;ac-btn ac-btn--green&quot; disabled>未解锁</button>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-btn</b> ( <b>--green/--blue/--orange/--cream · --sm/--lg/--block/--round</b> )</div>
+  </div>
+
+  <!-- 2 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>面板 · Panel</div><div class=&quot;comp-desc&quot;>奶油圆角卡 + 绿色标题条 + 可选四角小树叶。</div>
+    <div class=&quot;showcase&quot;>
+      <div class=&quot;ac-panel&quot; style=&quot;width:300px&quot;>
+        <span class=&quot;ac-leaf tl&quot;></span><span class=&quot;ac-leaf tr&quot;></span><span class=&quot;ac-leaf bl&quot;></span><span class=&quot;ac-leaf br&quot;></span>
+        <div class=&quot;ac-panel__hd&quot;>岛内广播</div>
+        <div class=&quot;ac-panel__bd&quot;><p>今天是钓鱼大赛!到广场找西施惠报名,钓上最大的鱼赢取奖杯吧~</p>
+          <div style=&quot;margin-top:12px; display:flex; gap:8px;&quot;>
+            <button class=&quot;ac-btn ac-btn--green ac-btn--sm&quot;>马上去</button>
+            <button class=&quot;ac-btn ac-btn--cream ac-btn--sm&quot;>待会儿</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-panel</b> &amp;gt; <b>ac-panel__hd</b> + <b>ac-panel__bd</b>　·　四角树叶:<b>ac-leaf tl/tr/bl/br</b></div>
+  </div>
+
+  <!-- 3 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>弹窗 · Modal</div><div class=&quot;comp-desc&quot;>遮罩 + 面板 + 圆形粉关闭钮。点击预览。</div>
+    <div class=&quot;showcase&quot;><button class=&quot;ac-btn ac-btn--orange&quot; onclick=&quot;document.getElementById('acModal').style.display='grid'&quot;>打开弹窗</button></div>
+    <div class=&quot;classline&quot;><b>ac-modal-mask</b> &amp;gt; <b>ac-modal</b> ( <b>ac-modal__close</b> + <b>ac-panel</b> )</div>
+  </div>
+
+  <!-- 4 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>进度条 · Bar</div><div class=&quot;comp-desc&quot;>奶油槽光泽条,铃钱/友好度/里程三色,可加 label。</div>
+    <div class=&quot;showcase&quot; style=&quot;flex-direction:column; align-items:stretch;&quot;>
+      <div class=&quot;ac-bar ac-bar--tall&quot;><div class=&quot;ac-bar__fill ac-bar__fill--bell&quot; style=&quot;width:72%&quot;></div><div class=&quot;ac-bar__label&quot;>房贷 348,000 / 498,000 铃钱</div></div>
+      <div class=&quot;ac-bar ac-bar--tall&quot;><div class=&quot;ac-bar__fill ac-bar__fill--friend&quot; style=&quot;width:90%&quot;></div><div class=&quot;ac-bar__label&quot;>友好度 90%</div></div>
+      <div class=&quot;ac-bar ac-bar--tall&quot;><div class=&quot;ac-bar__fill ac-bar__fill--mile&quot; style=&quot;width:45%&quot;></div><div class=&quot;ac-bar__label&quot;>里程任务 45%</div></div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-bar</b> &amp;gt; <b>ac-bar__fill --bell/--friend/--mile</b> + <b>ac-bar__label</b></div>
+  </div>
+
+  <!-- 5 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>货币条 · Currency</div><div class=&quot;comp-desc&quot;>铃钱/里程/大头菜三种,奶油胶囊。</div>
+    <div class=&quot;showcase&quot;>
+      <span class=&quot;ac-currency&quot;><span class=&quot;ac-currency__coin ac-currency__coin--bell&quot;>🔔</span>128,400</span>
+      <span class=&quot;ac-currency&quot;><span class=&quot;ac-currency__coin ac-currency__coin--mile&quot;>✈️</span>6,850</span>
+      <span class=&quot;ac-currency&quot;><span class=&quot;ac-currency__coin ac-currency__coin--turnip&quot;>🥬</span>×40</span>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-currency</b> &amp;gt; <b>ac-currency__coin --bell/--mile/--turnip</b> + 数值</div>
+  </div>
+
+  <!-- 6 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>水果能量计 · Fruit Meter</div><div class=&quot;comp-desc&quot;>吃水果攒力气,果子逐格点亮,满格数字红色闪烁。</div>
+    <div class=&quot;showcase&quot; style=&quot;gap:26px;&quot;>
+      <div class=&quot;ac-meter&quot;>
+        <span class=&quot;ac-meter__seg on&quot;></span><span class=&quot;ac-meter__seg on&quot;></span><span class=&quot;ac-meter__seg on&quot;></span>
+        <span class=&quot;ac-meter__seg&quot;></span><span class=&quot;ac-meter__seg&quot;></span>
+        <span class=&quot;ac-meter__num&quot;>3</span>
+      </div>
+      <div class=&quot;ac-meter&quot;>
+        <span class=&quot;ac-meter__seg on&quot;></span><span class=&quot;ac-meter__seg on&quot;></span><span class=&quot;ac-meter__seg on&quot;></span>
+        <span class=&quot;ac-meter__seg on&quot;></span><span class=&quot;ac-meter__seg on&quot;></span>
+        <span class=&quot;ac-meter__num max&quot;>MAX</span>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-meter</b> &amp;gt; 多个 <b>ac-meter__seg</b>(点亮加 <b>.on</b>) + <b>ac-meter__num</b>(满格加 <b>.max</b>)</div>
+  </div>
+
+  <!-- 7 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>图标底座 · Icon Slot</div><div class=&quot;comp-desc&quot;>道具槽,普通/DIY 配方/稀有底色 + 冷却遮罩。</div>
+    <div class=&quot;showcase&quot;>
+      <div class=&quot;ac-icon&quot;>🪓</div>
+      <div class=&quot;ac-icon ac-icon--diy&quot;>📜</div>
+      <div class=&quot;ac-icon ac-icon--rare&quot;>🦋</div>
+      <div class=&quot;ac-icon&quot;>🎣<div class=&quot;ac-icon__cd&quot;>3</div></div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-icon</b> ( <b>--diy / --rare</b> )　·　冷却:<b>ac-icon__cd</b></div>
+  </div>
+
+  <!-- 8 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>岛民卡 · Card</div><div class=&quot;comp-desc&quot;>岛民/物品卡,性格配色变体,悬停歪头上浮。</div>
+    <div class=&quot;showcase&quot;>
+      <div class=&quot;ac-card&quot;><div class=&quot;ac-card__art&quot;><span class=&quot;ac-card__tag&quot;>运动</span>🐶</div><div class=&quot;ac-card__name&quot;>小汪</div><div class=&quot;ac-card__foot&quot;><div class=&quot;ac-bar&quot;><div class=&quot;ac-bar__fill ac-bar__fill--friend&quot; style=&quot;width:80%&quot;></div></div></div></div>
+      <div class=&quot;ac-card ac-card--peppy&quot;><div class=&quot;ac-card__art&quot;><span class=&quot;ac-card__tag&quot;>元气</span>🐰</div><div class=&quot;ac-card__name&quot;>莉莉安</div><div class=&quot;ac-card__foot&quot;><div class=&quot;ac-bar&quot;><div class=&quot;ac-bar__fill ac-bar__fill--friend&quot; style=&quot;width:55%&quot;></div></div></div></div>
+      <div class=&quot;ac-card ac-card--smug&quot;><div class=&quot;ac-card__art&quot;><span class=&quot;ac-card__tag&quot;>自恋</span>🐱</div><div class=&quot;ac-card__name&quot;>杰克</div><div class=&quot;ac-card__foot&quot;><div class=&quot;ac-bar&quot;><div class=&quot;ac-bar__fill ac-bar__fill--friend&quot; style=&quot;width:35%&quot;></div></div></div></div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-card</b> ( <b>--peppy/--lazy/--smug</b> ) &amp;gt; <b>__art</b>(含 <b>__tag</b>) + <b>__name</b> + <b>__foot</b></div>
+  </div>
+
+  <!-- 9 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>列表项 · List</div><div class=&quot;comp-desc&quot;>家具/道具通用行,左图标 + 主副标题 + 右值,虚线分隔。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <div class=&quot;ac-list&quot; style=&quot;max-width:420px;&quot;>
+        <div class=&quot;ac-list__item&quot;><div class=&quot;ac-list__ic&quot;>🛋️</div><div class=&quot;ac-list__tx&quot;><b>原木沙发</b><small>家具 · 自然风</small></div><span class=&quot;ac-list__val&quot;>2,400🔔</span></div>
+        <div class=&quot;ac-list__item&quot;><div class=&quot;ac-list__ic&quot;>🪴</div><div class=&quot;ac-list__tx&quot;><b>观叶植物</b><small>家具 · 绿植</small></div><span class=&quot;ac-list__val&quot;>860🔔</span></div>
+        <div class=&quot;ac-list__item&quot;><div class=&quot;ac-list__ic&quot;>🎸</div><div class=&quot;ac-list__tx&quot;><b>木吉他</b><small>乐器 · 可演奏</small></div><span class=&quot;ac-list__val&quot;>3,120🔔</span></div>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-list</b> &amp;gt; <b>ac-list__item</b> ( <b>__ic</b> + <b>__tx</b>(b+small) + <b>__val</b> )</div>
+  </div>
+
+  <!-- 10 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>顶部 HUD · HUD Bar</div><div class=&quot;comp-desc&quot;>头像 + 名称/身份 + 右侧铃钱。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <div class=&quot;ac-hud&quot;><div class=&quot;ac-hud__ava&quot;>🧑‍🌾</div><div class=&quot;ac-hud__who&quot;><b>小岛岛民代表</b><small>桃桃岛 · ⭐⭐⭐ 评级</small></div><div class=&quot;ac-hud__spacer&quot;></div><span class=&quot;ac-currency&quot;><span class=&quot;ac-currency__coin ac-currency__coin--bell&quot;>🔔</span>128,400</span></div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-hud</b> &amp;gt; <b>ac-hud__ava</b> + <b>ac-hud__who</b>(b+small) + <b>ac-hud__spacer</b> + 右侧组件</div>
+  </div>
+
+  <!-- 11 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>导航栏 · Nav Bar</div><div class=&quot;comp-desc&quot;>底部主导航,绿底高亮当前页。点击切换。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <div class=&quot;ac-nav&quot; id=&quot;acNav&quot;>
+        <div class=&quot;ac-nav__tab ac-nav__tab--active&quot; data-nav><span class=&quot;i&quot;>🏝️</span>岛屿</div>
+        <div class=&quot;ac-nav__tab&quot; data-nav><span class=&quot;i&quot;>🎒</span>背包</div>
+        <div class=&quot;ac-nav__tab&quot; data-nav><span class=&quot;i&quot;>🧵</span>裁缝店</div>
+        <div class=&quot;ac-nav__tab&quot; data-nav><span class=&quot;i&quot;>🏛️</span>博物馆</div>
+        <div class=&quot;ac-nav__tab&quot; data-nav><span class=&quot;i&quot;>✈️</span>机场</div>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-nav</b> &amp;gt; <b>ac-nav__tab</b> ( <b>--active</b> ) &amp;gt; <b>span.i</b> + 文字</div>
+  </div>
+
+  <!-- 12 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>标签页 · Tabs</div><div class=&quot;comp-desc&quot;>面板分页,点击切换。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <div style=&quot;max-width:420px;&quot;>
+        <div class=&quot;ac-tabs&quot; id=&quot;acTabs&quot;>
+          <div class=&quot;ac-tabs__tab ac-tabs__tab--active&quot; data-tab>家具</div>
+          <div class=&quot;ac-tabs__tab&quot; data-tab>服装</div>
+          <div class=&quot;ac-tabs__tab&quot; data-tab>DIY 配方</div>
+        </div>
+        <div class=&quot;ac-panel&quot; style=&quot;border-radius:0 20px 20px 20px;&quot;><div class=&quot;ac-panel__bd&quot;><p id=&quot;acTabsBody&quot;>家具:原木沙发 ×1 · 观叶植物 ×2 · 木吉他 ×1</p></div></div>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-tabs</b> &amp;gt; <b>ac-tabs__tab</b> ( <b>--active</b> )</div>
+  </div>
+
+  <!-- 13 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>输入框 · Input</div><div class=&quot;comp-desc&quot;>奶油圆角框,聚焦绿光环;可选前置图标 ac-field。</div>
+    <div class=&quot;showcase&quot; style=&quot;flex-direction:column; align-items:stretch; max-width:360px;&quot;>
+      <input class=&quot;ac-input&quot; placeholder=&quot;给你的岛起个名字…&quot;>
+      <div class=&quot;ac-field&quot;><span class=&quot;ac-field__ic&quot;>🔍</span><input class=&quot;ac-input&quot; placeholder=&quot;搜索图鉴…&quot;></div>
+    </div>
+    <div class=&quot;classline&quot;><b>&amp;lt;input class=&quot;ac-input&quot;&amp;gt;</b>　·　带图标:<b>ac-field</b> &amp;gt; <b>ac-field__ic</b> + <b>ac-input</b></div>
+  </div>
+
+  <!-- 14 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>下拉选择 · Select</div><div class=&quot;comp-desc&quot;>奶油胶囊 + 橙色箭头。</div>
+    <div class=&quot;showcase&quot;>
+      <div class=&quot;ac-select&quot;><select><option>季节:春天</option><option>季节:夏天</option><option>季节:秋天</option><option>季节:冬天</option></select></div>
+      <div class=&quot;ac-select&quot;><select><option>半球:北半球</option><option>半球:南半球</option></select></div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-select</b> &amp;gt; <b>&amp;lt;select&amp;gt;</b> &amp;gt; <b>&amp;lt;option&amp;gt;</b></div>
+  </div>
+
+  <!-- 15 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>开关 · Switch</div><div class=&quot;comp-desc&quot;>软萌滑块,开启变绿。点击切换。</div>
+    <div class=&quot;showcase&quot; style=&quot;gap:26px;&quot;>
+      <label class=&quot;ac-switch&quot;><input type=&quot;checkbox&quot; checked><span class=&quot;ac-switch__track&quot;></span><span style=&quot;margin-left:10px; font-weight:800; font-size:13px; color:#41702e;&quot;>岛内 BGM</span></label>
+      <label class=&quot;ac-switch&quot;><input type=&quot;checkbox&quot;><span class=&quot;ac-switch__track&quot;></span><span style=&quot;margin-left:10px; font-weight:800; font-size:13px; color:#41702e;&quot;>访客通知</span></label>
+    </div>
+    <div class=&quot;classline&quot;><b>&amp;lt;label class=&quot;ac-switch&quot;&amp;gt;</b> &amp;gt; <b>input[checkbox]</b> + <b>span.ac-switch__track</b></div>
+  </div>
+
+  <!-- 16 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>滑条 · Slider</div><div class=&quot;comp-desc&quot;>白圆钮 + 绿→奶油轨,软投影。</div>
+    <div class=&quot;showcase&quot; style=&quot;flex-direction:column; align-items:stretch; max-width:360px;&quot;>
+      <input type=&quot;range&quot; class=&quot;ac-slider&quot; min=&quot;0&quot; max=&quot;100&quot; value=&quot;65&quot;>
+      <input type=&quot;range&quot; class=&quot;ac-slider&quot; min=&quot;0&quot; max=&quot;100&quot; value=&quot;30&quot;>
+    </div>
+    <div class=&quot;classline&quot;><b>&amp;lt;input type=&quot;range&quot; class=&quot;ac-slider&quot;&amp;gt;</b></div>
+  </div>
+
+  <!-- 17 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>徽章 · Badge</div><div class=&quot;comp-desc&quot;>粉/铃钱黄徽章,可贴图标右上。</div>
+    <div class=&quot;showcase&quot; style=&quot;gap:24px;&quot;>
+      <span class=&quot;ac-badge&quot;>3</span>
+      <span class=&quot;ac-badge ac-badge--bell&quot;>99+</span>
+      <span class=&quot;ac-badge-wrap&quot;><div class=&quot;ac-icon&quot;>✉️</div><span class=&quot;ac-badge&quot;>5</span></span>
+      <span class=&quot;ac-badge-wrap&quot;><div class=&quot;ac-icon&quot;>🎁</div><span class=&quot;ac-badge ac-badge--bell&quot;>!</span></span>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-badge</b> ( <b>--bell</b> )　·　贴角:<b>ac-badge-wrap</b> &amp;gt; 内容 + <b>ac-badge</b></div>
+  </div>
+
+  <!-- 18 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>角标 · Ribbon</div><div class=&quot;comp-desc&quot;>卡片左上圆头丝带。放 position:relative 容器内。</div>
+    <div class=&quot;showcase&quot;>
+      <div class=&quot;ac-card ac-card--lazy&quot; style=&quot;position:relative;&quot;><span class=&quot;ac-ribbon&quot;>非卖品</span><div class=&quot;ac-card__art&quot;>🏆</div><div class=&quot;ac-card__name&quot;>钓鱼奖杯</div></div>
+      <div class=&quot;ac-card&quot; style=&quot;position:relative;&quot;><span class=&quot;ac-ribbon ac-ribbon--bell&quot;>新品</span><div class=&quot;ac-card__art&quot;>🪑</div><div class=&quot;ac-card__name&quot;>树桩凳</div></div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-ribbon</b> ( <b>--bell</b> )　·　置于 relative 容器内</div>
+  </div>
+
+  <!-- 19 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>标签 · Tag</div><div class=&quot;comp-desc&quot;>属性小标签,绿/蓝/粉变体。</div>
+    <div class=&quot;showcase&quot;>
+      <span class=&quot;ac-tag&quot;>自然风</span>
+      <span class=&quot;ac-tag ac-tag--green&quot;>🍃 绿植</span>
+      <span class=&quot;ac-tag ac-tag--blue&quot;>🐟 海鲜</span>
+      <span class=&quot;ac-tag ac-tag--pink&quot;>🌸 樱花系列</span>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-tag</b> ( <b>--green / --blue / --pink</b> )</div>
+  </div>
+
+  <!-- 20 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>提示 · Tooltip</div><div class=&quot;comp-desc&quot;>悬停显示,内容取 data-tip。悬停试试。</div>
+    <div class=&quot;showcase&quot;>
+      <span class=&quot;ac-tooltip&quot; data-tip=&quot;鱼影特大,只在冬天出现&quot;>鲟鱼</span>
+      <span class=&quot;ac-tooltip&quot; data-tip=&quot;雨天出现在花朵上&quot;>蜗牛</span>
+      <span class=&quot;ac-tooltip&quot; data-tip=&quot;周日上午找曹卖买&quot;>大头菜</span>
+    </div>
+    <div class=&quot;classline&quot;><b>&amp;lt;span class=&quot;ac-tooltip&quot; data-tip=&quot;内容&quot;&amp;gt;</b></div>
+  </div>
+
+  <!-- 21 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>通知 · Toast</div><div class=&quot;comp-desc&quot;>奶油提示,普通/危险/铃钱三种图标色。</div>
+    <div class=&quot;showcase&quot; style=&quot;flex-direction:column; align-items:stretch;&quot;>
+      <div class=&quot;ac-toast ac-toast--bell&quot;><span class=&quot;ac-toast__ic&quot;>🔔</span><div><b>还清房贷!</b>狸克说可以扩建房子了~</div></div>
+      <div class=&quot;ac-toast ac-toast--danger&quot;><span class=&quot;ac-toast__ic&quot;>🐝</span><div><b>被蜜蜂蛰了!</b>快去商店买药,或者找岛民要一个。</div></div>
+      <div class=&quot;ac-toast&quot;><span class=&quot;ac-toast__ic&quot;>🏛️</span><div><b>捐赠成功</b>傅达收下了皇带鱼,快去博物馆看看!</div></div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-toast</b> ( <b>--danger / --bell</b> ) &amp;gt; <b>ac-toast__ic</b> + 内容(b 标题)</div>
+  </div>
+
+  <!-- 22 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>对话气泡 · Bubble</div><div class=&quot;comp-desc&quot;>动森招牌对话框:歪头名牌 + 圆角气泡。</div>
+    <div class=&quot;showcase&quot; style=&quot;padding-top:34px;&quot;><div class=&quot;ac-bubble&quot;><div class=&quot;ac-bubble__who&quot;>西施惠</div>早上好!今天岛上有流星雨哦,记得晚上抬头对流星许愿呢~</div></div>
+    <div class=&quot;classline&quot;><b>ac-bubble</b> &amp;gt; <b>ac-bubble__who</b>(浮动名牌) + 对话文字</div>
+  </div>
+
+  <!-- 23 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>加载 · Spinner</div><div class=&quot;comp-desc&quot;>飘转树叶(旋转缩放)。</div>
+    <div class=&quot;showcase&quot; style=&quot;gap:26px;&quot;><div class=&quot;ac-spinner&quot;></div><span style=&quot;font-weight:800; color:#41702e; font-size:13px;&quot;>正在前往机场…</span></div>
+    <div class=&quot;classline&quot;><b>ac-spinner</b></div>
+  </div>
+
+  <!-- 24 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>头像组 · Avatar Group</div><div class=&quot;comp-desc&quot;>岛民叠放 + 溢出计数,白描边圆。</div>
+    <div class=&quot;showcase&quot;><div class=&quot;ac-avatars&quot;><div class=&quot;ac-avatars__a&quot;>🐶</div><div class=&quot;ac-avatars__a&quot;>🐰</div><div class=&quot;ac-avatars__a&quot;>🐱</div><div class=&quot;ac-avatars__a&quot;>🦉</div><div class=&quot;ac-avatars__more&quot;>+6</div></div></div>
+    <div class=&quot;classline&quot;><b>ac-avatars</b> &amp;gt; 多个 <b>ac-avatars__a</b> + <b>ac-avatars__more</b></div>
+  </div>
+
+  <!-- 25 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>星级评分 · Stars</div><div class=&quot;comp-desc&quot;>岛屿评级,.on 点亮金星。</div>
+    <div class=&quot;showcase&quot; style=&quot;gap:26px;&quot;>
+      <span class=&quot;ac-stars&quot;><span class=&quot;on&quot;>★</span><span class=&quot;on&quot;>★</span><span class=&quot;on&quot;>★</span><span>★</span><span>★</span></span>
+      <span class=&quot;ac-stars&quot;><span class=&quot;on&quot;>★</span><span class=&quot;on&quot;>★</span><span class=&quot;on&quot;>★</span><span class=&quot;on&quot;>★</span><span class=&quot;on&quot;>★</span></span>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-stars</b> &amp;gt; 多个 <b>&amp;lt;span&amp;gt;★</b>,点亮加 <b>.on</b></div>
+  </div>
+
+  <!-- 26 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>分隔线 · Divider</div><div class=&quot;comp-desc&quot;>白色虚线,可带中心标签。</div>
+    <div class=&quot;showcase&quot; style=&quot;flex-direction:column; align-items:stretch; max-width:420px;&quot;>
+      <div class=&quot;ac-divider&quot;><span class=&quot;ac-divider__mark&quot;>🍃</span></div>
+      <div class=&quot;ac-divider&quot;><span class=&quot;ac-divider__mark&quot;>今日待办</span></div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-divider</b> &amp;gt; <b>ac-divider__mark</b></div>
+  </div>
+
+  <!-- 27 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>空状态 · Empty</div><div class=&quot;comp-desc&quot;>列表为空占位,图标+标题+说明。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <div class=&quot;ac-panel&quot; style=&quot;max-width:420px; margin:0 auto;&quot;><div class=&quot;ac-panel__hd&quot; style=&quot;background:var(--ac-blue);&quot;>博物馆 · 化石区</div><div class=&quot;ac-empty&quot;><div class=&quot;ac-empty__ic&quot;>🦴</div><div class=&quot;ac-empty__tt&quot;>还没有化石</div><div class=&quot;ac-empty__ds&quot;>每天用铲子挖开地上的裂缝试试吧!</div></div></div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-empty</b> &amp;gt; <b>ac-empty__ic</b> + <b>ac-empty__tt</b> + <b>ac-empty__ds</b></div>
+  </div>
+
+  <!-- ADVANCED -->
+  <div class=&quot;comp&quot; style=&quot;margin-top:52px;&quot;><div class=&quot;comp-title&quot; style=&quot;font-size:22px;&quot;>🍃 进阶组件 · Advanced</div><div class=&quot;comp-desc&quot;>复杂交互组件,均可操作。</div></div>
+
+  <!-- 28 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>步进器 · Stepper</div><div class=&quot;comp-desc&quot;>橙色圆钮数量选择,可点增减。</div>
+    <div class=&quot;showcase&quot;>
+      <div class=&quot;ac-stepper&quot; data-stepper><button class=&quot;ac-stepper__btn&quot; data-dec>−</button><div class=&quot;ac-stepper__val&quot; data-val>1</div><button class=&quot;ac-stepper__btn&quot; data-inc>+</button></div>
+      <span style=&quot;font-weight:800; font-size:13px; color:#41702e;&quot;>购买大头菜(×10 棵)</span>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-stepper</b> &amp;gt; <b>ac-stepper__btn</b>(−) + <b>ac-stepper__val</b> + <b>ac-stepper__btn</b>(+)</div>
+  </div>
+
+  <!-- 29 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>面包屑 · Breadcrumb</div><div class=&quot;comp-desc&quot;>层级路径,末项高亮。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <nav class=&quot;ac-breadcrumb&quot;><a>桃桃岛</a><span class=&quot;ac-breadcrumb__sep&quot;>▸</span><a>博物馆</a><span class=&quot;ac-breadcrumb__sep&quot;>▸</span><a>水族区</a><span class=&quot;ac-breadcrumb__sep&quot;>▸</span><span class=&quot;ac-breadcrumb__cur&quot;>深海展厅</span></nav>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-breadcrumb</b> &amp;gt; <b>a</b> + <b>__sep</b> … + <b>__cur</b></div>
+  </div>
+
+  <!-- 30 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>手风琴 · Accordion</div><div class=&quot;comp-desc&quot;>原生 details,枯叶/绿叶切换,无需 JS。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <div class=&quot;ac-accordion&quot; style=&quot;max-width:440px;&quot;>
+        <details open><summary>大头菜怎么玩?</summary><div class=&quot;ac-accordion__bd&quot;>周日上午向曹卖买入,一周内在商店卖出。价格每天上下午变动,周六下午前必须卖掉,否则会烂掉!</div></details>
+        <details><summary>怎么获得梯子?</summary><div class=&quot;ac-accordion__bd&quot;>推进狸克的移居计划,准备第三间房屋用地时会解锁梯子的 DIY 配方。</div></details>
+        <details><summary>流星雨怎么许愿?</summary><div class=&quot;ac-accordion__bd&quot;>听到流星声后,不拿任何工具抬头看天,流星划过时按 A 许愿,第二天海滩会出现星星碎片。</div></details>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-accordion</b> &amp;gt; <b>&amp;lt;details&amp;gt;</b> ( <b>&amp;lt;summary&amp;gt;</b> + <b>ac-accordion__bd</b> )</div>
+  </div>
+
+  <!-- 31 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>侧边抽屉 · Drawer</div><div class=&quot;comp-desc&quot;>右滑圆角面板。点击预览。</div>
+    <div class=&quot;showcase&quot;><button class=&quot;ac-btn ac-btn--blue&quot; onclick=&quot;acOpenDrawer()&quot;>打开背包</button></div>
+    <div class=&quot;classline&quot;><b>ac-drawer-mask</b> + <b>ac-drawer</b> ( <b>__hd</b> + <b>__bd</b> )　·　加 <b>.open</b> 展开</div>
+  </div>
+
+  <!-- 32 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>数据表格 · Table</div><div class=&quot;comp-desc&quot;>钓鱼大赛排行,斑马纹 + 悬停高亮。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <table class=&quot;ac-table&quot; style=&quot;max-width:480px;&quot;>
+        <thead><tr><th>排名</th><th>岛民</th><th>鱼</th><th>尺寸</th></tr></thead>
+        <tbody>
+          <tr><td class=&quot;ac-table__rank&quot;>①</td><td>岛民代表</td><td>皇带鱼</td><td>302.4 cm</td></tr>
+          <tr><td class=&quot;ac-table__rank&quot;>②</td><td>小汪</td><td>鲈鱼</td><td>88.2 cm</td></tr>
+          <tr><td class=&quot;ac-table__rank&quot;>③</td><td>莉莉安</td><td>红鲷鱼</td><td>64.7 cm</td></tr>
+          <tr><td>4</td><td>杰克</td><td>竹荚鱼</td><td>31.5 cm</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class=&quot;classline&quot;><b>table.ac-table</b> &amp;gt; <b>thead th</b> + <b>tbody td</b>　·　名次:<b>ac-table__rank</b></div>
+  </div>
+
+  <!-- 33 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>分页器 · Pagination</div><div class=&quot;comp-desc&quot;>圆点翻页,--active 当前 / --dis 禁用。点击切换。</div>
+    <div class=&quot;showcase&quot;>
+      <div class=&quot;ac-pagination&quot; id=&quot;acPage&quot;>
+        <div class=&quot;ac-pagination__pg ac-pagination__pg--dis&quot;>‹</div>
+        <div class=&quot;ac-pagination__pg ac-pagination__pg--active&quot; data-pg>1</div>
+        <div class=&quot;ac-pagination__pg&quot; data-pg>2</div>
+        <div class=&quot;ac-pagination__pg&quot; data-pg>3</div>
+        <div class=&quot;ac-pagination__pg&quot; data-pg>4</div>
+        <div class=&quot;ac-pagination__pg&quot;>›</div>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-pagination</b> &amp;gt; <b>ac-pagination__pg</b> ( <b>--active / --dis</b> )</div>
+  </div>
+
+  <!-- 34 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>时间轴 · Timeline</div><div class=&quot;comp-desc&quot;>搬家/建设进度,--done 完成 / --now 当前(铃钱金发光)。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <div class=&quot;ac-timeline&quot; style=&quot;max-width:400px;&quot;>
+        <div class=&quot;ac-timeline__item ac-timeline__item--done&quot;><div class=&quot;ac-timeline__t&quot;>搭起帐篷</div><div class=&quot;ac-timeline__d&quot;>已完成</div></div>
+        <div class=&quot;ac-timeline__item ac-timeline__item--done&quot;><div class=&quot;ac-timeline__t&quot;>升级成小房子</div><div class=&quot;ac-timeline__d&quot;>已完成</div></div>
+        <div class=&quot;ac-timeline__item ac-timeline__item--now&quot;><div class=&quot;ac-timeline__t&quot;>扩建二楼</div><div class=&quot;ac-timeline__d&quot;>还贷中 · 348,000 铃钱</div></div>
+        <div class=&quot;ac-timeline__item&quot;><div class=&quot;ac-timeline__t&quot;>地下室</div><div class=&quot;ac-timeline__d&quot;>未解锁</div></div>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-timeline</b> &amp;gt; <b>ac-timeline__item</b> ( <b>--done/--now</b> ) ( <b>__t</b> + <b>__d</b> )</div>
+  </div>
+
+  <!-- 35 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>树形菜单 · Tree</div><div class=&quot;comp-desc&quot;>图鉴分类,details 折叠。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <div class=&quot;ac-tree&quot; style=&quot;max-width:320px;&quot;>
+        <details open><summary>🐟 鱼类图鉴</summary>
+          <div class=&quot;ac-tree__leaf&quot;>鲈鱼 (已捕获)</div>
+          <div class=&quot;ac-tree__leaf&quot;>皇带鱼 (已捕获)</div>
+          <details><summary>深海鱼</summary><div class=&quot;ac-tree__leaf&quot;>鮟鱇鱼 (未捕获)</div><div class=&quot;ac-tree__leaf&quot;>腔棘鱼 (未捕获)</div></details>
+        </details>
+        <details><summary>🦋 昆虫图鉴</summary><div class=&quot;ac-tree__leaf&quot;>凤蝶 (已捕获)</div><div class=&quot;ac-tree__leaf&quot;>独角仙 (未捕获)</div></details>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-tree</b> &amp;gt; 嵌套 <b>&amp;lt;details&amp;gt;</b> + <b>ac-tree__leaf</b></div>
+  </div>
+
+  <!-- 36 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>能量条倒计时 · Energy</div><div class=&quot;comp-desc&quot;>水果力气回复,含实时倒计时。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <div class=&quot;ac-energy&quot; style=&quot;max-width:340px;&quot;>
+        <div class=&quot;ac-energy__orb&quot;>🍑</div>
+        <div class=&quot;ac-energy__body&quot;>
+          <div class=&quot;ac-energy__top&quot;><span>力气 <b style=&quot;color:#fffdf2&quot;>3 / 10</b></span><span class=&quot;ac-energy__timer&quot; id=&quot;acEnergyTimer&quot;>+1 · 04:59</span></div>
+          <div class=&quot;ac-bar&quot;><div class=&quot;ac-bar__fill ac-bar__fill--friend&quot; style=&quot;width:30%&quot;></div></div>
+        </div>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-energy</b> &amp;gt; <b>__orb</b> + <b>__body</b> ( <b>__top</b>(含 <b>__timer</b>) + <b>ac-bar</b> )</div>
+  </div>
+
+  <!-- 37 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>签到日历 · Calendar</div><div class=&quot;comp-desc&quot;>7 日签到,--done 已领 / --today 当天橙框。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <div class=&quot;ac-calendar&quot; style=&quot;max-width:400px;&quot;>
+        <div class=&quot;ac-calendar__day ac-calendar__day--done&quot;><span class=&quot;r&quot;>🔔</span>1</div>
+        <div class=&quot;ac-calendar__day ac-calendar__day--done&quot;><span class=&quot;r&quot;>🍑</span>2</div>
+        <div class=&quot;ac-calendar__day ac-calendar__day--done&quot;><span class=&quot;r&quot;>📜</span>3</div>
+        <div class=&quot;ac-calendar__day ac-calendar__day--today&quot;><span class=&quot;r&quot;>🎁</span>4</div>
+        <div class=&quot;ac-calendar__day&quot;><span class=&quot;r&quot;>🔔</span>5</div>
+        <div class=&quot;ac-calendar__day&quot;><span class=&quot;r&quot;>🌸</span>6</div>
+        <div class=&quot;ac-calendar__day&quot;><span class=&quot;r&quot;>⭐</span>7</div>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-calendar</b> &amp;gt; <b>ac-calendar__day</b> ( <b>--done / --today</b> )</div>
+  </div>
+
+  <!-- 38 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>里程任务链 · Quest Chain</div><div class=&quot;comp-desc&quot;>狸克里程进度,--done/--now + 虚线连接。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <div class=&quot;ac-questchain&quot; style=&quot;max-width:400px;&quot;>
+        <div class=&quot;ac-questchain__node ac-questchain__node--done&quot;>✓</div>
+        <div class=&quot;ac-questchain__link ac-questchain__link--done&quot;></div>
+        <div class=&quot;ac-questchain__node ac-questchain__node--done&quot;>✓</div>
+        <div class=&quot;ac-questchain__link ac-questchain__link--done&quot;></div>
+        <div class=&quot;ac-questchain__node ac-questchain__node--now&quot;>✈️</div>
+        <div class=&quot;ac-questchain__link&quot;></div>
+        <div class=&quot;ac-questchain__node&quot;>🏝️</div>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-questchain</b> &amp;gt; <b>__node</b>( <b>--done/--now</b> ) 与 <b>__link</b>( <b>--done</b> ) 交替</div>
+  </div>
+
+  <!-- 39 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>成就解锁 · Achievement</div><div class=&quot;comp-desc&quot;>奖章+标题+描述,--locked 灰化。</div>
+    <div class=&quot;showcase&quot; style=&quot;flex-direction:column; align-items:stretch; max-width:400px;&quot;>
+      <div class=&quot;ac-achievement&quot;><div class=&quot;ac-achievement__medal&quot;>🎣</div><div class=&quot;ac-achievement__tx&quot;><b>钓鱼达人</b><small>累计钓上 500 条鱼</small></div></div>
+      <div class=&quot;ac-achievement ac-achievement--locked&quot;><div class=&quot;ac-achievement__medal&quot;>🔒</div><div class=&quot;ac-achievement__tx&quot;><b>???</b><small>达成隐藏条件解锁</small></div></div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-achievement</b> ( <b>--locked</b> ) &amp;gt; <b>__medal</b> + <b>__tx</b>(b+small)</div>
+  </div>
+
+  <!-- 40 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>翻牌 · Flip Card</div><div class=&quot;comp-desc&quot;>CSS 3D 翻转,化石背面 → 鉴定结果。点击翻。</div>
+    <div class=&quot;showcase&quot;>
+      <div class=&quot;ac-flipcard&quot; onclick=&quot;this.classList.toggle('flipped')&quot;><div class=&quot;ac-flipcard__inner&quot;><div class=&quot;ac-flipcard__face ac-flipcard__back&quot;>?</div><div class=&quot;ac-flipcard__face ac-flipcard__front&quot;><span class=&quot;em&quot;>🦖</span><span class=&quot;nm&quot;>霸王龙头骨</span></div></div></div>
+      <div class=&quot;ac-flipcard&quot; onclick=&quot;this.classList.toggle('flipped')&quot;><div class=&quot;ac-flipcard__inner&quot;><div class=&quot;ac-flipcard__face ac-flipcard__back&quot;>?</div><div class=&quot;ac-flipcard__face ac-flipcard__front&quot;><span class=&quot;em&quot;>🐚</span><span class=&quot;nm&quot;>菊石化石</span></div></div></div>
+      <span style=&quot;font-weight:800; font-size:12px; color:#41702e;&quot;>← 点击鉴定</span>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-flipcard</b> &amp;gt; <b>__inner</b> &amp;gt; <b>__face __back</b> + <b>__face __front</b>　·　加 <b>.flipped</b></div>
+  </div>
+
+  <!-- 41 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>拆礼物 · Gift</div><div class=&quot;comp-desc&quot;>点击弹开礼物盒,揭示内容物。</div>
+    <div class=&quot;showcase&quot;>
+      <div class=&quot;ac-chest&quot; onclick=&quot;acOpenChest(this)&quot;>
+        <div class=&quot;ac-chest__box&quot;>🎀</div>
+        <div class=&quot;ac-chest__label&quot;>点击拆开</div>
+        <div class=&quot;ac-chest__glow&quot;><div style=&quot;display:flex; gap:6px; justify-content:center;&quot;><div class=&quot;ac-icon ac-icon--diy&quot;>📜</div><div class=&quot;ac-icon&quot;>🔔</div></div></div>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-chest</b> &amp;gt; <b>__box</b> + <b>__label</b> + <b>__glow</b>　·　加 <b>.opened</b></div>
+  </div>
+
+  <!-- 42 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>背包网格 · Inventory Grid</div><div class=&quot;comp-desc&quot;>口袋格子,DIY/稀有底色、数量角标、空格。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <div class=&quot;ac-invgrid&quot;>
+        <div class=&quot;ac-invgrid__cell ac-invgrid__cell--rare&quot;>🦋</div>
+        <div class=&quot;ac-invgrid__cell ac-invgrid__cell--diy&quot;>📜</div>
+        <div class=&quot;ac-invgrid__cell&quot;>🍑<span class=&quot;ac-invgrid__qty&quot;>9</span></div>
+        <div class=&quot;ac-invgrid__cell&quot;>🪵<span class=&quot;ac-invgrid__qty&quot;>30</span></div>
+        <div class=&quot;ac-invgrid__cell&quot;>🪨<span class=&quot;ac-invgrid__qty&quot;>14</span></div>
+        <div class=&quot;ac-invgrid__cell&quot;>🪓</div>
+        <div class=&quot;ac-invgrid__cell ac-invgrid__cell--rare&quot;>🐠</div>
+        <div class=&quot;ac-invgrid__cell ac-invgrid__cell--empty&quot;></div>
+        <div class=&quot;ac-invgrid__cell ac-invgrid__cell--empty&quot;></div>
+        <div class=&quot;ac-invgrid__cell ac-invgrid__cell--empty&quot;></div>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-invgrid</b> &amp;gt; <b>ac-invgrid__cell</b> ( <b>--diy/--rare/--empty</b> ) + <b>ac-invgrid__qty</b></div>
+  </div>
+
+  <!-- 43 -->
+  <div class=&quot;comp&quot;><div class=&quot;comp-title&quot;>道具对比 · Compare</div><div class=&quot;comp-desc&quot;>普通斧头 vs 金斧头,属性升降绿/红标注。</div>
+    <div class=&quot;showcase&quot; style=&quot;display:block;&quot;>
+      <div class=&quot;ac-compare&quot; style=&quot;max-width:460px;&quot;>
+        <div class=&quot;ac-compare__side&quot;><div class=&quot;ac-icon&quot;>🪓</div><div class=&quot;ac-compare__nm&quot;>普通斧头</div>
+          <div class=&quot;ac-compare__stat&quot;><span>耐久</span><span>100 次</span></div><div class=&quot;ac-compare__stat&quot;><span>效果</span><span>砍倒树木</span></div></div>
+        <div class=&quot;ac-compare__vs&quot;>VS</div>
+        <div class=&quot;ac-compare__side&quot;><div class=&quot;ac-icon ac-icon--diy&quot;>🪓</div><div class=&quot;ac-compare__nm&quot; style=&quot;color:#c1841f&quot;>金斧头</div>
+          <div class=&quot;ac-compare__stat&quot;><span>耐久</span><span class=&quot;ac-compare__up&quot;>200 次 ▲</span></div><div class=&quot;ac-compare__stat&quot;><span>效果</span><span class=&quot;ac-compare__up&quot;>砍树+闪光 ▲</span></div></div>
+      </div>
+    </div>
+    <div class=&quot;classline&quot;><b>ac-compare</b> &amp;gt; <b>__side</b> + <b>__vs</b> + <b>__side</b>　·　升降:<b>ac-compare__up / __down</b></div>
+  </div>
+
+</div>
+
+<!-- modal -->
+<div class=&quot;ac-modal-mask&quot; id=&quot;acModal&quot; style=&quot;display:none;&quot;>
+  <div class=&quot;ac-modal&quot;>
+    <button class=&quot;ac-btn ac-modal__close ac-btn--round&quot; onclick=&quot;document.getElementById('acModal').style.display='none'&quot;>✕</button>
+    <div class=&quot;ac-panel&quot;>
+      <span class=&quot;ac-leaf tl&quot;></span><span class=&quot;ac-leaf tr&quot;></span><span class=&quot;ac-leaf bl&quot;></span><span class=&quot;ac-leaf br&quot;></span>
+      <div class=&quot;ac-panel__hd&quot;>确认购买</div>
+      <div class=&quot;ac-panel__bd&quot;><p style=&quot;text-align:center;&quot;>以每棵 92 铃钱的价格,购买 400 棵大头菜吗?</p>
+        <div style=&quot;margin-top:16px; display:flex; gap:10px; justify-content:center;&quot;>
+          <button class=&quot;ac-btn ac-btn--green ac-btn--sm&quot; onclick=&quot;document.getElementById('acModal').style.display='none'&quot;>买了!</button>
+          <button class=&quot;ac-btn ac-btn--cream ac-btn--sm&quot; onclick=&quot;document.getElementById('acModal').style.display='none'&quot;>再想想</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- drawer -->
+<div class=&quot;ac-drawer-mask&quot; id=&quot;acDrawerMask&quot; onclick=&quot;acCloseDrawer()&quot;></div>
+<div class=&quot;ac-drawer&quot; id=&quot;acDrawer&quot;>
+  <div class=&quot;ac-drawer__hd&quot;>口袋 <span onclick=&quot;acCloseDrawer()&quot;>✕</span></div>
+  <div class=&quot;ac-drawer__bd&quot;>
+    <div class=&quot;ac-list&quot;>
+      <div class=&quot;ac-list__item&quot;><div class=&quot;ac-list__ic&quot;>🪓</div><div class=&quot;ac-list__tx&quot;><b>普通斧头</b><small>耐久 62/100</small></div><span class=&quot;ac-list__val&quot;>×1</span></div>
+      <div class=&quot;ac-list__item&quot;><div class=&quot;ac-list__ic&quot;>🎣</div><div class=&quot;ac-list__tx&quot;><b>钓竿</b><small>耐久 18/30</small></div><span class=&quot;ac-list__val&quot;>×1</span></div>
+      <div class=&quot;ac-list__item&quot;><div class=&quot;ac-list__ic&quot;>🍑</div><div class=&quot;ac-list__tx&quot;><b>桃子</b><small>本岛特产</small></div><span class=&quot;ac-list__val&quot;>×9</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function acOpenDrawer(){document.getElementById('acDrawer').classList.add('open');document.getElementById('acDrawerMask').classList.add('open');}
+  function acCloseDrawer(){document.getElementById('acDrawer').classList.remove('open');document.getElementById('acDrawerMask').classList.remove('open');}
+  function acOpenChest(el){el.classList.add('opened');el.querySelector('.ac-chest__label').textContent='获得礼物!';el.querySelector('.ac-chest__box').textContent='🎉';}
+  document.querySelectorAll('[data-stepper]').forEach(s=>{const v=s.querySelector('[data-val]');let n=parseInt(v.textContent,10);
+    s.querySelector('[data-inc]').onclick=()=>{n=Math.min(99,n+1);v.textContent=n;};
+    s.querySelector('[data-dec]').onclick=()=>{n=Math.max(1,n-1);v.textContent=n;};});
+  document.querySelectorAll('#acNav [data-nav]').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('#acNav [data-nav]').forEach(x=>x.classList.remove('ac-nav__tab--active'));t.classList.add('ac-nav__tab--active');}));
+  const acTB={0:'家具:原木沙发 ×1 · 观叶植物 ×2 · 木吉他 ×1',1:'服装:水手服 · 草帽 · 小熊连帽衫',2:'DIY 配方:树桩凳 · 木质衣柜 · 篝火'};
+  document.querySelectorAll('#acTabs [data-tab]').forEach((t,i)=>t.addEventListener('click',()=>{
+    document.querySelectorAll('#acTabs [data-tab]').forEach(x=>x.classList.remove('ac-tabs__tab--active'));t.classList.add('ac-tabs__tab--active');
+    document.getElementById('acTabsBody').textContent=acTB[i];}));
+  document.querySelectorAll('#acPage [data-pg]').forEach(p=>p.addEventListener('click',()=>{
+    document.querySelectorAll('#acPage [data-pg]').forEach(x=>x.classList.remove('ac-pagination__pg--active'));p.classList.add('ac-pagination__pg--active');}));
+  document.getElementById('acModal').addEventListener('click',e=>{if(e.target.id==='acModal')e.target.style.display='none';});
+  (function(){const t=document.getElementById('acEnergyTimer');if(!t)return;let s=299;
+    setInterval(()=>{s=s<=0?299:s-1;const m=String(Math.floor(s/60)).padStart(2,'0'),ss=String(s%60).padStart(2,'0');t.textContent='+1 · '+m+':'+ss;},1000);})();
 </script>
 </body>
 </html>
